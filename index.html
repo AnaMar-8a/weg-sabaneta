@@ -100,7 +100,7 @@
       z-index: 50;
     }
     .progress-bar {
-      height: 100%; width: 12.5%; /* Actualizado para 8 slides */
+      height: 100%; width: 11.11%;
       background: linear-gradient(90deg, var(--turq), var(--gold));
       transition: width 0.5s var(--ease);
       border-radius: 0 4px 4px 0;
@@ -178,107 +178,110 @@
     .check-list li::before { content: "\f00c"; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; left: 0; top: 2px; font-size: 14px; color: var(--turq); }
     .gold .check-list li::before { color: var(--gold); }
 
-    /* --- NUEVO: Muro de Lluvia de Ideas --- */
-    .board-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 30px;
+    /* ==========================================
+       NUEVO: ANIMACIONES EN VIVO PARA "LA VOZ DEL EQUIPO"
+       ========================================== */
+    .stat-pills-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
       margin-top: 24px;
-      padding: 20px 0;
     }
-    .idea-card {
-      background: rgba(255, 255, 255, 0.04);
+    .stat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 24px;
+      background: rgba(255,255,255,0.04);
       border: 1px solid var(--line);
-      padding: 32px 24px;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-      backdrop-filter: blur(10px);
+      border-radius: 999px;
       transition: all 0.3s var(--ease);
+    }
+    .stat-count {
+      font-family: var(--display);
+      font-size: 26px;
+      color: var(--text);
+      line-height: 1;
+      min-width: 30px; /* Evita que brinque el texto al contar */
+    }
+    .stat-label {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    /* --- NUEVO: MURO DE TESTIMONIOS EN VIVO (MARQUEE) --- */
+    .quotes-marquee-wrapper {
+      position: relative;
+      height: 580px; /* Altura del muro */
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      /* Máscara para que se desvanezcan suavemente arriba y abajo */
+      -webkit-mask-image: linear-gradient(to bottom, transparent, black 5%, black 95%, transparent);
+      mask-image: linear-gradient(to bottom, transparent, black 5%, black 95%, transparent);
+    }
+    .quotes-track {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 20px;
+      animation: scrollVertical var(--duration) linear infinite;
+    }
+    .quotes-track:hover {
+      /* Se detiene cuando pasas el mouse para poder leer */
+      animation-play-state: paused;
+    }
+    @keyframes scrollVertical {
+      from { transform: translateY(0); }
+      to { transform: translateY(calc(-50% - 10px)); } /* Sube exactamente la mitad para reiniciar el bucle */
+    }
+    
+    .quote-card {
+      background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 24px;
       position: relative;
-      overflow: hidden;
+      transition: all 0.3s var(--ease);
     }
-    /* El "pin" del post-it superior */
-    .idea-card::before {
-      content: ""; position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
-      width: 40px; height: 4px; border-radius: 4px; background: rgba(255,255,255,0.1);
+    .quote-card:hover {
+      background: rgba(255,255,255,0.08);
+      transform: translateX(8px) scale(1.02);
+      border-color: rgba(78,185,165,0.4);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
+    .quote-icon { position: absolute; top: 24px; right: 24px; color: rgba(78,185,165,0.15); font-size: 32px; transition: transform 0.3s; }
+    .quote-card:hover .quote-icon { transform: scale(1.2) rotate(10deg); color: var(--turq); opacity: 0.5; }
+    .quote-card p { font-style: italic; color: #e2e8f0; font-size: 16px; position: relative; z-index: 2; line-height: 1.5; }
+
+    /* --- Muro de Lluvia de Ideas --- */
+    .board-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; margin-top: 24px; padding: 20px 0; }
+    .idea-card { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--line); padding: 32px 24px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); backdrop-filter: blur(10px); transition: all 0.3s var(--ease); display: flex; flex-direction: column; gap: 12px; position: relative; overflow: hidden; }
+    .idea-card::before { content: ""; position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 40px; height: 4px; border-radius: 4px; background: rgba(255,255,255,0.1); }
     .idea-card:hover { transform: scale(1.03) translateY(-10px) !important; z-index: 10; background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); }
     .tilt-left { transform: rotate(-2deg); }
     .tilt-right { transform: rotate(2deg); }
     .tilt-alt { transform: rotate(-1deg); }
 
-    /* --- NUEVO: Lista de Beneficios (Conclusiones ANIMADAS) --- */
-    @keyframes premioPop {
-      0% { opacity: 0; transform: translateY(40px) scale(0.95); }
-      100% { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    /* Animación para el título de la última slide */
-    .slide.active .conclusion-header {
-      opacity: 0;
-      animation: premioPop 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-      animation-delay: 0.1s;
-    }
-
-    .benefits-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 28px;
-      margin-top: 24px;
-    }
+    /* --- Lista de Beneficios (Conclusiones ANIMADAS) --- */
+    @keyframes premioPop { 0% { opacity: 0; transform: translateY(40px) scale(0.95); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+    .slide.active .conclusion-header { opacity: 0; animation: premioPop 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards; animation-delay: 0.1s; }
+    .benefits-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 24px; }
+    .benefit-item { display: flex; align-items: flex-start; gap: 20px; padding: 32px; background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01)); border: 1px solid var(--line); border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); opacity: 0; transition: all 0.4s var(--ease); }
     
-    .benefit-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 20px;
-      padding: 32px;
-      background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      opacity: 0; /* Arrancan ocultos para la sorpresa */
-      transition: all 0.4s var(--ease);
-    }
-    
-    /* Efecto cascada: entran uno tras otro cuando llegas a la slide */
-    .slide.active .benefit-item {
-      animation: premioPop 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
+    .slide.active .benefit-item { animation: premioPop 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
     .slide.active .benefit-item:nth-child(1) { animation-delay: 0.3s; }
     .slide.active .benefit-item:nth-child(2) { animation-delay: 0.5s; }
     .slide.active .benefit-item:nth-child(3) { animation-delay: 0.7s; }
     .slide.active .benefit-item:nth-child(4) { animation-delay: 0.9s; }
 
-    /* Efecto al pasar el mouse por encima de un premio */
-    .benefit-item:hover {
-      background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
-      transform: translateY(-8px) !important;
-      border-color: rgba(255,255,255,0.2);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-    }
-    
-    .benefit-icon {
-      width: 64px; height: 64px; border-radius: 50%;
-      background: linear-gradient(135deg, rgba(78,185,165,0.2), rgba(78,185,165,0.05));
-      color: var(--turq);
-      border: 1px solid rgba(78,185,165,0.3);
-      display: grid; place-items: center; font-size: 26px; flex-shrink: 0;
-      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    .gold .benefit-icon { 
-      background: linear-gradient(135deg, rgba(223,166,57,0.2), rgba(223,166,57,0.05)); 
-      color: var(--gold); 
-      border-color: rgba(223,166,57,0.3);
-    }
-    
-    /* El ícono celebra un poquito al pasar el mouse */
-    .benefit-item:hover .benefit-icon {
-      transform: scale(1.15) rotate(8deg);
-    }
-
+    .benefit-item:hover { background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)); transform: translateY(-8px) !important; border-color: rgba(255,255,255,0.2); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+    .benefit-icon { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, rgba(78,185,165,0.2), rgba(78,185,165,0.05)); color: var(--turq); border: 1px solid rgba(78,185,165,0.3); display: grid; place-items: center; font-size: 26px; flex-shrink: 0; transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .gold .benefit-icon { background: linear-gradient(135deg, rgba(223,166,57,0.2), rgba(223,166,57,0.05)); color: var(--gold); border-color: rgba(223,166,57,0.3); }
+    .benefit-item:hover .benefit-icon { transform: scale(1.15) rotate(8deg); }
     .benefit-text h4 { font-size: 22px; color: var(--text); margin-bottom: 8px; font-family: var(--display); text-transform: uppercase; letter-spacing: 0.03em; }
     .benefit-text p { font-size: 16px; color: var(--muted); line-height: 1.5; font-weight: 300; }
 
@@ -335,6 +338,7 @@
     }
     @media (max-width: 600px) {
       .facilitator-card { flex-direction: column; text-align: center; padding: 24px; }
+      .stat-pills-container { justify-content: center; }
     }
   </style>
 </head>
@@ -347,7 +351,7 @@
       <section class="slide active" data-title="Bienvenida">
         <div class="topbar">
           <div class="kicker">RAÍZ i3 × WEG</div>
-          <div class="slide-count">01 / 08</div>
+          <div class="slide-count">01 / 09</div>
         </div>
         <div class="hero">
           <div>
@@ -394,7 +398,7 @@
       <section class="slide" data-title="Agenda">
         <div class="topbar">
           <div class="kicker">Nuestra Ruta</div>
-          <div class="slide-count">02 / 08</div>
+          <div class="slide-count">02 / 09</div>
         </div>
         <div>
           <h2 style="margin-bottom: 8px;">Cómo nos vamos a <span class="accent-g">mover hoy</span></h2>
@@ -457,7 +461,7 @@
       <section class="slide" data-title="Presentación">
         <div class="topbar">
           <div class="kicker">Rompiendo el Hielo</div>
-          <div class="slide-count">03 / 08</div>
+          <div class="slide-count">03 / 09</div>
         </div>
         <div>
           <h2 style="margin-bottom: 8px;">Nos presentamos <span class="accent-t">en un minuto</span></h2>
@@ -494,11 +498,282 @@
         </div>
       </section>
 
-      <!-- ========================= [ SLIDE 4: FACILITADORAS ] ========================= -->
+      <!-- ========================= [ SLIDE 4: RESULTADOS ROMPEHIELO ANIMADOS ] ========================= -->
+      <section class="slide" data-title="La Voz del Equipo">
+        <div class="topbar">
+          <div class="kicker">Rompehielo · El Mundo Pide, WEG Responde</div>
+          <div class="slide-count">04 / 09</div>
+        </div>
+        
+        <div class="hero" style="grid-template-columns: 0.9fr 1.1fr; align-items: start;">
+          <div>
+            <div class="eyebrow"><i class="fa-solid fa-heart-pulse"></i> El pulso del equipo</div>
+            <h2 style="line-height: 1.2;">El motor de WEG no son las máquinas, <span class="accent-g">somos nosotros.</span></h2>
+            <p class="lead" style="font-size: 18px;">Antes de reunirnos, les preguntamos qué les inspiraba nuestro lema. Sus respuestas nos demostraron que estamos aquí con toda la disposición para dar lo mejor.</p>
+            
+            <h4 style="margin-top: 32px; color: var(--muted-2); font-size: 14px;">El Termómetro del Grupo:</h4>
+            <div class="stat-pills-container">
+              <div class="stat-pill" style="background: rgba(78,185,165,0.1); border-color: rgba(78,185,165,0.3);">
+                <span class="stat-count count-animate" data-target="15">0</span>
+                <span class="stat-label" style="color: var(--turq);">🌍 Compromiso</span>
+              </div>
+              <div class="stat-pill" style="background: rgba(223,166,57,0.1); border-color: rgba(223,166,57,0.3);">
+                <span class="stat-count count-animate" data-target="11">0</span>
+                <span class="stat-label" style="color: var(--gold);">🔥 Motivación</span>
+              </div>
+              <div class="stat-pill">
+                <span class="stat-count count-animate" data-target="8">0</span>
+                <span class="stat-label">💪 Orgullo</span>
+              </div>
+              <div class="stat-pill">
+                <span class="stat-count count-animate" data-target="8">0</span>
+                <span class="stat-label">⭐ Excelencia</span>
+              </div>
+              <div class="stat-pill">
+                <span class="stat-count count-animate" data-target="5">0</span>
+                <span class="stat-label">🚀 Ambición</span>
+              </div>
+              <div class="stat-pill">
+                <span class="stat-count count-animate" data-target="1">0</span>
+                <span class="stat-label">🤝 Unidad</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Muro en vivo (Scrolling Marquee) -->
+          <div class="quotes-marquee-wrapper">
+            
+            <!-- TRACK IZQUIERDO -->
+            <div class="quotes-track" style="--duration: 55s;">
+              <!-- GRUPO 1 -->
+              <div class="quote-card">
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+                <p>"Seguir enfocada en el crecimiento de la nueva planta."</p>
+              </div>
+              <div class="quote-card" style="border-color: rgba(223,166,57,0.2); background: linear-gradient(135deg, rgba(223,166,57,0.05), rgba(223,166,57,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(223,166,57,0.15);"></i>
+                <p>"Para mí significa que WEG se prepara y planifica de acuerdo a lo que el mercado y los clientes solicitan, con ansia de estar creciendo siempre."</p>
+              </div>
+              <div class="quote-card" style="border-color: rgba(78,185,165,0.2); background: linear-gradient(135deg, rgba(78,185,165,0.05), rgba(78,185,165,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(78,185,165,0.15);"></i>
+                <p>"Motivación para estar a la altura de los nuevos retos, poder llevar a cabalidad las necesidades del cliente."</p>
+              </div>
+              <div class="quote-card">
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+                <p>"Cumplir con lo que sea solicitado para el sitio nuevo."</p>
+              </div>
+              <div class="quote-card">
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+                <p>"Me comprometo con las actividades que realizo y coordino en la compañía."</p>
+              </div>
+              <div class="quote-card" style="border-color: rgba(223,166,57,0.2); background: linear-gradient(135deg, rgba(223,166,57,0.05), rgba(223,166,57,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(223,166,57,0.15);"></i>
+                <p>"Me inspira al mejoramiento y crecimiento continuo."</p>
+              </div>
+              <div class="quote-card" style="border-color: rgba(78,185,165,0.2); background: linear-gradient(135deg, rgba(78,185,165,0.05), rgba(78,185,165,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(78,185,165,0.15);"></i>
+                <p>"Es un motivo de alto compromiso de la organización, me genera mucho orgullo y me motiva a hacer cada día las cosas mejor."</p>
+              </div>
+              <div class="quote-card">
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+                <p>"Esta frase me inspira motivación, porque WEG es una empresa que te impulsa a crecer, te motiva y nos dice que no nos queda nada grande – siempre responderemos."</p>
+              </div>
+              <div class="quote-card" style="border-color: rgba(223,166,57,0.2); background: linear-gradient(135deg, rgba(223,166,57,0.05), rgba(223,166,57,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(223,166,57,0.15);"></i>
+                <p>"La frase me transmite certeza, confianza en las propias capacidades de la empresa para responder a lo que el mercado pide. Me transmite seguridad."</p>
+              </div>
+              <div class="quote-card">
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+                <p>"Me inspira compromiso y que se tiene muy clara la meta hacia donde quiere ir WEG."</p>
+              </div>
+              <div class="quote-card" style="border-color: rgba(78,185,165,0.2); background: linear-gradient(135deg, rgba(78,185,165,0.05), rgba(78,185,165,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(78,185,165,0.15);"></i>
+                <p>"Estar a la altura de los nuevos retos, transmitir el conocimiento a los nuevos integrantes y motivar al personal actual."</p>
+              </div>
+              <div class="quote-card">
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+                <p>"A dar lo mejor para responder de la mejor manera y buscar no dar una buena respuesta sino la mejor."</p>
+              </div>
+              <div class="quote-card" style="border-color: rgba(223,166,57,0.2); background: linear-gradient(135deg, rgba(223,166,57,0.05), rgba(223,166,57,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(223,166,57,0.15);"></i>
+                <p>"PASIÓN POR EL TRABAJO QUE REALIZAMOS."</p>
+              </div>
+              
+              <!-- CLON EXACTO DEL GRUPO 1 PARA QUE EL BUCLE SEA INIFINITO Y SUAVE -->
+              <div class="quote-card">
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+                <p>"Seguir enfocada en el crecimiento de la nueva planta."</p>
+              </div>
+              <div class="quote-card" style="border-color: rgba(223,166,57,0.2); background: linear-gradient(135deg, rgba(223,166,57,0.05), rgba(223,166,57,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(223,166,57,0.15);"></i>
+                <p>"Para mí significa que WEG se prepara y planifica de acuerdo a lo que el mercado y los clientes solicitan, con ansia de estar creciendo siempre."</p>
+              </div>
+              <div class="quote-card" style="border-color: rgba(78,185,165,0.2); background: linear-gradient(135deg, rgba(78,185,165,0.05), rgba(78,185,165,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(78,185,165,0.15);"></i>
+                <p>"Motivación para estar a la altura de los nuevos retos, poder llevar a cabalidad las necesidades del cliente."</p>
+              </div>
+              <div class="quote-card">
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+                <p>"Cumplir con lo que sea solicitado para el sitio nuevo."</p>
+              </div>
+              <div class="quote-card">
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+                <p>"Me comprometo con las actividades que realizo y coordino en la compañía."</p>
+              </div>
+              <div class="quote-card" style="border-color: rgba(223,166,57,0.2); background: linear-gradient(135deg, rgba(223,166,57,0.05), rgba(223,166,57,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(223,166,57,0.15);"></i>
+                <p>"Me inspira al mejoramiento y crecimiento continuo."</p>
+              </div>
+              <div class="quote-card" style="border-color: rgba(78,185,165,0.2); background: linear-gradient(135deg, rgba(78,185,165,0.05), rgba(78,185,165,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(78,185,165,0.15);"></i>
+                <p>"Es un motivo de alto compromiso de la organización, me genera mucho orgullo y me motiva a hacer cada día las cosas mejor."</p>
+              </div>
+              <div class="quote-card">
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+                <p>"Esta frase me inspira motivación, porque WEG es una empresa que te impulsa a crecer, te motiva y nos dice que no nos queda nada grande – siempre responderemos."</p>
+              </div>
+              <div class="quote-card" style="border-color: rgba(223,166,57,0.2); background: linear-gradient(135deg, rgba(223,166,57,0.05), rgba(223,166,57,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(223,166,57,0.15);"></i>
+                <p>"La frase me transmite certeza, confianza en las propias capacidades de la empresa para responder a lo que el mercado pide. Me transmite seguridad."</p>
+              </div>
+              <div class="quote-card">
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+                <p>"Me inspira compromiso y que se tiene muy clara la meta hacia donde quiere ir WEG."</p>
+              </div>
+              <div class="quote-card" style="border-color: rgba(78,185,165,0.2); background: linear-gradient(135deg, rgba(78,185,165,0.05), rgba(78,185,165,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(78,185,165,0.15);"></i>
+                <p>"Estar a la altura de los nuevos retos, transmitir el conocimiento a los nuevos integrantes y motivar al personal actual."</p>
+              </div>
+              <div class="quote-card">
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+                <p>"A dar lo mejor para responder de la mejor manera y buscar no dar una buena respuesta sino la mejor."</p>
+              </div>
+              <div class="quote-card" style="border-color: rgba(223,166,57,0.2); background: linear-gradient(135deg, rgba(223,166,57,0.05), rgba(223,166,57,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(223,166,57,0.15);"></i>
+                <p>"PASIÓN POR EL TRABAJO QUE REALIZAMOS."</p>
+              </div>
+            </div>
+            
+            <!-- TRACK DERECHO -->
+            <div class="quotes-track" style="--duration: 45s;">
+              <!-- GRUPO 2 -->
+              <div class="quote-card" style="border-color: rgba(78,185,165,0.2); background: linear-gradient(135deg, rgba(78,185,165,0.05), rgba(78,185,165,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(78,185,165,0.15);"></i>
+                <p>"Compartir experiencia."</p>
+              </div>
+              <div class="quote-card">
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+                <p>"Tener la conciencia del impacto que podemos generar en el mundo y nuestro entorno, empresa y familia."</p>
+              </div>
+              <div class="quote-card" style="border-color: rgba(223,166,57,0.2); background: linear-gradient(135deg, rgba(223,166,57,0.05), rgba(223,166,57,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(223,166,57,0.15);"></i>
+                <p>"Consecución de logros, activación profesional, crecimiento continuo."</p>
+              </div>
+              <div class="quote-card">
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+                <p>"Me motiva a asumir nuevos retos."</p>
+              </div>
+              <div class="quote-card" style="border-color: rgba(78,185,165,0.2); background: linear-gradient(135deg, rgba(78,185,165,0.05), rgba(78,185,165,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(78,185,165,0.15);"></i>
+                <p>"Me compromete con las responsabilidades bajo mi cargo en la compañía."</p>
+              </div>
+              <div class="quote-card">
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+                <p>"Demostrar al cliente que estamos allí con una respuesta, con un apoyo, un soporte o una solución que le permita sentir que WEG tiene las respuestas."</p>
+              </div>
+              <div class="quote-card" style="border-color: rgba(223,166,57,0.2); background: linear-gradient(135deg, rgba(223,166,57,0.05), rgba(223,166,57,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(223,166,57,0.15);"></i>
+                <p>"Sostenibilidad y solución."</p>
+              </div>
+              <div class="quote-card">
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+                <p>"Me inspira a generar mayor compromiso referente a las actividades desde mi área porque tengo el deber de visibilizar la marca hacia los clientes, ver a WEG como referente mundial."</p>
+              </div>
+              <div class="quote-card" style="border-color: rgba(78,185,165,0.2); background: linear-gradient(135deg, rgba(78,185,165,0.05), rgba(78,185,165,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(78,185,165,0.15);"></i>
+                <p>"Conocimiento de los productos, respaldo a los clientes."</p>
+              </div>
+              <div class="quote-card">
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+                <p>"Evolucionar para un mundo y una industria mejor."</p>
+              </div>
+              <div class="quote-card" style="border-color: rgba(223,166,57,0.2); background: linear-gradient(135deg, rgba(223,166,57,0.05), rgba(223,166,57,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(223,166,57,0.15);"></i>
+                <p>"Me inspira ver la compañía con apertura constante al cambio, orgullosa de ser parte del proceso y al mismo tiempo dar más del 100% para superar expectativas."</p>
+              </div>
+              <div class="quote-card" style="border-color: rgba(78,185,165,0.2); background: linear-gradient(135deg, rgba(78,185,165,0.05), rgba(78,185,165,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(78,185,165,0.15);"></i>
+                <p>"Compromiso constante con la empresa y personas que laboran en WEG."</p>
+              </div>
+              <div class="quote-card">
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+                <p>"Mucho orgullo – mucha responsabilidad."</p>
+              </div>
+
+              <!-- CLON EXACTO DEL GRUPO 2 PARA BUCLE INIFINITO -->
+              <div class="quote-card" style="border-color: rgba(78,185,165,0.2); background: linear-gradient(135deg, rgba(78,185,165,0.05), rgba(78,185,165,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(78,185,165,0.15);"></i>
+                <p>"Compartir experiencia."</p>
+              </div>
+              <div class="quote-card">
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+                <p>"Tener la conciencia del impacto que podemos generar en el mundo y nuestro entorno, empresa y familia."</p>
+              </div>
+              <div class="quote-card" style="border-color: rgba(223,166,57,0.2); background: linear-gradient(135deg, rgba(223,166,57,0.05), rgba(223,166,57,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(223,166,57,0.15);"></i>
+                <p>"Consecución de logros, activación profesional, crecimiento continuo."</p>
+              </div>
+              <div class="quote-card">
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+                <p>"Me motiva a asumir nuevos retos."</p>
+              </div>
+              <div class="quote-card" style="border-color: rgba(78,185,165,0.2); background: linear-gradient(135deg, rgba(78,185,165,0.05), rgba(78,185,165,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(78,185,165,0.15);"></i>
+                <p>"Me compromete con las responsabilidades bajo mi cargo en la compañía."</p>
+              </div>
+              <div class="quote-card">
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+                <p>"Demostrar al cliente que estamos allí con una respuesta, con un apoyo, un soporte o una solución que le permita sentir que WEG tiene las respuestas."</p>
+              </div>
+              <div class="quote-card" style="border-color: rgba(223,166,57,0.2); background: linear-gradient(135deg, rgba(223,166,57,0.05), rgba(223,166,57,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(223,166,57,0.15);"></i>
+                <p>"Sostenibilidad y solución."</p>
+              </div>
+              <div class="quote-card">
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+                <p>"Me inspira a generar mayor compromiso referente a las actividades desde mi área porque tengo el deber de visibilizar la marca hacia los clientes, ver a WEG como referente mundial."</p>
+              </div>
+              <div class="quote-card" style="border-color: rgba(78,185,165,0.2); background: linear-gradient(135deg, rgba(78,185,165,0.05), rgba(78,185,165,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(78,185,165,0.15);"></i>
+                <p>"Conocimiento de los productos, respaldo a los clientes."</p>
+              </div>
+              <div class="quote-card">
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+                <p>"Evolucionar para un mundo y una industria mejor."</p>
+              </div>
+              <div class="quote-card" style="border-color: rgba(223,166,57,0.2); background: linear-gradient(135deg, rgba(223,166,57,0.05), rgba(223,166,57,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(223,166,57,0.15);"></i>
+                <p>"Me inspira ver la compañía con apertura constante al cambio, orgullosa de ser parte del proceso y al mismo tiempo dar más del 100% para superar expectativas."</p>
+              </div>
+              <div class="quote-card" style="border-color: rgba(78,185,165,0.2); background: linear-gradient(135deg, rgba(78,185,165,0.05), rgba(78,185,165,0.01));">
+                <i class="fa-solid fa-quote-right quote-icon" style="color: rgba(78,185,165,0.15);"></i>
+                <p>"Compromiso constante con la empresa y personas que laboran en WEG."</p>
+              </div>
+              <div class="quote-card">
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+                <p>"Mucho orgullo – mucha responsabilidad."</p>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================= [ SLIDE 5: FACILITADORAS ] ========================= -->
       <section class="slide" data-title="Facilitadoras">
         <div class="topbar">
           <div class="kicker">Acompañamiento</div>
-          <div class="slide-count">04 / 08</div>
+          <div class="slide-count">05 / 09</div>
         </div>
         <div>
           <h2 style="margin-bottom: 8px;">Quiénes guían <span class="accent-g">esta conversación</span></h2>
@@ -532,11 +807,11 @@
         </div>
       </section>
 
-      <!-- ========================= [ SLIDE 5: HALLAZGOS PREVIOS ] ========================= -->
+      <!-- ========================= [ SLIDE 6: HALLAZGOS PREVIOS ] ========================= -->
       <section class="slide" data-title="Hallazgos">
         <div class="topbar">
           <div class="kicker">Punto de Partida</div>
-          <div class="slide-count">05 / 08</div>
+          <div class="slide-count">06 / 09</div>
         </div>
         <div>
           <h2 style="margin-bottom: 8px;">Lo que vimos y <span class="accent-t">debemos hablar</span></h2>
@@ -567,18 +842,17 @@
         </div>
       </section>
 
-      <!-- ========================= [ SLIDE 6 (NUEVA): LLUVIA DE IDEAS ] ========================= -->
+      <!-- ========================= [ SLIDE 7: LLUVIA DE IDEAS ] ========================= -->
       <section class="slide" data-title="Lluvia de Ideas">
         <div class="topbar">
           <div class="kicker">Mente Abierta</div>
-          <div class="slide-count">06 / 08</div>
+          <div class="slide-count">07 / 09</div>
         </div>
         <div>
           <h2 style="margin-bottom: 8px;">Nuestras Ideas en el <span class="accent-t">Tablero</span></h2>
           <p class="intro">Es momento de soltar la imaginación. Todo suma cuando se trata de encontrar el mejor camino para el 2026. ¡Vamos a construir juntos!</p>
         </div>
         
-        <!-- Muro tipo Post-its / Tarjetas de cristal -->
         <div class="board-grid">
           <div class="idea-card tilt-left">
             <div class="card-icon" style="width: 40px; height: 40px; font-size: 16px;"><i class="fa-solid fa-lightbulb"></i></div>
@@ -606,11 +880,11 @@
         </div>
       </section>
 
-      <!-- ========================= [ SLIDE 7: QUÉ SIGUE ] ========================= -->
+      <!-- ========================= [ SLIDE 8: QUÉ SIGUE ] ========================= -->
       <section class="slide" data-title="Qué sigue">
         <div class="topbar">
           <div class="kicker">Pasos Claros</div>
-          <div class="slide-count">07 / 08</div>
+          <div class="slide-count">08 / 09</div>
         </div>
         <div class="hero" style="align-items: flex-start; margin-top: 16px;">
           <div>
@@ -640,14 +914,13 @@
         </div>
       </section>
 
-      <!-- ========================= [ SLIDE 8 (NUEVA): CONCLUSIONES ] ========================= -->
+      <!-- ========================= [ SLIDE 9: CONCLUSIONES ] ========================= -->
       <section class="slide" data-title="Conclusiones">
         <div class="topbar">
           <div class="kicker">Cierre de la Jornada</div>
-          <div class="slide-count">08 / 08</div>
+          <div class="slide-count">09 / 09</div>
         </div>
         
-        <!-- Le añadimos la clase para que el título también entre animado -->
         <div class="conclusion-header" style="opacity: 0;">
           <h2 style="margin-bottom: 8px;">El <span class="accent-g">Premio</span> de Lograrlo</h2>
           <p class="intro">Trabajar tan duro tiene una razón de ser. Esto es lo que ganamos como familia WEG cuando cumplimos nuestras metas este 2026.</p>
@@ -655,7 +928,6 @@
 
         <div class="benefits-grid">
           
-          <!-- Pilar 1: Emocional / Humano -->
           <div class="benefit-item">
             <div class="benefit-icon"><i class="fa-solid fa-heart"></i></div>
             <div class="benefit-text">
@@ -664,7 +936,6 @@
             </div>
           </div>
 
-          <!-- Pilar 2: Crecimiento -->
           <div class="benefit-item gold">
             <div class="benefit-icon"><i class="fa-solid fa-seedling"></i></div>
             <div class="benefit-text">
@@ -673,7 +944,6 @@
             </div>
           </div>
 
-          <!-- Pilar 3: Operación y Excelencia -->
           <div class="benefit-item">
             <div class="benefit-icon"><i class="fa-solid fa-industry"></i></div>
             <div class="benefit-text">
@@ -682,7 +952,6 @@
             </div>
           </div>
 
-          <!-- Pilar 4: Futuro / Sostenibilidad -->
           <div class="benefit-item gold">
             <div class="benefit-icon"><i class="fa-solid fa-leaf"></i></div>
             <div class="benefit-text">
@@ -729,6 +998,7 @@
     let totalSeconds = 60;
     let remainingSeconds = 60;
     let timerInterval = null;
+    let countedNumbers = false; // Bandera para animar el termómetro solo una vez
 
     slides.forEach((slide, index) => {
       const dot = document.createElement('button');
@@ -738,10 +1008,41 @@
       pager.appendChild(dot);
     });
 
+    // Función que hace contar los números del "Termómetro" de 0 a su valor real
+    function animateCounters() {
+      if(countedNumbers) return; // Evita que se repita cada vez que entras
+      const counters = document.querySelectorAll('.count-animate');
+      
+      counters.forEach(counter => {
+        const target = +counter.getAttribute('data-target');
+        const duration = 2000; // 2 segundos para contar
+        const step = target / (duration / 16); 
+        let currentNum = 0;
+        
+        const updateCounter = () => {
+          currentNum += step;
+          if(currentNum < target) {
+            counter.innerText = Math.ceil(currentNum);
+            requestAnimationFrame(updateCounter);
+          } else {
+            counter.innerText = target;
+          }
+        };
+        updateCounter();
+      });
+      countedNumbers = true;
+    }
+
     function updateUI() {
       slides.forEach((slide, index) => {
         slide.classList.toggle('active', index === current);
         if(index === current) slide.scrollTop = 0;
+        
+        // Si estamos en la Diapositiva 4 (índice 3), disparamos la animación de números
+        if(index === 3 && index === current) {
+          // Un ligero retraso para que arranque justo cuando la diapositiva ya cargó
+          setTimeout(animateCounters, 300);
+        }
       });
 
       document.querySelectorAll('.dot').forEach((dot, index) => {
