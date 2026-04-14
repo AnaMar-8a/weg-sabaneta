@@ -4,34 +4,51 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RAÍZ i3 × WEG | Jornada de Planeación 2026</title>
+  
+  <!-- ==========================================
+       1. FUENTES EXTERNAS (Google Fonts & Iconos)
+       ========================================== -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
   <style>
+    /* ==========================================
+       2. VARIABLES DE DISEÑO (Colores y Tamaños)
+       ========================================== */
     :root {
       --bg-1: #060b17;
       --bg-2: #0b1528;
       --bg-3: #111f3d;
+      
       --panel: rgba(255,255,255,0.03);
       --line: rgba(255,255,255,0.08);
       --line-soft: rgba(255,255,255,0.04);
+      
       --text: #f8fafc;
       --muted: #cbd5e1;
       --muted-2: #94a3b8;
+      
       --turq: #4EB9A5;
       --gold: #DFA639;
+      
       --display: 'Oswald', sans-serif;
       --body: 'Inter', sans-serif;
+      
       --radius-xl: 32px;
       --radius-lg: 20px;
       --shadow: 0 25px 80px rgba(0,0,0,0.6);
+      
       --ease: cubic-bezier(.22,.8,.22,1);
     }
 
     * { box-sizing: border-box; }
     html, body { height: 100%; margin: 0; }
     
+    /* ==========================================
+       3. FONDO GENERAL DEL NAVEGADOR
+       ========================================== */
     body {
       font-family: var(--body);
       color: var(--text);
@@ -44,7 +61,6 @@
       text-rendering: optimizeLegibility;
     }
 
-    /* Scrollbar sutil para cuando el contenido sea largo */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
@@ -55,15 +71,17 @@
       height: 100vh;
       display: grid;
       place-items: center;
-      padding: 2vw; /* Ajuste fluido */
+      padding: 2vw;
     }
 
-    /* DECK - Contenedor principal ajustado para NO cortar info */
+    /* ==========================================
+       4. CONTENEDOR PRINCIPAL
+       ========================================== */
     .deck {
       position: relative;
       width: 100%;
       max-width: 1400px;
-      height: 92vh; /* Altura relativa segura */
+      height: 92vh;
       border-radius: var(--radius-xl);
       border: 1px solid rgba(255,255,255,0.06);
       background: rgba(10, 15, 30, 0.7);
@@ -71,10 +89,9 @@
       backdrop-filter: blur(30px);
       -webkit-backdrop-filter: blur(30px);
       isolation: isolate;
-      overflow: hidden; /* Mantiene las esquinas redondas */
+      overflow: hidden;
     }
 
-    /* Progress Bar */
     .progress-shell {
       position: absolute;
       top: 0; left: 0;
@@ -83,17 +100,16 @@
       z-index: 50;
     }
     .progress-bar {
-      height: 100%; width: 16.66%;
+      height: 100%; width: 12.5%; /* Actualizado para 8 slides */
       background: linear-gradient(90deg, var(--turq), var(--gold));
       transition: width 0.5s var(--ease);
       border-radius: 0 4px 4px 0;
     }
 
-    /* SLIDES - Con capacidad de scroll interno si es necesario */
     .slide {
       position: absolute;
       inset: 0;
-      padding: 48px 5vw 110px; /* Espacio inferior extra para el footer */
+      padding: 48px 5vw 110px;
       display: flex;
       flex-direction: column;
       gap: 32px;
@@ -102,9 +118,10 @@
       pointer-events: none;
       transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
       z-index: 2;
-      overflow-y: auto; /* ¡EVITA PERDER INFO! */
+      overflow-y: auto;
       overflow-x: hidden;
     }
+    
     .slide.active {
       opacity: 1;
       transform: translateY(0);
@@ -112,329 +129,207 @@
       z-index: 3;
     }
 
-    /* Topbar */
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0; /* Evita que se encoja al scrollear */
-    }
-    .kicker {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
-    .kicker::before {
-      content: ""; width: 32px; height: 3px;
-      border-radius: 2px;
-      background: linear-gradient(90deg, var(--gold), var(--turq));
-    }
-    .slide-count {
-      padding: 8px 16px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,0.02);
-      font-family: var(--display);
-      font-size: 16px;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-    }
+    /* ==========================================
+       5. COMPONENTES GLOBALES (Textos, Topbar)
+       ========================================== */
+    .topbar { display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+    .kicker { display: inline-flex; align-items: center; gap: 12px; color: var(--muted); font-size: 13px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; }
+    .kicker::before { content: ""; width: 32px; height: 3px; border-radius: 2px; background: linear-gradient(90deg, var(--gold), var(--turq)); }
+    .slide-count { padding: 8px 16px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,0.02); font-family: var(--display); font-size: 16px; letter-spacing: 0.1em; color: var(--muted); }
 
-    /* Tipografía */
-    h1, h2, h3, h4 {
-      margin: 0;
-      font-family: var(--display);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-      line-height: 1.15;
-    }
+    h1, h2, h3, h4 { margin: 0; font-family: var(--display); font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; line-height: 1.15; }
     h1 { font-size: clamp(40px, 4vw, 64px); }
     h2 { font-size: clamp(32px, 3vw, 46px); }
     h3 { font-size: clamp(20px, 1.5vw, 24px); }
-    
-    p, li {
-      margin: 0;
-      font-size: clamp(16px, 1.1vw, 18px);
-      line-height: 1.6;
-      color: var(--muted);
-    }
+    p, li { margin: 0; font-size: clamp(16px, 1.1vw, 18px); line-height: 1.6; color: var(--muted); }
     
     .accent-t { color: var(--turq); }
     .accent-g { color: var(--gold); }
+    .intro { color: var(--text); font-size: clamp(18px, 1.2vw, 20px); max-width: 900px; font-weight: 300; }
 
-    .intro {
-      color: var(--text);
-      font-size: clamp(18px, 1.2vw, 20px);
-      max-width: 900px;
-      font-weight: 300;
-    }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 999px; background: rgba(78,185,165,0.1); border: 1px solid rgba(78,185,165,0.2); font-size: 12px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--turq); margin-bottom: 20px; }
+    .gold .eyebrow { background: rgba(223,166,57,0.1); border-color: rgba(223,166,57,0.2); color: var(--gold); }
 
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
-      border-radius: 999px;
-      background: rgba(78,185,165,0.1);
-      border: 1px solid rgba(78,185,165,0.2);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--turq);
-      margin-bottom: 20px;
-    }
-    .gold .eyebrow {
-      background: rgba(223,166,57,0.1);
-      border-color: rgba(223,166,57,0.2);
-      color: var(--gold);
-    }
-
-    /* Contenedores y Tarjetas Limpias */
-    .hero {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
-      align-items: center;
-      flex-grow: 1;
-    }
-    .lead {
-      font-size: clamp(18px, 1.2vw, 22px);
-      color: var(--muted);
-      margin-top: 20px;
-    }
+    /* ==========================================
+       6. TARJETAS Y GRILLAS
+       ========================================== */
+    .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; flex-grow: 1; }
+    .lead { font-size: clamp(18px, 1.2vw, 22px); color: var(--muted); margin-top: 20px; }
 
     .hero-panel, .card, .agenda-card, .facilitator-card, .timer-card, .deliverable, .decision-box {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: var(--radius-lg);
-      padding: 32px;
-      transition: transform 0.3s var(--ease), border-color 0.3s var(--ease);
+      background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 32px; transition: transform 0.3s var(--ease), border-color 0.3s var(--ease);
     }
-    
     .hero-panel { display: flex; flex-direction: column; justify-content: center; height: 100%; }
-    
-    .card:hover, .agenda-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(255,255,255,0.15);
-      background: rgba(255,255,255,0.04);
-    }
+    .card:hover, .agenda-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); }
 
-    /* Grillas fluidas */
+    .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
     .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
     .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; }
 
-    /* Items resumen Hero */
-    .summary-band {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 24px;
-      margin-top: 40px;
-      padding-top: 32px;
-      border-top: 1px solid var(--line);
-    }
-    .summary-item .tag {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--muted-2);
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-    .summary-item .big {
-      font-family: var(--display);
-      color: var(--text);
-      font-size: 32px;
-      line-height: 1;
-      margin-bottom: 12px;
-    }
+    .summary-band { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--line); }
+    .summary-item .tag { font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted-2); font-weight: 700; margin-bottom: 8px; }
+    .summary-item .big { font-family: var(--display); color: var(--text); font-size: 32px; line-height: 1; margin-bottom: 12px; }
 
-    /* Iconos */
-    .card-icon, .agenda-icon {
-      width: 56px; height: 56px;
-      border-radius: 14px;
-      display: grid; place-items: center;
-      background: rgba(78,185,165,0.1);
-      color: var(--turq);
-      font-size: 22px;
-      margin-bottom: 16px;
-    }
+    .card-icon, .agenda-icon { width: 56px; height: 56px; border-radius: 14px; display: grid; place-items: center; background: rgba(78,185,165,0.1); color: var(--turq); font-size: 22px; margin-bottom: 16px; }
     .gold .card-icon, .gold .agenda-icon { background: rgba(223,166,57,0.1); color: var(--gold); }
 
-    /* Listas */
     .check-list { list-style: none; padding: 0; display: grid; gap: 12px; margin-top: 16px; }
-    .check-list li {
-      position: relative;
-      padding-left: 28px;
-      color: var(--muted);
-    }
-    .check-list li::before {
-      content: "\f00c";
-      font-family: "Font Awesome 6 Free";
-      font-weight: 900;
-      position: absolute;
-      left: 0; top: 2px;
-      font-size: 14px;
-      color: var(--turq);
-    }
+    .check-list li { position: relative; padding-left: 28px; color: var(--muted); }
+    .check-list li::before { content: "\f00c"; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; left: 0; top: 2px; font-size: 14px; color: var(--turq); }
     .gold .check-list li::before { color: var(--gold); }
 
-    /* Agenda */
-    .agenda-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-    .time-chip {
-      padding: 6px 14px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.05);
-      font-family: var(--display);
-      font-size: 14px;
-      letter-spacing: 0.05em;
+    /* --- NUEVO: Muro de Lluvia de Ideas --- */
+    .board-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 30px;
+      margin-top: 24px;
+      padding: 20px 0;
+    }
+    .idea-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--line);
+      padding: 32px 24px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s var(--ease);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    /* El "pin" del post-it superior */
+    .idea-card::before {
+      content: ""; position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+      width: 40px; height: 4px; border-radius: 4px; background: rgba(255,255,255,0.1);
+    }
+    .idea-card:hover { transform: scale(1.03) translateY(-10px) !important; z-index: 10; background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); }
+    .tilt-left { transform: rotate(-2deg); }
+    .tilt-right { transform: rotate(2deg); }
+    .tilt-alt { transform: rotate(-1deg); }
+
+    /* --- NUEVO: Lista de Beneficios (Conclusiones ANIMADAS) --- */
+    @keyframes premioPop {
+      0% { opacity: 0; transform: translateY(40px) scale(0.95); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* Timer */
+    /* Animación para el título de la última slide */
+    .slide.active .conclusion-header {
+      opacity: 0;
+      animation: premioPop 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation-delay: 0.1s;
+    }
+
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      margin-top: 24px;
+    }
+    
+    .benefit-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 32px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      opacity: 0; /* Arrancan ocultos para la sorpresa */
+      transition: all 0.4s var(--ease);
+    }
+    
+    /* Efecto cascada: entran uno tras otro cuando llegas a la slide */
+    .slide.active .benefit-item {
+      animation: premioPop 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .slide.active .benefit-item:nth-child(1) { animation-delay: 0.3s; }
+    .slide.active .benefit-item:nth-child(2) { animation-delay: 0.5s; }
+    .slide.active .benefit-item:nth-child(3) { animation-delay: 0.7s; }
+    .slide.active .benefit-item:nth-child(4) { animation-delay: 0.9s; }
+
+    /* Efecto al pasar el mouse por encima de un premio */
+    .benefit-item:hover {
+      background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+      transform: translateY(-8px) !important;
+      border-color: rgba(255,255,255,0.2);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+    
+    .benefit-icon {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: linear-gradient(135deg, rgba(78,185,165,0.2), rgba(78,185,165,0.05));
+      color: var(--turq);
+      border: 1px solid rgba(78,185,165,0.3);
+      display: grid; place-items: center; font-size: 26px; flex-shrink: 0;
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .gold .benefit-icon { 
+      background: linear-gradient(135deg, rgba(223,166,57,0.2), rgba(223,166,57,0.05)); 
+      color: var(--gold); 
+      border-color: rgba(223,166,57,0.3);
+    }
+    
+    /* El ícono celebra un poquito al pasar el mouse */
+    .benefit-item:hover .benefit-icon {
+      transform: scale(1.15) rotate(8deg);
+    }
+
+    .benefit-text h4 { font-size: 22px; color: var(--text); margin-bottom: 8px; font-family: var(--display); text-transform: uppercase; letter-spacing: 0.03em; }
+    .benefit-text p { font-size: 16px; color: var(--muted); line-height: 1.5; font-weight: 300; }
+
+    /* ==========================================
+       7. OTROS COMPONENTES (Agenda, Timer, Facil)
+       ========================================== */
+    .agenda-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .time-chip { padding: 6px 14px; border-radius: 999px; background: rgba(255,255,255,0.05); font-family: var(--display); font-size: 14px; letter-spacing: 0.05em; }
+
     .timer-layout { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 32px; align-items: start; }
     .timer-card { text-align: center; padding: 48px; }
-    .timer-display {
-      font-size: clamp(80px, 8vw, 140px);
-      letter-spacing: 0.02em;
-      margin: 16px 0;
-      font-family: var(--display);
-      line-height: 1;
-    }
-    .timer-bar {
-      width: 100%; height: 8px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.1);
-      overflow: hidden;
-      margin: 24px 0;
-    }
-    .timer-fill {
-      width: 100%; height: 100%;
-      background: linear-gradient(90deg, var(--turq), var(--gold));
-      transition: width 1s linear, background-color 0.3s;
-    }
+    .timer-display { font-size: clamp(80px, 8vw, 140px); letter-spacing: 0.02em; margin: 16px 0; font-family: var(--display); line-height: 1; }
+    .timer-bar { width: 100%; height: 8px; border-radius: 999px; background: rgba(255,255,255,0.1); overflow: hidden; margin: 24px 0; }
+    .timer-fill { width: 100%; height: 100%; background: linear-gradient(90deg, var(--turq), var(--gold)); transition: width 1s linear, background-color 0.3s; }
     .timer-controls { display: flex; gap: 12px; justify-content: center; }
-    .timer-btn {
-      border: 1px solid var(--line);
-      background: transparent;
-      color: var(--text);
-      border-radius: 999px;
-      padding: 12px 24px;
-      cursor: pointer;
-      font-weight: 600;
-      font-family: var(--body);
-      transition: all 0.2s;
-    }
+    .timer-btn { border: 1px solid var(--line); background: transparent; color: var(--text); border-radius: 999px; padding: 12px 24px; cursor: pointer; font-weight: 600; font-family: var(--body); transition: all 0.2s; }
     .timer-btn:hover { background: rgba(255,255,255,0.08); }
 
-    /* MEJORA UX: FACILITADORAS INFALIBLES */
     .facilitators-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 32px; }
-    
-    .facilitator-card {
-      display: flex;
-      align-items: center;
-      gap: 32px;
-      padding: 32px;
-    }
-    
-    .facilitator-media {
-      width: 130px;
-      height: 130px;
-      border-radius: 50%; /* Círculo perfecto, UX amigable */
-      flex-shrink: 0;
-      overflow: hidden;
-      border: 3px solid rgba(255,255,255,0.1);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      position: relative;
-    }
-
-    .facilitator-media img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover; /* Recorte perfecto siempre */
-      object-position: center 15%; /* Enfoca el rostro generalmente */
-    }
-
+    .facilitator-card { display: flex; align-items: center; gap: 32px; padding: 32px; }
+    .facilitator-media { width: 130px; height: 130px; border-radius: 50%; flex-shrink: 0; overflow: hidden; border: 3px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.3); position: relative; }
+    .facilitator-media img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; }
     .facilitator-body { display: flex; flex-direction: column; gap: 8px; }
     .facilitator-role { font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted-2); font-weight: 700; }
     .facilitator-name { font-size: 28px; line-height: 1.1; color: var(--text); font-family: var(--display); }
     .facilitator-title { font-size: 15px; color: var(--turq); font-weight: 600; }
     .gold .facilitator-title { color: var(--gold); }
-    
-    .profile-link {
-      display: inline-flex; align-items: center; gap: 8px;
-      text-decoration: none; color: var(--text);
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--line-soft);
-      border-radius: 999px;
-      padding: 8px 16px;
-      font-size: 13px; font-weight: 500;
-      margin-top: 8px;
-      transition: all 0.2s;
-    }
+    .profile-link { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text); background: rgba(255,255,255,0.05); border: 1px solid var(--line-soft); border-radius: 999px; padding: 8px 16px; font-size: 13px; font-weight: 500; margin-top: 8px; transition: all 0.2s; }
     .profile-link:hover { background: rgba(255,255,255,0.1); }
-    .profile-link i { color: #0a66c2; } /* Azul LinkedIn */
+    .profile-link i { color: #0a66c2; }
+    .facilitator-note { font-size: 14px; color: var(--muted); margin-top: 12px; line-height: 1.5; }
 
-    .facilitator-note {
-      font-size: 14px;
-      color: var(--muted);
-      margin-top: 12px;
-      line-height: 1.5;
-    }
-
-    /* Footer Fijo sobre el scroll */
-    .footer-bar {
-      position: absolute;
-      left: 0; right: 0; bottom: 0;
-      padding: 24px 5vw;
-      background: linear-gradient(to top, rgba(6,11,23,1) 30%, rgba(6,11,23,0));
-      z-index: 70;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      pointer-events: none; /* Deja clickear lo de abajo si no es botón */
-    }
+    /* ==========================================
+       8. FOOTER Y CONTROLES DE NAVEGACIÓN
+       ========================================== */
+    .footer-bar { position: absolute; left: 0; right: 0; bottom: 0; padding: 24px 5vw; background: linear-gradient(to top, rgba(6,11,23,1) 30%, rgba(6,11,23,0)); z-index: 70; display: flex; justify-content: space-between; align-items: flex-end; pointer-events: none; }
     .footer-left { display: flex; align-items: center; gap: 16px; pointer-events: auto; }
-    .footer-note {
-      font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--muted-2); font-weight: 600;
-    }
+    .footer-note { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted-2); font-weight: 600; }
     .controls { display: flex; align-items: center; gap: 8px; pointer-events: auto; }
-    
     .btn, .dot { appearance: none; border: none; outline: none; }
-    .btn {
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      border: 1px solid var(--line);
-      background: rgba(0,0,0,0.5);
-      color: var(--text);
-      cursor: pointer;
-      display: grid; place-items: center;
-      transition: all 0.2s;
-      backdrop-filter: blur(5px);
-    }
+    .btn { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: rgba(0,0,0,0.5); color: var(--text); cursor: pointer; display: grid; place-items: center; transition: all 0.2s; backdrop-filter: blur(5px); }
     .btn:hover { background: rgba(255,255,255,0.1); }
-    
-    .pager {
-      display: flex; gap: 8px; padding: 12px 16px;
-      border-radius: 999px; background: rgba(0,0,0,0.5); border: 1px solid var(--line);
-      backdrop-filter: blur(5px);
-    }
-    .dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: rgba(255,255,255,0.2); cursor: pointer;
-      transition: all 0.3s;
-    }
+    .pager { display: flex; gap: 8px; padding: 12px 16px; border-radius: 999px; background: rgba(0,0,0,0.5); border: 1px solid var(--line); backdrop-filter: blur(5px); }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.2); cursor: pointer; transition: all 0.3s; }
     .dot.active { width: 24px; border-radius: 4px; background: var(--turq); }
 
-    /* Responsivo amigable */
+    /* ==========================================
+       9. DISEÑO ADAPTATIVO
+       ========================================== */
     @media (max-width: 1024px) {
-      .hero, .timer-layout, .facilitators-grid { grid-template-columns: 1fr; gap: 32px; }
+      .hero, .timer-layout, .facilitators-grid, .benefits-grid { grid-template-columns: 1fr; gap: 32px; }
       .slide { padding-bottom: 140px; }
       .footer-bar { flex-direction: column; align-items: center; gap: 16px; padding-bottom: 20px; background: rgba(6,11,23,0.95); }
     }
@@ -448,63 +343,64 @@
     <main class="deck" aria-label="Jornada de Planeación WEG">
       <div class="progress-shell"><div class="progress-bar" id="progressBar"></div></div>
 
-      <!-- SLIDE 1 -->
+      <!-- ========================= [ SLIDE 1: BIENVENIDA ] ========================= -->
       <section class="slide active" data-title="Bienvenida">
         <div class="topbar">
           <div class="kicker">RAÍZ i3 × WEG</div>
-          <div class="slide-count">01 / 06</div>
+          <div class="slide-count">01 / 08</div>
         </div>
         <div class="hero">
           <div>
             <div class="eyebrow"><i class="fa-solid fa-compass-drafting"></i> 14 de Abril · Planeación 2026</div>
             <h1>Bienvenidos a la <br><span class="accent-t">Jornada de Planeación</span></h1>
-            <p class="lead">Hoy queremos tener una conversación franca, cercana y sumamente útil. Vamos a revisar el contexto, escuchar la visión estratégica y salir con acuerdos claros que nos den foco real.</p>
+            <p class="lead">Hoy queremos tener una conversación franca, cercana y muy útil. Vamos a entender en qué estamos, escuchar hacia dónde vamos y salir con acuerdos claros que nos den foco real para el año.</p>
             <div class="summary-band">
               <div class="summary-item">
                 <div class="tag">Escuchar</div>
                 <div class="big">Visión</div>
-                <p style="font-size: 14px;">Entender los retos y lo que hoy nos exige mayor claridad.</p>
+                <p style="font-size: 14px;">Entender los retos y lo que hoy necesita más atención.</p>
               </div>
               <div class="summary-item">
                 <div class="tag">Construir</div>
-                <div class="big">Lectura</div>
-                <p style="font-size: 14px;">Lograr una visión compartida entre todos los procesos.</p>
+                <div class="big">Empatía</div>
+                <p style="font-size: 14px;">Saber en qué está el otro proceso y cómo nos cruzamos.</p>
               </div>
               <div class="summary-item">
-                <div class="tag">Bajar</div>
-                <div class="big">Acuerdos</div>
-                <p style="font-size: 14px;">Definir prioridades claras y los pasos que siguen mañana.</p>
+                <div class="tag">Bajar a</div>
+                <div class="big">Tierra</div>
+                <p style="font-size: 14px;">Definir prioridades claras y qué hacemos mañana mismo.</p>
               </div>
             </div>
           </div>
           <div class="hero-panel gold">
             <div class="eyebrow"><i class="fa-solid fa-lightbulb"></i> La intención del día</div>
-            <h2>No se trata de cumplir una agenda. <br><span class="accent-g">Se trata de lograr claridad.</span></h2>
-            <p style="margin-top: 16px;">Queremos que este espacio sea participativo y muy aterrizado. El objetivo es que lo verdaderamente importante se pueda nombrar, ordenar y poner en movimiento.</p>
+            <h2>No venimos a cumplir una agenda. <br><span class="accent-g">Venimos a ganar claridad.</span></h2>
+            <p style="margin-top: 16px;">Queremos que este sea un espacio donde todos participen, hablen con honestidad y se sientan escuchados. Lo importante hoy es nombrar las cosas para poder avanzar.</p>
             <div class="grid-2" style="margin-top: 32px;">
               <div style="padding: 16px; background: rgba(255,255,255,0.03); border-radius: 12px;">
                 <h4 style="color: var(--text); margin-bottom: 8px;">1. El Clima</h4>
-                <p style="font-size: 14px;">Conversación abierta, honesta y enfocada.</p>
+                <p style="font-size: 14px;">Conversación abierta y enfocada en soluciones.</p>
               </div>
               <div style="padding: 16px; background: rgba(255,255,255,0.03); border-radius: 12px;">
-                <h4 style="color: var(--text); margin-bottom: 8px;">2. La Salida</h4>
-                <p style="font-size: 14px;">Prioridades definidas y siguientes pasos.</p>
+                <h4 style="color: var(--text); margin-bottom: 8px;">2. La Meta</h4>
+                <p style="font-size: 14px;">Irnos sabiendo qué sigue y quién hace qué.</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- SLIDE 2 -->
+      <!-- ========================= [ SLIDE 2: AGENDA ] ========================= -->
       <section class="slide" data-title="Agenda">
         <div class="topbar">
           <div class="kicker">Nuestra Ruta</div>
-          <div class="slide-count">02 / 06</div>
+          <div class="slide-count">02 / 08</div>
         </div>
         <div>
           <h2 style="margin-bottom: 8px;">Cómo nos vamos a <span class="accent-g">mover hoy</span></h2>
-          <p class="intro">Iremos de lo general a lo concreto: abrir, escuchar, construir, negociar y cerrar con absoluta claridad.</p>
+          <p class="intro">Iremos de lo general a lo específico: abrir, escuchar, construir juntos, hacer una pausa para respirar, y cerrar negociando acuerdos clave.</p>
         </div>
+        
         <div class="grid-3" style="margin-top: 16px;">
           <article class="agenda-card">
             <div class="agenda-top">
@@ -520,7 +416,7 @@
               <div class="time-chip">30 min</div>
             </div>
             <h3>Visión Gerencial</h3>
-            <p>Escucharemos las prioridades y la dirección estratégica de este año.</p>
+            <p>Escucharemos las prioridades y la dirección de WEG para este año.</p>
           </article>
           <article class="agenda-card">
             <div class="agenda-top">
@@ -528,15 +424,7 @@
               <div class="time-chip">60 min</div>
             </div>
             <h3>Subir la Montaña</h3>
-            <p>Haremos visibles los bloqueos y entenderemos el reto de cada proceso.</p>
-          </article>
-          <article class="agenda-card gold">
-            <div class="agenda-top">
-              <div class="agenda-icon"><i class="fa-solid fa-handshake-angle"></i></div>
-              <div class="time-chip">60 min</div>
-            </div>
-            <h3>Negociación</h3>
-            <p>Conectaremos áreas, validaremos dependencias y sellaremos acuerdos.</p>
+            <p>Haremos visibles los bloqueos y entenderemos el reto de cada equipo.</p>
           </article>
           <article class="agenda-card">
             <div class="agenda-top">
@@ -544,7 +432,15 @@
               <div class="time-chip">20 min</div>
             </div>
             <h3>Pausa & Café</h3>
-            <p>Un respiro necesario para recargar energía antes de la recta final.</p>
+            <p>Un respiro necesario para relajar la mente antes de la recta final.</p>
+          </article>
+          <article class="agenda-card gold">
+            <div class="agenda-top">
+              <div class="agenda-icon"><i class="fa-solid fa-handshake-angle"></i></div>
+              <div class="time-chip">60 min</div>
+            </div>
+            <h3>Negociación</h3>
+            <p>Conectaremos áreas, cruzaremos apoyos y sellaremos los acuerdos.</p>
           </article>
           <article class="agenda-card">
             <div class="agenda-top">
@@ -552,26 +448,26 @@
               <div class="time-chip">40 min</div>
             </div>
             <h3>El Cierre</h3>
-            <p>Conclusiones por equipo, mensaje final y compromisos pactados.</p>
+            <p>Conclusiones, un buen mensaje final y compromisos pactados.</p>
           </article>
         </div>
       </section>
 
-      <!-- SLIDE 3 -->
+      <!-- ========================= [ SLIDE 3: ROMPE HIELO Y TEMPORIZADOR ] ========================= -->
       <section class="slide" data-title="Presentación">
         <div class="topbar">
           <div class="kicker">Rompiendo el Hielo</div>
-          <div class="slide-count">03 / 06</div>
+          <div class="slide-count">03 / 08</div>
         </div>
         <div>
           <h2 style="margin-bottom: 8px;">Nos presentamos <span class="accent-t">en un minuto</span></h2>
-          <p class="intro">Para mantener el ritmo, cada persona compartirá la esencia de su preparación previa. Al grano y con foco.</p>
+          <p class="intro">Para mantener la energía arriba, cada persona compartirá la esencia de lo que preparó. Directo al grano.</p>
         </div>
         <div class="timer-layout" style="margin-top: 16px;">
           <article class="timer-card gold">
-            <div class="eyebrow" style="margin-bottom: 24px;">Tiempo por intervención</div>
+            <div class="eyebrow" style="margin-bottom: 24px;">Tiempo por persona</div>
             <div class="timer-display" id="timerDisplay">01:00</div>
-            <p style="max-width: 400px; margin: 0 auto;">Corta, clara y al punto. Ideal para abrir la conversación con buena energía.</p>
+            <p style="max-width: 400px; margin: 0 auto;">Una intervención corta y honesta. Ideal para que todos nos escuchemos desde el inicio.</p>
             <div class="timer-bar">
               <div class="timer-fill" id="timerFill"></div>
             </div>
@@ -583,137 +479,222 @@
           </article>
           <article class="card">
             <div class="card-icon"><i class="fa-solid fa-comments"></i></div>
-            <h3>Estructura del minuto:</h3>
+            <h3>¿Qué nos vas a contar?</h3>
             <ul class="check-list">
-              <li>Tu nombre, área y rol actual.</li>
-              <li>La meta más crítica para tu área en 2026.</li>
-              <li>El mayor obstáculo que ves para lograrla hoy.</li>
-              <li>Qué esperas llevarte de este espacio.</li>
+              <li>Tu nombre, tu área y tu rol actual.</li>
+              <li>Esa meta que es innegociable para tu área en 2026.</li>
+              <li>El mayor obstáculo que sientes hoy para lograrla.</li>
+              <li>Qué esperas llevarte de esta jornada.</li>
             </ul>
             <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--line);">
-              <span class="accent-t" style="font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em;">Importante</span>
-              <p style="font-size: 14px; margin-top: 8px;">Nombraremos las cosas, pero no resolveremos problemas profundos en esta ronda. Ya habrá tiempo.</p>
+              <span class="accent-t" style="font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em;">Tranquilidad</span>
+              <p style="font-size: 14px; margin-top: 8px;">Ahorita solo vamos a poner los temas sobre la mesa, no intentes resolverlos todos de una vez. Ya habrá tiempo para eso.</p>
             </div>
           </article>
         </div>
       </section>
 
-      <!-- SLIDE 4 -->
+      <!-- ========================= [ SLIDE 4: FACILITADORAS ] ========================= -->
       <section class="slide" data-title="Facilitadoras">
         <div class="topbar">
           <div class="kicker">Acompañamiento</div>
-          <div class="slide-count">04 / 06</div>
+          <div class="slide-count">04 / 08</div>
         </div>
         <div>
-          <h2 style="margin-bottom: 8px;">Quiénes guían <span class="accent-g">el espacio</span></h2>
-          <p class="intro">Estaremos acompañando la conversación, cuidando el ritmo y ayudando a que todo lo importante quede organizado y sea accionable.</p>
+          <h2 style="margin-bottom: 8px;">Quiénes guían <span class="accent-g">esta conversación</span></h2>
+          <p class="intro">Estaremos acompañando la charla, cuidando los tiempos y ayudando a que esas buenas ideas no se queden en el aire.</p>
         </div>
         <div class="facilitators-grid" style="margin-top: 16px;">
-          
           <article class="facilitator-card gold">
             <div class="facilitator-media">
-              <!-- Fotos circulares: siempre perfectas sin importar el ratio original -->
               <img src="./assets/angela-giraldo.jpg" onerror="this.src='https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400&h=400'" alt="Angela Giraldo">
             </div>
             <div class="facilitator-body">
               <div class="facilitator-role">Visión Estratégica</div>
               <div class="facilitator-name">Angela Giraldo</div>
               <div class="facilitator-title">CEO & Fundadora, RAÍZ i3</div>
-              <p class="facilitator-note">Orientará la charla para que cada punto conecte con el propósito del negocio y la estrategia anual.</p>
-              <a class="profile-link" style="width: fit-content;" href="https://linkedin.com/in/angela-giraldo" target="_blank" rel="noopener noreferrer">
-                <i class="fa-brands fa-linkedin"></i> LinkedIn
-              </a>
+              <p class="facilitator-note">Nos ayudará a que no perdamos el norte y que cada tema conecte con el verdadero propósito del negocio.</p>
+              <a class="profile-link" style="width: fit-content;" href="https://linkedin.com/in/angela-giraldo" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
             </div>
           </article>
-
           <article class="facilitator-card">
             <div class="facilitator-media">
               <img src="./assets/ana-ochoa.JPG" onerror="this.src='https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=400&h=400'" alt="Ana Maria Ochoa">
             </div>
             <div class="facilitator-body">
-              <div class="facilitator-role">Diseño & Metodología</div>
+              <div class="facilitator-role">Guía de la Sesión</div>
               <div class="facilitator-name">Ana Maria Ochoa</div>
               <div class="facilitator-title">Dir. de Operaciones, RAÍZ i3</div>
-              <p class="facilitator-note">Asegurará que la metodología fluya, el tiempo rinda y las buenas ideas se conviertan en compromisos.</p>
-              <a class="profile-link" style="width: fit-content;" href="https://linkedin.com/in/8aanamaria" target="_blank" rel="noopener noreferrer">
-                <i class="fa-brands fa-linkedin"></i> LinkedIn
-              </a>
+              <p class="facilitator-note">Se encargará de que la dinámica fluya, el tiempo rinda y las conversaciones se conviertan en compromisos reales.</p>
+              <a class="profile-link" style="width: fit-content;" href="https://linkedin.com/in/8aanamaria" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
             </div>
           </article>
-
         </div>
       </section>
 
-      <!-- SLIDE 5 -->
+      <!-- ========================= [ SLIDE 5: HALLAZGOS PREVIOS ] ========================= -->
       <section class="slide" data-title="Hallazgos">
         <div class="topbar">
           <div class="kicker">Punto de Partida</div>
-          <div class="slide-count">05 / 06</div>
+          <div class="slide-count">05 / 08</div>
         </div>
         <div>
           <h2 style="margin-bottom: 8px;">Lo que vimos y <span class="accent-t">debemos hablar</span></h2>
-          <p class="intro">El diagnóstico inicial es claro: hay muchísima disposición, pero necesitamos alinear mejor los esfuerzos entre equipos.</p>
+          <p class="intro">Antes de llegar aquí notamos algo claro: hay muchísima disposición en el equipo, pero necesitamos alinearnos mejor en el día a día.</p>
         </div>
         <div class="grid-3" style="margin-top: 16px;">
           <article class="card">
             <div class="card-icon"><i class="fa-solid fa-bullseye"></i></div>
             <h3>1. Precisar la Meta</h3>
-            <p>Una buena intención no basta. Cada frente de trabajo debe saber exactamente qué significa "lograr el objetivo".</p>
+            <p>Las buenas intenciones no bastan. Hoy cada frente de trabajo debe salir sabiendo exactamente qué significa "lograrlo".</p>
           </article>
           <article class="card gold">
             <div class="card-icon"><i class="fa-solid fa-link"></i></div>
             <h3>2. Clarificar Vínculos</h3>
-            <p>Hay dependencias invisibles entre áreas. Hoy vamos a ponerlas sobre la mesa para dejar de lado las fricciones operativas.</p>
+            <p>A veces un proceso frena a otro sin querer. Vamos a destapar esas dependencias para dejar de lado las fricciones operativas.</p>
           </article>
           <article class="card">
             <div class="card-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
             <h3>3. Alinear Apoyos</h3>
-            <p>Este espacio está diseñado para coordinarnos de verdad: quién necesita a quién, para cuándo, y cómo lo vamos a medir.</p>
+            <p>De aquí debemos salir sabiendo coordinarnos mejor: quién necesita la ayuda de quién, para cuándo, y cómo lo medimos juntos.</p>
           </article>
         </div>
         <div class="decision-box gold" style="margin-top: 16px;">
-          <div class="eyebrow" style="margin-bottom: 12px; font-size: 11px;">Nuestra Pregunta Guía</div>
+          <div class="eyebrow" style="margin-bottom: 12px; font-size: 11px;">Nuestra Pregunta Central</div>
           <h2 style="font-size: clamp(24px, 2.5vw, 36px); line-height: 1.3; color: var(--text);">
-            ¿Cuál es ese resultado crítico que, como equipo WEG, <span class="accent-g">no podemos dejar ambiguo</span> este año?
+            ¿Cuál es ese resultado vital que, como equipo WEG, <span class="accent-g">no podemos dejar ambiguo</span> este año?
           </h2>
         </div>
       </section>
 
-      <!-- SLIDE 6 -->
+      <!-- ========================= [ SLIDE 6 (NUEVA): LLUVIA DE IDEAS ] ========================= -->
+      <section class="slide" data-title="Lluvia de Ideas">
+        <div class="topbar">
+          <div class="kicker">Mente Abierta</div>
+          <div class="slide-count">06 / 08</div>
+        </div>
+        <div>
+          <h2 style="margin-bottom: 8px;">Nuestras Ideas en el <span class="accent-t">Tablero</span></h2>
+          <p class="intro">Es momento de soltar la imaginación. Todo suma cuando se trata de encontrar el mejor camino para el 2026. ¡Vamos a construir juntos!</p>
+        </div>
+        
+        <!-- Muro tipo Post-its / Tarjetas de cristal -->
+        <div class="board-grid">
+          <div class="idea-card tilt-left">
+            <div class="card-icon" style="width: 40px; height: 40px; font-size: 16px;"><i class="fa-solid fa-lightbulb"></i></div>
+            <h4 style="color: var(--text);">Sin Filtros</h4>
+            <p style="font-size: 15px;">La regla de oro: ninguna idea es mala. Pongamos todo sobre la mesa antes de empezar a ordenar.</p>
+          </div>
+          
+          <div class="idea-card tilt-right gold">
+            <div class="card-icon" style="width: 40px; height: 40px; font-size: 16px;"><i class="fa-solid fa-plug"></i></div>
+            <h4 style="color: var(--text);">Conectar Puntos</h4>
+            <p style="font-size: 15px;">A veces la solución de tu área está en la idea que acaba de dar alguien de otro proceso.</p>
+          </div>
+          
+          <div class="idea-card tilt-alt">
+            <div class="card-icon" style="width: 40px; height: 40px; font-size: 16px;"><i class="fa-solid fa-people-arrows"></i></div>
+            <h4 style="color: var(--text);">Mucha Empatía</h4>
+            <p style="font-size: 15px;">Pensemos no solo en qué necesitamos nosotros, sino en cómo le facilitamos la vida al equipo de al lado.</p>
+          </div>
+          
+          <div class="idea-card tilt-right">
+            <div class="card-icon" style="width: 40px; height: 40px; font-size: 16px;"><i class="fa-solid fa-hand-holding-heart"></i></div>
+            <h4 style="color: var(--text);">Aportar Valor</h4>
+            <p style="font-size: 15px;">Enfoquémonos en soluciones que nos den alegría aplicar y que traigan impacto real y positivo.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================= [ SLIDE 7: QUÉ SIGUE ] ========================= -->
       <section class="slide" data-title="Qué sigue">
         <div class="topbar">
-          <div class="kicker">Visualizando el Mañana</div>
-          <div class="slide-count">06 / 06</div>
+          <div class="kicker">Pasos Claros</div>
+          <div class="slide-count">07 / 08</div>
         </div>
         <div class="hero" style="align-items: flex-start; margin-top: 16px;">
           <div>
             <h2 style="margin-bottom: 24px;">Que la charla se vuelva <span class="accent-g">trabajo real</span></h2>
-            <p class="lead">Nuestra próxima sesión estará 100% enfocada en ejecución. Tomaremos todo lo construido hoy y le pondremos dolientes, fechas y métricas. Nada se queda en el aire.</p>
+            <p class="lead">Nuestra próxima sesión estará enfocada 100% en actuar. Tomaremos lo que hablemos hoy y le pondremos dolientes, fechas claras y formas de medirlo. La idea es que nada quede en el aire.</p>
           </div>
           <div class="grid-2">
             <article class="card">
-              <h3 style="margin-bottom: 16px;">Los Entregables</h3>
+              <h3 style="margin-bottom: 16px;">Lo que nos llevamos en concreto</h3>
               <ul class="check-list">
-                <li>Listado de acciones inmediatas.</li>
-                <li>Responsables directos por iniciativa.</li>
-                <li>Hitos y planes de trabajo base.</li>
-                <li>Indicadores de que vamos por buen camino.</li>
+                <li>Un listado de acciones para mañana.</li>
+                <li>Responsables directos (nombres propios).</li>
+                <li>Primeros pasos claros para avanzar.</li>
+                <li>Señales de que vamos por buen camino.</li>
               </ul>
             </article>
             <article class="card gold">
               <h3 style="margin-bottom: 16px;">Nuestra Promesa</h3>
               <ul class="check-list">
                 <li>Saldremos de aquí desatorados.</li>
-                <li>Conoceremos los bloqueos del otro.</li>
-                <li>Seremos más ágiles decidiendo juntos.</li>
-                <li>Tendremos un sistema de seguimiento.</li>
+                <li>Entenderemos los dolores del otro equipo.</li>
+                <li>Seremos más ágiles tomando decisiones juntos.</li>
+                <li>Tendremos cómo hacernos seguimiento fácil.</li>
               </ul>
             </article>
           </div>
         </div>
       </section>
 
-      <!-- Controles fijos -->
+      <!-- ========================= [ SLIDE 8 (NUEVA): CONCLUSIONES ] ========================= -->
+      <section class="slide" data-title="Conclusiones">
+        <div class="topbar">
+          <div class="kicker">Cierre de la Jornada</div>
+          <div class="slide-count">08 / 08</div>
+        </div>
+        
+        <!-- Le añadimos la clase para que el título también entre animado -->
+        <div class="conclusion-header" style="opacity: 0;">
+          <h2 style="margin-bottom: 8px;">El <span class="accent-g">Premio</span> de Lograrlo</h2>
+          <p class="intro">Trabajar tan duro tiene una razón de ser. Esto es lo que ganamos como familia WEG cuando cumplimos nuestras metas este 2026.</p>
+        </div>
+
+        <div class="benefits-grid">
+          
+          <!-- Pilar 1: Emocional / Humano -->
+          <div class="benefit-item">
+            <div class="benefit-icon"><i class="fa-solid fa-heart"></i></div>
+            <div class="benefit-text">
+              <h4>El Lado Humano</h4>
+              <p>Un sentido de pertenencia gigante (¡ser de los más grandes!). Sentir orgullo puro, mucha alegría en el día a día y la enorme fortuna de estar trabajando en WEG.</p>
+            </div>
+          </div>
+
+          <!-- Pilar 2: Crecimiento -->
+          <div class="benefit-item gold">
+            <div class="benefit-icon"><i class="fa-solid fa-seedling"></i></div>
+            <div class="benefit-text">
+              <h4>Nuevos Caminos</h4>
+              <p>Un mar lleno de nuevas oportunidades y crecimiento personal y profesional para todos los que le ponemos el alma a este proyecto.</p>
+            </div>
+          </div>
+
+          <!-- Pilar 3: Operación y Excelencia -->
+          <div class="benefit-item">
+            <div class="benefit-icon"><i class="fa-solid fa-industry"></i></div>
+            <div class="benefit-text">
+              <h4>De Talla Mundial</h4>
+              <p>Consolidarnos como una planta de categoría mundial, lograr ser Zona Franca y contar siempre con el respaldo y apoyo internacional.</p>
+            </div>
+          </div>
+
+          <!-- Pilar 4: Futuro / Sostenibilidad -->
+          <div class="benefit-item gold">
+            <div class="benefit-icon"><i class="fa-solid fa-leaf"></i></div>
+            <div class="benefit-text">
+              <h4>Pensando en el Mañana</h4>
+              <p>Destinar un 20% completo a inversión en innovación pura y lograr convertirnos, con mucho orgullo, en una empresa carbono neutro.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ========================= [ FOOTER Y CONTROLES ] ========================= -->
       <div class="footer-bar">
         <div class="footer-left">
           <div class="footer-note">RAÍZ i3 · Jornada WEG 2026</div>
@@ -727,6 +708,9 @@
     </main>
   </div>
 
+  <!-- ==========================================
+       11. CÓDIGO JAVASCRIPT (Lógica de la App)
+       ========================================== -->
   <script>
     const slides = Array.from(document.querySelectorAll('.slide'));
     const progressBar = document.getElementById('progressBar');
@@ -757,7 +741,6 @@
     function updateUI() {
       slides.forEach((slide, index) => {
         slide.classList.toggle('active', index === current);
-        // Reset scroll position when sliding
         if(index === current) slide.scrollTop = 0;
       });
 
@@ -774,22 +757,11 @@
       nextBtn.style.pointerEvents = current === slides.length - 1 ? 'none' : 'auto';
     }
 
-    function goTo(index) {
-      current = Math.max(0, Math.min(slides.length - 1, index));
-      updateUI();
-    }
+    function goTo(index) { current = Math.max(0, Math.min(slides.length - 1, index)); updateUI(); }
+    function next() { if (current < slides.length - 1) current += 1; updateUI(); }
+    function prev() { if (current > 0) current -= 1; updateUI(); }
 
-    function next() {
-      if (current < slides.length - 1) current += 1;
-      updateUI();
-    }
-
-    function prev() {
-      if (current > 0) current -= 1;
-      updateUI();
-    }
-
-    // Funcionalidad Timer
+    // --- TEMPORIZADOR ---
     function formatTime(seconds) {
       const mins = Math.floor(seconds / 60);
       const secs = seconds % 60;
@@ -803,7 +775,7 @@
       timerFill.style.width = `${progress}%`;
       
       if(remainingSeconds <= 10 && remainingSeconds > 0) {
-        timerFill.style.background = '#f43f5e'; // Rojo de alerta suave
+        timerFill.style.background = '#f43f5e'; 
         timerDisplay.style.color = '#f43f5e';
       } else {
         timerFill.style.background = 'linear-gradient(90deg, var(--turq), var(--gold))';
@@ -814,53 +786,30 @@
     function startTimer() {
       if (timerInterval) return;
       timerInterval = setInterval(() => {
-        if (remainingSeconds > 0) {
-          remainingSeconds -= 1;
-          renderTimer();
-        } else {
-          clearInterval(timerInterval);
-          timerInterval = null;
-        }
+        if (remainingSeconds > 0) { remainingSeconds -= 1; renderTimer(); } 
+        else { clearInterval(timerInterval); timerInterval = null; }
       }, 1000);
     }
 
-    function pauseTimer() {
-      clearInterval(timerInterval);
-      timerInterval = null;
-    }
-
-    function resetTimer() {
-      clearInterval(timerInterval);
-      timerInterval = null;
-      remainingSeconds = totalSeconds;
-      renderTimer();
-    }
+    function pauseTimer() { clearInterval(timerInterval); timerInterval = null; }
+    function resetTimer() { clearInterval(timerInterval); timerInterval = null; remainingSeconds = totalSeconds; renderTimer(); }
 
     if (startTimerBtn) startTimerBtn.addEventListener('click', startTimer);
     if (pauseTimerBtn) pauseTimerBtn.addEventListener('click', pauseTimer);
     if (resetTimerBtn) resetTimerBtn.addEventListener('click', resetTimer);
 
-    // Navegación
+    // --- NAVEGACIÓN ---
     prevBtn.addEventListener('click', prev);
     nextBtn.addEventListener('click', next);
 
     window.addEventListener('keydown', (e) => {
-      // Ignorar si estamos haciendo scroll con las flechas
-      if (['ArrowRight', 'PageDown'].includes(e.key)) {
-        e.preventDefault(); next();
-      }
-      if (['ArrowLeft', 'PageUp'].includes(e.key)) {
-        e.preventDefault(); prev();
-      }
+      if (['ArrowRight', 'PageDown'].includes(e.key)) { e.preventDefault(); next(); }
+      if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
     });
 
-    window.addEventListener('touchstart', (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-
+    window.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
     window.addEventListener('touchend', (e) => {
       const delta = e.changedTouches[0].screenX - touchStartX;
-      // Solo navega si el deslizamiento es largo (evita roces accidentales al hacer scroll vertical)
       if (Math.abs(delta) < 80) return; 
       if (delta < 0) next();
       if (delta > 0) prev();
