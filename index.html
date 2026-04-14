@@ -10,713 +10,445 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
     :root {
-      --bg-1: #030611;
-      --bg-2: #071022;
-      --bg-3: #0a1630;
-      --panel: rgba(255,255,255,0.05);
-      --line: rgba(255,255,255,0.10);
-      --line-soft: rgba(255,255,255,0.07);
+      --bg-1: #060b17;
+      --bg-2: #0b1528;
+      --bg-3: #111f3d;
+      --panel: rgba(255,255,255,0.03);
+      --line: rgba(255,255,255,0.08);
+      --line-soft: rgba(255,255,255,0.04);
       --text: #f8fafc;
-      --muted: #c2cbda;
-      --muted-2: rgba(248,250,252,0.54);
+      --muted: #cbd5e1;
+      --muted-2: #94a3b8;
       --turq: #4EB9A5;
       --gold: #DFA639;
       --display: 'Oswald', sans-serif;
       --body: 'Inter', sans-serif;
-      --radius-xl: 30px;
-      --radius-lg: 22px;
-      --shadow: 0 30px 90px rgba(0,0,0,0.38);
+      --radius-xl: 32px;
+      --radius-lg: 20px;
+      --shadow: 0 25px 80px rgba(0,0,0,0.6);
       --ease: cubic-bezier(.22,.8,.22,1);
     }
 
     * { box-sizing: border-box; }
-    html, body { height: 100%; }
-
+    html, body { height: 100%; margin: 0; }
+    
     body {
-      margin: 0;
       font-family: var(--body);
       color: var(--text);
-      background:
-        radial-gradient(circle at 12% 16%, rgba(78,185,165,0.16), transparent 18%),
-        radial-gradient(circle at 86% 18%, rgba(223,166,57,0.10), transparent 22%),
-        linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 52%, var(--bg-3) 100%);
+      background: 
+        radial-gradient(circle at 0% 0%, rgba(78,185,165,0.12), transparent 40%),
+        radial-gradient(circle at 100% 100%, rgba(223,166,57,0.08), transparent 40%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2), var(--bg-3));
       overflow: hidden;
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
     }
+
+    /* Scrollbar sutil para cuando el contenido sea largo */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }
 
     .app {
       width: 100vw;
       height: 100vh;
       display: grid;
       place-items: center;
-      padding: 20px;
+      padding: 2vw; /* Ajuste fluido */
     }
 
+    /* DECK - Contenedor principal ajustado para NO cortar info */
     .deck {
       position: relative;
-      width: min(95vw, 1450px);
-      aspect-ratio: 16 / 9;
-      max-height: 89vh;
-      overflow: hidden;
+      width: 100%;
+      max-width: 1400px;
+      height: 92vh; /* Altura relativa segura */
       border-radius: var(--radius-xl);
-      border: 1px solid rgba(255,255,255,0.08);
-      background: linear-gradient(180deg, rgba(6,11,26,0.98), rgba(8,14,29,0.98));
-      box-shadow: 0 30px 90px rgba(0,0,0,0.38);
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(10, 15, 30, 0.7);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
       isolation: isolate;
+      overflow: hidden; /* Mantiene las esquinas redondas */
     }
 
-    .deck::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
-      background-size: 34px 34px;
-      opacity: 0.08;
-      pointer-events: none;
-    }
-
+    /* Progress Bar */
     .progress-shell {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
+      top: 0; left: 0;
+      width: 100%; height: 4px;
       background: rgba(255,255,255,0.05);
       z-index: 50;
     }
-
     .progress-bar {
-      height: 100%;
-      width: 16.66%;
+      height: 100%; width: 16.66%;
       background: linear-gradient(90deg, var(--turq), var(--gold));
-      transition: width .35s var(--ease);
+      transition: width 0.5s var(--ease);
+      border-radius: 0 4px 4px 0;
     }
 
+    /* SLIDES - Con capacidad de scroll interno si es necesario */
     .slide {
       position: absolute;
       inset: 0;
-      padding: 40px 44px 86px;
-      display: grid;
-      grid-template-rows: auto 1fr;
-      gap: 20px;
+      padding: 48px 5vw 110px; /* Espacio inferior extra para el footer */
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
       opacity: 0;
-      transform: translateX(28px);
+      transform: translateY(20px);
       pointer-events: none;
-      transition: opacity .32s var(--ease), transform .32s var(--ease);
+      transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
       z-index: 2;
+      overflow-y: auto; /* ¡EVITA PERDER INFO! */
+      overflow-x: hidden;
     }
-
     .slide.active {
       opacity: 1;
-      transform: translateX(0);
+      transform: translateY(0);
       pointer-events: auto;
       z-index: 3;
     }
 
+    /* Topbar */
     .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
+      flex-shrink: 0; /* Evita que se encoja al scrollear */
     }
-
     .kicker {
       display: inline-flex;
       align-items: center;
       gap: 12px;
-      color: rgba(248,250,252,0.78);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .28em;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
     }
-
     .kicker::before {
-      content: "";
-      width: 34px;
-      height: 2px;
-      border-radius: 999px;
+      content: ""; width: 32px; height: 3px;
+      border-radius: 2px;
       background: linear-gradient(90deg, var(--gold), var(--turq));
-      display: inline-block;
     }
-
     .slide-count {
-      min-width: 96px;
-      text-align: center;
-      padding: 10px 14px;
+      padding: 8px 16px;
       border-radius: 999px;
-      border: 1px solid var(--line-soft);
-      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.02);
       font-family: var(--display);
-      font-size: 15px;
-      letter-spacing: .16em;
-      color: rgba(248,250,252,0.68);
-    }
-
-    .content {
-      min-height: 0;
-      display: grid;
-      gap: 16px;
-      align-content: start;
-    }
-
-    h1, h2, h3, h4 {
-      margin: 0;
-      font-family: var(--display);
-      text-transform: uppercase;
-      letter-spacing: .03em;
-      line-height: 1.02;
-    }
-
-    h1 { font-size: clamp(48px, 5vw, 74px); }
-    h2 { font-size: clamp(28px, 2.7vw, 42px); }
-    h3 { font-size: clamp(18px, 1.3vw, 22px); }
-
-    p, li {
-      margin: 0;
-      font-size: clamp(15px, 1.08vw, 18px);
-      line-height: 1.48;
+      font-size: 16px;
+      letter-spacing: 0.1em;
       color: var(--muted);
     }
 
+    /* Tipografía */
+    h1, h2, h3, h4 {
+      margin: 0;
+      font-family: var(--display);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      line-height: 1.15;
+    }
+    h1 { font-size: clamp(40px, 4vw, 64px); }
+    h2 { font-size: clamp(32px, 3vw, 46px); }
+    h3 { font-size: clamp(20px, 1.5vw, 24px); }
+    
+    p, li {
+      margin: 0;
+      font-size: clamp(16px, 1.1vw, 18px);
+      line-height: 1.6;
+      color: var(--muted);
+    }
+    
     .accent-t { color: var(--turq); }
     .accent-g { color: var(--gold); }
 
-    .section-head {
-      display: grid;
-      gap: 10px;
-      max-width: 920px;
-    }
-
-    .section-rule {
-      width: 110px;
-      height: 3px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--turq), var(--gold));
-    }
-
     .intro {
-      max-width: 940px;
-      color: #cdd6e3;
-      font-size: 17px;
+      color: var(--text);
+      font-size: clamp(18px, 1.2vw, 20px);
+      max-width: 900px;
+      font-weight: 300;
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      width: fit-content;
-      padding: 8px 12px;
+      padding: 8px 16px;
       border-radius: 999px;
-      border: 1px solid var(--line-soft);
-      background: rgba(255,255,255,0.04);
-      font-size: 11px;
+      background: rgba(78,185,165,0.1);
+      border: 1px solid rgba(78,185,165,0.2);
+      font-size: 12px;
       font-weight: 700;
-      letter-spacing: .14em;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: rgba(248,250,252,0.78);
-      margin-bottom: 14px;
-    }
-
-    .hero {
-      display: grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap: 22px;
-      height: 100%;
-      align-items: center;
-    }
-
-    .lead {
-      max-width: 760px;
-      font-size: 19px;
-      line-height: 1.56;
-      color: #d2dbe7;
-      margin-top: 16px;
-    }
-
-    .hero-panel,
-    .card,
-    .agenda-card,
-    .facilitator-card,
-    .timer-card,
-    .deliverable,
-    .decision-box,
-    .summary-item,
-    .mini-box {
-      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
-      border: 1px solid var(--line);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
-      backdrop-filter: blur(12px);
-      border-radius: var(--radius-lg);
-    }
-
-    .hero-panel {
-      padding: 24px;
-      min-height: 360px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-panel::before,
-    .card::before,
-    .agenda-card::before,
-    .facilitator-card::before,
-    .timer-card::before,
-    .deliverable::before,
-    .decision-box::before {
-      content: "";
-      display: block;
-      width: 100%;
-      height: 4px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--turq), transparent);
-      margin: -24px 0 14px;
-    }
-
-    .gold::before {
-      background: linear-gradient(90deg, var(--gold), transparent);
-    }
-
-    .summary-band,
-    .grid-3,
-    .grid-2,
-    .facilitators-grid,
-    .deliverable-layout {
-      display: grid;
-      gap: 16px;
-    }
-
-    .summary-band { grid-template-columns: repeat(3, 1fr); max-width: 860px; margin-top: 24px; }
-    .grid-3 { grid-template-columns: repeat(3, 1fr); }
-    .grid-2, .facilitators-grid, .deliverable-layout { grid-template-columns: repeat(2, 1fr); }
-
-    .summary-item,
-    .card,
-    .deliverable,
-    .decision-box,
-    .agenda-card,
-    .facilitator-card,
-    .timer-card {
-      padding: 20px;
-      display: grid;
-      gap: 12px;
-      align-content: start;
-    }
-
-    .summary-item .tag,
-    .mini-label,
-    .timer-hint,
-    .facilitator-role {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: .16em;
-      color: var(--muted-2);
-      font-weight: 700;
-    }
-
-    .summary-item .big,
-    .timer-display {
-      font-family: var(--display);
-      color: var(--text);
-      line-height: 1;
-    }
-
-    .summary-item .big { font-size: 28px; }
-
-    .card-icon,
-    .facilitator-icon,
-    .agenda-icon {
-      width: 52px;
-      height: 52px;
-      border-radius: 16px;
-      display: grid;
-      place-items: center;
-      background: rgba(78,185,165,0.10);
       color: var(--turq);
-      font-size: 20px;
+      margin-bottom: 20px;
     }
-
-    .gold .card-icon,
-    .gold .facilitator-icon,
-    .gold .agenda-icon {
-      background: rgba(223,166,57,0.12);
+    .gold .eyebrow {
+      background: rgba(223,166,57,0.1);
+      border-color: rgba(223,166,57,0.2);
       color: var(--gold);
     }
 
-    .mini-list,
-    .check-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
+    /* Contenedores y Tarjetas Limpias */
+    .hero {
       display: grid;
-      gap: 8px;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+      flex-grow: 1;
+    }
+    .lead {
+      font-size: clamp(18px, 1.2vw, 22px);
+      color: var(--muted);
+      margin-top: 20px;
     }
 
-    .mini-list li,
+    .hero-panel, .card, .agenda-card, .facilitator-card, .timer-card, .deliverable, .decision-box {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      transition: transform 0.3s var(--ease), border-color 0.3s var(--ease);
+    }
+    
+    .hero-panel { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+    
+    .card:hover, .agenda-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.04);
+    }
+
+    /* Grillas fluidas */
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; }
+
+    /* Items resumen Hero */
+    .summary-band {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      margin-top: 40px;
+      padding-top: 32px;
+      border-top: 1px solid var(--line);
+    }
+    .summary-item .tag {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--muted-2);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .summary-item .big {
+      font-family: var(--display);
+      color: var(--text);
+      font-size: 32px;
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    /* Iconos */
+    .card-icon, .agenda-icon {
+      width: 56px; height: 56px;
+      border-radius: 14px;
+      display: grid; place-items: center;
+      background: rgba(78,185,165,0.1);
+      color: var(--turq);
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+    .gold .card-icon, .gold .agenda-icon { background: rgba(223,166,57,0.1); color: var(--gold); }
+
+    /* Listas */
+    .check-list { list-style: none; padding: 0; display: grid; gap: 12px; margin-top: 16px; }
     .check-list li {
       position: relative;
-      padding-left: 18px;
-      color: #d7dfea;
+      padding-left: 28px;
+      color: var(--muted);
     }
-
-    .mini-list li::before,
     .check-list li::before {
-      content: "";
+      content: "\f00c";
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
       position: absolute;
-      left: 0;
-      top: 8px;
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: var(--turq);
+      left: 0; top: 2px;
+      font-size: 14px;
+      color: var(--turq);
     }
+    .gold .check-list li::before { color: var(--gold); }
 
-    .gold .mini-list li::before,
-    .gold .check-list li::before { background: var(--gold); }
-
-    .agenda-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
+    /* Agenda */
+    .agenda-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
     .time-chip {
-      width: fit-content;
-      padding: 8px 12px;
+      padding: 6px 14px;
       border-radius: 999px;
-      border: 1px solid var(--line-soft);
-      background: rgba(255,255,255,0.04);
-      font-family: var(--display);
-      font-size: 13px;
-      letter-spacing: .10em;
-      color: var(--text);
-    }
-
-    .timer-layout {
-      display: grid;
-      grid-template-columns: 1.08fr .92fr;
-      gap: 18px;
-      align-items: stretch;
-    }
-
-    .timer-card {
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
-
-    .timer-display {
-      font-size: clamp(68px, 8vw, 120px);
-      letter-spacing: .04em;
-      margin: 10px 0;
-    }
-
-    .timer-bar {
-      width: 100%;
-      height: 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.08);
-      overflow: hidden;
-      margin-top: 10px;
-    }
-
-    .timer-fill {
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, var(--turq), var(--gold));
-      transition: width 1s linear;
-    }
-
-    .timer-controls {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 12px;
-    }
-
-    .timer-btn {
-      appearance: none;
-      border: 1px solid var(--line);
       background: rgba(255,255,255,0.05);
+      font-family: var(--display);
+      font-size: 14px;
+      letter-spacing: 0.05em;
+    }
+
+    /* Timer */
+    .timer-layout { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 32px; align-items: start; }
+    .timer-card { text-align: center; padding: 48px; }
+    .timer-display {
+      font-size: clamp(80px, 8vw, 140px);
+      letter-spacing: 0.02em;
+      margin: 16px 0;
+      font-family: var(--display);
+      line-height: 1;
+    }
+    .timer-bar {
+      width: 100%; height: 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.1);
+      overflow: hidden;
+      margin: 24px 0;
+    }
+    .timer-fill {
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, var(--turq), var(--gold));
+      transition: width 1s linear, background-color 0.3s;
+    }
+    .timer-controls { display: flex; gap: 12px; justify-content: center; }
+    .timer-btn {
+      border: 1px solid var(--line);
+      background: transparent;
       color: var(--text);
       border-radius: 999px;
-      padding: 12px 18px;
+      padding: 12px 24px;
       cursor: pointer;
-      font-weight: 700;
+      font-weight: 600;
       font-family: var(--body);
-      transition: transform .18s var(--ease), background .18s var(--ease), border-color .18s var(--ease);
+      transition: all 0.2s;
     }
+    .timer-btn:hover { background: rgba(255,255,255,0.08); }
 
-    .timer-btn:hover {
-      transform: translateY(-1px);
-      background: rgba(78,185,165,0.10);
-      border-color: rgba(78,185,165,0.34);
-    }
-
-    .facilitators-grid {
-      align-items: stretch;
-    }
-
+    /* MEJORA UX: FACILITADORAS INFALIBLES */
+    .facilitators-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 32px; }
+    
     .facilitator-card {
-      grid-template-columns: 220px 1fr;
-      align-items: stretch;
-      gap: 18px;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      padding: 32px;
     }
-
+    
     .facilitator-media {
-      min-height: 320px;
-      border-radius: 18px;
+      width: 130px;
+      height: 130px;
+      border-radius: 50%; /* Círculo perfecto, UX amigable */
+      flex-shrink: 0;
       overflow: hidden;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--line-soft);
+      border: 3px solid rgba(255,255,255,0.1);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      position: relative;
     }
 
     .facilitator-media img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      display: block;
+      object-fit: cover; /* Recorte perfecto siempre */
+      object-position: center 15%; /* Enfoca el rostro generalmente */
     }
 
-    .facilitator-body {
-      display: grid;
-      gap: 12px;
-      align-content: start;
-    }
-
-    .facilitator-name {
-      font-family: var(--display);
-      font-size: 28px;
-      line-height: 1.05;
-      text-transform: uppercase;
-      color: var(--text);
-    }
-
-    .facilitator-title {
-      font-size: 15px;
-      line-height: 1.45;
-      color: #e0e7ef;
-      font-weight: 600;
-    }
-
-    .facilitator-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 2px;
-    }
-
+    .facilitator-body { display: flex; flex-direction: column; gap: 8px; }
+    .facilitator-role { font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted-2); font-weight: 700; }
+    .facilitator-name { font-size: 28px; line-height: 1.1; color: var(--text); font-family: var(--display); }
+    .facilitator-title { font-size: 15px; color: var(--turq); font-weight: 600; }
+    .gold .facilitator-title { color: var(--gold); }
+    
     .profile-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      text-decoration: none;
-      color: var(--text);
+      display: inline-flex; align-items: center; gap: 8px;
+      text-decoration: none; color: var(--text);
       background: rgba(255,255,255,0.05);
       border: 1px solid var(--line-soft);
       border-radius: 999px;
-      padding: 10px 14px;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: .03em;
-      transition: transform .18s var(--ease), background .18s var(--ease), border-color .18s var(--ease), color .18s var(--ease);
+      padding: 8px 16px;
+      font-size: 13px; font-weight: 500;
+      margin-top: 8px;
+      transition: all 0.2s;
     }
-
-    .profile-link:hover {
-      transform: translateY(-1px);
-      background: rgba(78,185,165,0.10);
-      border-color: rgba(78,185,165,0.32);
-      color: #ffffff;
-    }
-
-    .profile-link i {
-      color: #7dd3fc;
-    }
+    .profile-link:hover { background: rgba(255,255,255,0.1); }
+    .profile-link i { color: #0a66c2; } /* Azul LinkedIn */
 
     .facilitator-note {
-      padding-top: 10px;
-      border-top: 1px solid var(--line-soft);
       font-size: 14px;
+      color: var(--muted);
+      margin-top: 12px;
       line-height: 1.5;
-      color: #d7dfea;
     }
 
-    .close-layout {
-      display: grid;
-      grid-template-columns: 1.02fr .98fr;
-      gap: 20px;
-      align-items: center;
-      height: 100%;
-    }
-
+    /* Footer Fijo sobre el scroll */
     .footer-bar {
       position: absolute;
-      left: 44px;
-      right: 44px;
-      bottom: 20px;
+      left: 0; right: 0; bottom: 0;
+      padding: 24px 5vw;
+      background: linear-gradient(to top, rgba(6,11,23,1) 30%, rgba(6,11,23,0));
       z-index: 70;
-      display: grid;
-      grid-template-columns: 1fr auto auto;
-      gap: 14px;
-      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      pointer-events: none; /* Deja clickear lo de abajo si no es botón */
     }
-
+    .footer-left { display: flex; align-items: center; gap: 16px; pointer-events: auto; }
     .footer-note {
-      font-size: 10px;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      color: rgba(248,250,252,0.44);
-      font-weight: 700;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
+      font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted-2); font-weight: 600;
     }
-
-    .footer-note::before {
-      content: "";
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--turq), var(--gold));
-      flex: 0 0 auto;
-    }
-
-    .slide-meta {
-      padding: 9px 12px;
-      border-radius: 999px;
-      border: 1px solid var(--line-soft);
-      background: rgba(255,255,255,0.04);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: rgba(248,250,252,0.68);
-      white-space: nowrap;
-    }
-
-    .slide-meta span:last-child { color: var(--text); }
-
-    .controls {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .btn, .dot {
-      appearance: none;
-      border: none;
-      font: inherit;
-    }
-
+    .controls { display: flex; align-items: center; gap: 8px; pointer-events: auto; }
+    
+    .btn, .dot { appearance: none; border: none; outline: none; }
     .btn {
-      width: 48px;
-      height: 48px;
-      border-radius: 999px;
+      width: 44px; height: 44px;
+      border-radius: 50%;
       border: 1px solid var(--line);
-      background: rgba(255,255,255,0.04);
+      background: rgba(0,0,0,0.5);
       color: var(--text);
-      display: grid;
-      place-items: center;
       cursor: pointer;
-      transition: transform .18s var(--ease), background .18s var(--ease), border-color .18s var(--ease);
+      display: grid; place-items: center;
+      transition: all 0.2s;
+      backdrop-filter: blur(5px);
     }
-
-    .btn:hover {
-      transform: translateY(-1px);
-      background: rgba(78,185,165,0.10);
-      border-color: rgba(78,185,165,0.32);
-    }
-
+    .btn:hover { background: rgba(255,255,255,0.1); }
+    
     .pager {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--line-soft);
-      background: rgba(255,255,255,0.04);
+      display: flex; gap: 8px; padding: 12px 16px;
+      border-radius: 999px; background: rgba(0,0,0,0.5); border: 1px solid var(--line);
+      backdrop-filter: blur(5px);
     }
-
     .dot {
-      position: relative;
-      width: 11px;
-      height: 11px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.20);
-      cursor: pointer;
-      transition: width .18s var(--ease), background .18s var(--ease);
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,0.2); cursor: pointer;
+      transition: all 0.3s;
     }
+    .dot.active { width: 24px; border-radius: 4px; background: var(--turq); }
 
-    .dot.active {
-      width: 30px;
-      background: linear-gradient(90deg, var(--turq), var(--gold));
+    /* Responsivo amigable */
+    @media (max-width: 1024px) {
+      .hero, .timer-layout, .facilitators-grid { grid-template-columns: 1fr; gap: 32px; }
+      .slide { padding-bottom: 140px; }
+      .footer-bar { flex-direction: column; align-items: center; gap: 16px; padding-bottom: 20px; background: rgba(6,11,23,0.95); }
     }
-
-    .hint {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      z-index: 75;
-      padding: 8px 12px;
-      border-radius: 999px;
-      border: 1px solid var(--line-soft);
-      background: rgba(255,255,255,0.04);
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: rgba(248,250,252,0.58);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: opacity .25s var(--ease);
-    }
-
-    kbd {
-      font-family: var(--body);
-      font-size: 10px;
-      padding: 4px 7px;
-      border-radius: 7px;
-      border: 1px solid var(--line-soft);
-      background: rgba(255,255,255,0.06);
-      color: var(--text);
-    }
-
-    @media (max-width: 1220px) {
-      .slide { padding: 34px 32px 88px; }
-      .hero, .grid-3, .grid-2, .summary-band, .timer-layout, .facilitators-grid, .deliverable-layout, .close-layout {
-        grid-template-columns: 1fr;
-      }
-      .facilitator-card {
-        grid-template-columns: 1fr;
-      }
-      .facilitator-media {
-        min-height: 260px;
-      }
-      .footer-bar {
-        left: 32px;
-        right: 32px;
-        grid-template-columns: 1fr;
-      }
-      .controls { justify-self: end; }
-      .hint { display: none; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { transition: none !important; }
+    @media (max-width: 600px) {
+      .facilitator-card { flex-direction: column; text-align: center; padding: 24px; }
     }
   </style>
 </head>
 <body>
   <div class="app">
-    <main class="deck" aria-label="Jornada de planeación estratégica WEG">
+    <main class="deck" aria-label="Jornada de Planeación WEG">
       <div class="progress-shell"><div class="progress-bar" id="progressBar"></div></div>
-      <div class="hint" id="hint"><kbd>←</kbd><kbd>→</kbd><span>Navegar</span></div>
 
+      <!-- SLIDE 1 -->
       <section class="slide active" data-title="Bienvenida">
         <div class="topbar">
           <div class="kicker">RAÍZ i3 × WEG</div>
@@ -724,276 +456,268 @@
         </div>
         <div class="hero">
           <div>
-            <div class="eyebrow"><i class="fa-solid fa-compass-drafting"></i> 14 de abril · Planeación 2026</div>
-            <h1>Bienvenidos a la <span class="accent-t">jornada de planeación</span></h1>
-            <p class="lead">Hoy queremos tener una conversación clara, cercana y útil. Vamos a revisar el contexto, escuchar a gerencia, trabajar por procesos y salir con acuerdos que nos ayuden a avanzar con más foco.</p>
+            <div class="eyebrow"><i class="fa-solid fa-compass-drafting"></i> 14 de Abril · Planeación 2026</div>
+            <h1>Bienvenidos a la <br><span class="accent-t">Jornada de Planeación</span></h1>
+            <p class="lead">Hoy queremos tener una conversación franca, cercana y sumamente útil. Vamos a revisar el contexto, escuchar la visión estratégica y salir con acuerdos claros que nos den foco real.</p>
             <div class="summary-band">
               <div class="summary-item">
-                <div class="tag">Hoy vamos a</div>
-                <div class="big">Escuchar</div>
-                <p>La visión, los retos y lo que hoy necesita más claridad.</p>
+                <div class="tag">Escuchar</div>
+                <div class="big">Visión</div>
+                <p style="font-size: 14px;">Entender los retos y lo que hoy nos exige mayor claridad.</p>
               </div>
               <div class="summary-item">
-                <div class="tag">También vamos a</div>
-                <div class="big">Construir</div>
-                <p>Una lectura compartida entre procesos y áreas.</p>
+                <div class="tag">Construir</div>
+                <div class="big">Lectura</div>
+                <p style="font-size: 14px;">Lograr una visión compartida entre todos los procesos.</p>
               </div>
               <div class="summary-item">
-                <div class="tag">Y al final</div>
-                <div class="big">Bajar</div>
-                <p>Acuerdos, prioridades y lo que sigue después de esta sesión.</p>
+                <div class="tag">Bajar</div>
+                <div class="big">Acuerdos</div>
+                <p style="font-size: 14px;">Definir prioridades claras y los pasos que siguen mañana.</p>
               </div>
             </div>
           </div>
           <div class="hero-panel gold">
-            <div class="eyebrow">Intención del día</div>
-            <h3 style="font-size:30px; line-height:1.06;">No se trata de llenar una agenda. <span class="accent-g">Se trata de salir con más claridad.</span></h3>
-            <p>Queremos que esta sesión sea participativa, honesta y aterrizada. La idea es que lo importante se pueda nombrar, ordenar y mover.</p>
-            <div class="grid-2" style="margin-top:20px;">
-              <div class="mini-box" style="padding:16px; border-radius:18px; border:1px solid var(--line-soft); background:rgba(255,255,255,0.04);">
-                <div class="mini-label">Clima</div>
-                <p>Conversación abierta y con foco.</p>
+            <div class="eyebrow"><i class="fa-solid fa-lightbulb"></i> La intención del día</div>
+            <h2>No se trata de cumplir una agenda. <br><span class="accent-g">Se trata de lograr claridad.</span></h2>
+            <p style="margin-top: 16px;">Queremos que este espacio sea participativo y muy aterrizado. El objetivo es que lo verdaderamente importante se pueda nombrar, ordenar y poner en movimiento.</p>
+            <div class="grid-2" style="margin-top: 32px;">
+              <div style="padding: 16px; background: rgba(255,255,255,0.03); border-radius: 12px;">
+                <h4 style="color: var(--text); margin-bottom: 8px;">1. El Clima</h4>
+                <p style="font-size: 14px;">Conversación abierta, honesta y enfocada.</p>
               </div>
-              <div class="mini-box" style="padding:16px; border-radius:18px; border:1px solid var(--line-soft); background:rgba(255,255,255,0.04);">
-                <div class="mini-label">Salida</div>
-                <p>Prioridades, acuerdos y próximos pasos.</p>
+              <div style="padding: 16px; background: rgba(255,255,255,0.03); border-radius: 12px;">
+                <h4 style="color: var(--text); margin-bottom: 8px;">2. La Salida</h4>
+                <p style="font-size: 14px;">Prioridades definidas y siguientes pasos.</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
+      <!-- SLIDE 2 -->
       <section class="slide" data-title="Agenda">
         <div class="topbar">
-          <div class="kicker">Agenda del día</div>
+          <div class="kicker">Nuestra Ruta</div>
           <div class="slide-count">02 / 06</div>
         </div>
-        <div class="content">
-          <div class="section-head">
-            <h2>Les contamos la <span class="accent-g">agenda</span></h2>
-            <div class="section-rule"></div>
-            <p class="intro">La idea es ir de lo general a lo concreto: abrir, escuchar, construir, negociar, hacer una pausa y cerrar con claridad sobre lo que sigue.</p>
-          </div>
-          <div class="grid-3">
-            <article class="agenda-card">
-              <div class="agenda-top">
-                <div class="agenda-icon"><i class="fa-solid fa-door-open"></i></div>
-                <div class="time-chip">32 min</div>
-              </div>
-              <h3>Apertura</h3>
-              <p>Nos ubicamos, contamos el propósito del espacio y abrimos la jornada.</p>
-            </article>
-            <article class="agenda-card gold">
-              <div class="agenda-top">
-                <div class="agenda-icon"><i class="fa-solid fa-building-user"></i></div>
-                <div class="time-chip">30 min</div>
-              </div>
-              <h3>Gerencia</h3>
-              <p>Escuchamos visión, prioridades y dirección para este año.</p>
-            </article>
-            <article class="agenda-card">
-              <div class="agenda-top">
-                <div class="agenda-icon"><i class="fa-solid fa-mountain"></i></div>
-                <div class="time-chip">60 min</div>
-              </div>
-              <h3>La montaña</h3>
-              <p>Construimos visión compartida por proceso y hacemos visibles bloqueos.</p>
-            </article>
-            <article class="agenda-card gold">
-              <div class="agenda-top">
-                <div class="agenda-icon"><i class="fa-solid fa-handshake-angle"></i></div>
-                <div class="time-chip">60 min</div>
-              </div>
-              <h3>Negociación</h3>
-              <p>Conectamos áreas, dependencias, tiempos y acuerdos.</p>
-            </article>
-            <article class="agenda-card">
-              <div class="agenda-top">
-                <div class="agenda-icon"><i class="fa-solid fa-mug-hot"></i></div>
-                <div class="time-chip">20 min</div>
-              </div>
-              <h3>Break</h3>
-              <p>Paramos, respiramos y volvemos con energía para el cierre.</p>
-            </article>
-            <article class="agenda-card">
-              <div class="agenda-top">
-                <div class="agenda-icon"><i class="fa-solid fa-flag-checkered"></i></div>
-                <div class="time-chip">40 min</div>
-              </div>
-              <h3>Cierre</h3>
-              <p>Cerramos con preguntas por equipo, mensaje final y próximos pasos.</p>
-            </article>
-          </div>
+        <div>
+          <h2 style="margin-bottom: 8px;">Cómo nos vamos a <span class="accent-g">mover hoy</span></h2>
+          <p class="intro">Iremos de lo general a lo concreto: abrir, escuchar, construir, negociar y cerrar con absoluta claridad.</p>
+        </div>
+        <div class="grid-3" style="margin-top: 16px;">
+          <article class="agenda-card">
+            <div class="agenda-top">
+              <div class="agenda-icon"><i class="fa-solid fa-door-open"></i></div>
+              <div class="time-chip">32 min</div>
+            </div>
+            <h3>Apertura</h3>
+            <p>Nos ubicamos, conectamos con el propósito y calentamos motores.</p>
+          </article>
+          <article class="agenda-card gold">
+            <div class="agenda-top">
+              <div class="agenda-icon"><i class="fa-solid fa-building-user"></i></div>
+              <div class="time-chip">30 min</div>
+            </div>
+            <h3>Visión Gerencial</h3>
+            <p>Escucharemos las prioridades y la dirección estratégica de este año.</p>
+          </article>
+          <article class="agenda-card">
+            <div class="agenda-top">
+              <div class="agenda-icon"><i class="fa-solid fa-mountain"></i></div>
+              <div class="time-chip">60 min</div>
+            </div>
+            <h3>Subir la Montaña</h3>
+            <p>Haremos visibles los bloqueos y entenderemos el reto de cada proceso.</p>
+          </article>
+          <article class="agenda-card gold">
+            <div class="agenda-top">
+              <div class="agenda-icon"><i class="fa-solid fa-handshake-angle"></i></div>
+              <div class="time-chip">60 min</div>
+            </div>
+            <h3>Negociación</h3>
+            <p>Conectaremos áreas, validaremos dependencias y sellaremos acuerdos.</p>
+          </article>
+          <article class="agenda-card">
+            <div class="agenda-top">
+              <div class="agenda-icon"><i class="fa-solid fa-mug-hot"></i></div>
+              <div class="time-chip">20 min</div>
+            </div>
+            <h3>Pausa & Café</h3>
+            <p>Un respiro necesario para recargar energía antes de la recta final.</p>
+          </article>
+          <article class="agenda-card">
+            <div class="agenda-top">
+              <div class="agenda-icon"><i class="fa-solid fa-flag-checkered"></i></div>
+              <div class="time-chip">40 min</div>
+            </div>
+            <h3>El Cierre</h3>
+            <p>Conclusiones por equipo, mensaje final y compromisos pactados.</p>
+          </article>
         </div>
       </section>
 
+      <!-- SLIDE 3 -->
       <section class="slide" data-title="Presentación">
         <div class="topbar">
-          <div class="kicker">Presentación del grupo</div>
+          <div class="kicker">Rompiendo el Hielo</div>
           <div class="slide-count">03 / 06</div>
         </div>
-        <div class="content">
-          <div class="section-head">
-            <h2>Nos presentamos <span class="accent-t">en un minuto</span></h2>
-            <div class="section-rule"></div>
-            <p class="intro">Para hacerlo más ágil, cada persona comparte una versión corta de su preparación individual. La idea es quedarnos con lo esencial.</p>
-          </div>
-          <div class="timer-layout">
-            <article class="timer-card gold">
-              <div class="timer-hint">Timer por persona</div>
-              <div class="timer-display" id="timerDisplay">01:00</div>
-              <p style="max-width:500px;">Una sola intervención por persona: corta, clara y útil para arrancar con ritmo.</p>
-              <div class="timer-bar">
-                <div class="timer-fill" id="timerFill"></div>
-              </div>
-              <div class="timer-controls">
-                <button class="timer-btn" id="startTimer">Iniciar</button>
-                <button class="timer-btn" id="pauseTimer">Pausar</button>
-                <button class="timer-btn" id="resetTimer">Reiniciar</button>
-              </div>
-            </article>
-            <article class="card">
-              <div class="card-icon"><i class="fa-solid fa-comments"></i></div>
-              <h3>¿Qué comparte cada persona?</h3>
-              <ul class="check-list">
-                <li>Nombre, área y rol.</li>
-                <li>Una meta clave para 2026.</li>
-                <li>El obstáculo principal para lograrla.</li>
-                <li>Qué espera de esta nueva etapa.</li>
-              </ul>
-              <div class="mini-box" style="padding:16px; border-radius:18px; border:1px solid var(--line-soft); background:rgba(255,255,255,0.04); margin-top:6px;">
-                <div class="mini-label">Clave</div>
-                <p>Solo lo más importante. La idea es abrir la conversación, no resolver todo en esta ronda.</p>
-              </div>
-            </article>
-          </div>
+        <div>
+          <h2 style="margin-bottom: 8px;">Nos presentamos <span class="accent-t">en un minuto</span></h2>
+          <p class="intro">Para mantener el ritmo, cada persona compartirá la esencia de su preparación previa. Al grano y con foco.</p>
+        </div>
+        <div class="timer-layout" style="margin-top: 16px;">
+          <article class="timer-card gold">
+            <div class="eyebrow" style="margin-bottom: 24px;">Tiempo por intervención</div>
+            <div class="timer-display" id="timerDisplay">01:00</div>
+            <p style="max-width: 400px; margin: 0 auto;">Corta, clara y al punto. Ideal para abrir la conversación con buena energía.</p>
+            <div class="timer-bar">
+              <div class="timer-fill" id="timerFill"></div>
+            </div>
+            <div class="timer-controls">
+              <button class="timer-btn" id="startTimer"><i class="fa-solid fa-play"></i> Iniciar</button>
+              <button class="timer-btn" id="pauseTimer"><i class="fa-solid fa-pause"></i> Pausar</button>
+              <button class="timer-btn" id="resetTimer"><i class="fa-solid fa-rotate-left"></i></button>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-icon"><i class="fa-solid fa-comments"></i></div>
+            <h3>Estructura del minuto:</h3>
+            <ul class="check-list">
+              <li>Tu nombre, área y rol actual.</li>
+              <li>La meta más crítica para tu área en 2026.</li>
+              <li>El mayor obstáculo que ves para lograrla hoy.</li>
+              <li>Qué esperas llevarte de este espacio.</li>
+            </ul>
+            <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--line);">
+              <span class="accent-t" style="font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em;">Importante</span>
+              <p style="font-size: 14px; margin-top: 8px;">Nombraremos las cosas, pero no resolveremos problemas profundos en esta ronda. Ya habrá tiempo.</p>
+            </div>
+          </article>
         </div>
       </section>
 
+      <!-- SLIDE 4 -->
       <section class="slide" data-title="Facilitadoras">
         <div class="topbar">
-          <div class="kicker">Quiénes facilitan</div>
+          <div class="kicker">Acompañamiento</div>
           <div class="slide-count">04 / 06</div>
         </div>
-        <div class="content">
-          <div class="section-head">
-            <h2>Sus <span class="accent-g">facilitadoras</span></h2>
-            <div class="section-rule"></div>
-            <p class="intro">Vamos a acompañar la conversación, cuidar el ritmo del espacio y ayudar a que lo importante se vuelva visible, ordenado y accionable.</p>
-          </div>
-          <div class="facilitators-grid">
-            <article class="facilitator-card gold">
-              <div class="facilitator-media">
-                <img src="./assets/angela-giraldo.jpg" alt="Angela María Giraldo Franco">
-              </div>
-              <div class="facilitator-body">
-                <div class="facilitator-icon"><i class="fa-solid fa-user-tie"></i></div>
-                <div class="facilitator-role">Facilitadora 1</div>
-                <div class="facilitator-name">Angela María Giraldo Franco</div>
-                <div class="facilitator-title">CEO y fundadora de RAÍZ i3</div>
-                <div class="facilitator-links">
-                  <a class="profile-link" href="https://linkedin.com/in/angela-giraldo-81a7a427/?skipRedirect=true" target="_blank" rel="noopener noreferrer">
-                    <i class="fa-brands fa-linkedin"></i>
-                    <span>Ver LinkedIn</span>
-                  </a>
-                </div>
-                <p class="facilitator-note">Acompañará la conversación desde la mirada estratégica, el sentido de la jornada y la lectura de lo que el grupo vaya poniendo sobre la mesa.</p>
-              </div>
-            </article>
-            <article class="facilitator-card">
-              <div class="facilitator-media">
-                <img src="./assets/ana-ochoa.JPG" alt="Ana Maria Ochoa">
-              </div>
-              <div class="facilitator-body">
-                <div class="facilitator-icon"><i class="fa-solid fa-user-group"></i></div>
-                <div class="facilitator-role">Facilitadora 2</div>
-                <div class="facilitator-name">Ana Maria Ochoa</div>
-                <div class="facilitator-title">Directora de Operaciones de RAÍZ i3</div>
-                <div class="facilitator-links">
-                  <a class="profile-link" href="https://www.linkedin.com/in/8aanamaria/" target="_blank" rel="noopener noreferrer">
-                    <i class="fa-brands fa-linkedin"></i>
-                    <span>Ver LinkedIn</span>
-                  </a>
-                </div>
-                <p class="facilitator-note">Acompañará la metodología, el orden del ejercicio, la participación del grupo y la captura de acuerdos para que la sesión tenga ritmo y aterrizaje.</p>
-              </div>
-            </article>
-          </div>
+        <div>
+          <h2 style="margin-bottom: 8px;">Quiénes guían <span class="accent-g">el espacio</span></h2>
+          <p class="intro">Estaremos acompañando la conversación, cuidando el ritmo y ayudando a que todo lo importante quede organizado y sea accionable.</p>
+        </div>
+        <div class="facilitators-grid" style="margin-top: 16px;">
+          
+          <article class="facilitator-card gold">
+            <div class="facilitator-media">
+              <!-- Fotos circulares: siempre perfectas sin importar el ratio original -->
+              <img src="./assets/angela-giraldo.jpg" onerror="this.src='https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400&h=400'" alt="Angela Giraldo">
+            </div>
+            <div class="facilitator-body">
+              <div class="facilitator-role">Visión Estratégica</div>
+              <div class="facilitator-name">Angela Giraldo</div>
+              <div class="facilitator-title">CEO & Fundadora, RAÍZ i3</div>
+              <p class="facilitator-note">Orientará la charla para que cada punto conecte con el propósito del negocio y la estrategia anual.</p>
+              <a class="profile-link" style="width: fit-content;" href="https://linkedin.com/in/angela-giraldo" target="_blank" rel="noopener noreferrer">
+                <i class="fa-brands fa-linkedin"></i> LinkedIn
+              </a>
+            </div>
+          </article>
+
+          <article class="facilitator-card">
+            <div class="facilitator-media">
+              <img src="./assets/ana-ochoa.JPG" onerror="this.src='https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=400&h=400'" alt="Ana Maria Ochoa">
+            </div>
+            <div class="facilitator-body">
+              <div class="facilitator-role">Diseño & Metodología</div>
+              <div class="facilitator-name">Ana Maria Ochoa</div>
+              <div class="facilitator-title">Dir. de Operaciones, RAÍZ i3</div>
+              <p class="facilitator-note">Asegurará que la metodología fluya, el tiempo rinda y las buenas ideas se conviertan en compromisos.</p>
+              <a class="profile-link" style="width: fit-content;" href="https://linkedin.com/in/8aanamaria" target="_blank" rel="noopener noreferrer">
+                <i class="fa-brands fa-linkedin"></i> LinkedIn
+              </a>
+            </div>
+          </article>
+
         </div>
       </section>
 
+      <!-- SLIDE 5 -->
       <section class="slide" data-title="Hallazgos">
         <div class="topbar">
-          <div class="kicker">Lo que vimos antes</div>
+          <div class="kicker">Punto de Partida</div>
           <div class="slide-count">05 / 06</div>
         </div>
-        <div class="content">
-          <div class="section-head">
-            <h2>Lo que hoy vale la pena <span class="accent-t">poner sobre la mesa</span></h2>
-            <div class="section-rule"></div>
-            <p class="intro">Llegamos con una lectura inicial simple: hay intención, pero todavía hay cosas que necesitan más definición y mejor coordinación.</p>
-          </div>
-          <div class="grid-3">
-            <article class="card">
-              <div class="card-icon"><i class="fa-solid fa-bullseye"></i></div>
-              <h3>La meta necesita más precisión</h3>
-              <p>No basta con tener una intención general. Necesitamos aterrizar qué significa lograrla por frente.</p>
-            </article>
-            <article class="card gold">
-              <div class="card-icon"><i class="fa-solid fa-link"></i></div>
-              <h3>Las dependencias deben hacerse visibles</h3>
-              <p>Hay relaciones entre áreas que hoy necesitan nombrarse mejor para evitar fricción.</p>
-            </article>
-            <article class="card">
-              <div class="card-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
-              <h3>La coordinación es parte del reto</h3>
-              <p>Queremos que esta sesión ayude a ordenar conversaciones, prioridades y apoyos concretos.</p>
-            </article>
-          </div>
-          <div class="decision-box gold" style="margin-top:4px; max-width: 980px;">
-            <h3>Pregunta guía del día</h3>
-            <p style="font-size:24px; line-height:1.4; color:var(--text);">¿Cuál es el resultado crítico que WEG no puede dejar ambiguo este año por cada frente?</p>
-          </div>
+        <div>
+          <h2 style="margin-bottom: 8px;">Lo que vimos y <span class="accent-t">debemos hablar</span></h2>
+          <p class="intro">El diagnóstico inicial es claro: hay muchísima disposición, pero necesitamos alinear mejor los esfuerzos entre equipos.</p>
+        </div>
+        <div class="grid-3" style="margin-top: 16px;">
+          <article class="card">
+            <div class="card-icon"><i class="fa-solid fa-bullseye"></i></div>
+            <h3>1. Precisar la Meta</h3>
+            <p>Una buena intención no basta. Cada frente de trabajo debe saber exactamente qué significa "lograr el objetivo".</p>
+          </article>
+          <article class="card gold">
+            <div class="card-icon"><i class="fa-solid fa-link"></i></div>
+            <h3>2. Clarificar Vínculos</h3>
+            <p>Hay dependencias invisibles entre áreas. Hoy vamos a ponerlas sobre la mesa para dejar de lado las fricciones operativas.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <h3>3. Alinear Apoyos</h3>
+            <p>Este espacio está diseñado para coordinarnos de verdad: quién necesita a quién, para cuándo, y cómo lo vamos a medir.</p>
+          </article>
+        </div>
+        <div class="decision-box gold" style="margin-top: 16px;">
+          <div class="eyebrow" style="margin-bottom: 12px; font-size: 11px;">Nuestra Pregunta Guía</div>
+          <h2 style="font-size: clamp(24px, 2.5vw, 36px); line-height: 1.3; color: var(--text);">
+            ¿Cuál es ese resultado crítico que, como equipo WEG, <span class="accent-g">no podemos dejar ambiguo</span> este año?
+          </h2>
         </div>
       </section>
 
+      <!-- SLIDE 6 -->
       <section class="slide" data-title="Qué sigue">
         <div class="topbar">
-          <div class="kicker">Cierre y siguiente sesión</div>
+          <div class="kicker">Visualizando el Mañana</div>
           <div class="slide-count">06 / 06</div>
         </div>
-        <div class="close-layout">
+        <div class="hero" style="align-items: flex-start; margin-top: 16px;">
           <div>
-            <div class="eyebrow"><i class="fa-solid fa-arrow-right"></i> Después de hoy</div>
-            <h1>Lo que salga de esta jornada debe poder <span class="accent-g">bajarse a trabajo real</span></h1>
-            <p class="lead">La siguiente sesión nos ayudará a convertir lo visto hoy en acciones, responsables, indicadores y seguimiento. La idea es que nada se quede solo en conversación.</p>
+            <h2 style="margin-bottom: 24px;">Que la charla se vuelva <span class="accent-g">trabajo real</span></h2>
+            <p class="lead">Nuestra próxima sesión estará 100% enfocada en ejecución. Tomaremos todo lo construido hoy y le pondremos dolientes, fechas y métricas. Nada se queda en el aire.</p>
           </div>
-          <div class="deliverable-layout">
-            <article class="deliverable">
-              <h3>Lo que vamos a bajar</h3>
+          <div class="grid-2">
+            <article class="card">
+              <h3 style="margin-bottom: 16px;">Los Entregables</h3>
               <ul class="check-list">
-                <li>Acciones concretas.</li>
-                <li>Responsables por frente.</li>
-                <li>Planes de trabajo.</li>
-                <li>Indicadores de éxito.</li>
+                <li>Listado de acciones inmediatas.</li>
+                <li>Responsables directos por iniciativa.</li>
+                <li>Hitos y planes de trabajo base.</li>
+                <li>Indicadores de que vamos por buen camino.</li>
               </ul>
             </article>
-            <article class="deliverable gold">
-              <h3>La intención final</h3>
+            <article class="card gold">
+              <h3 style="margin-bottom: 16px;">Nuestra Promesa</h3>
               <ul class="check-list">
-                <li>Salir con más claridad.</li>
-                <li>Nombrar bloqueos con honestidad.</li>
-                <li>Definir apoyos entre áreas.</li>
-                <li>Tener una base para seguimiento.</li>
+                <li>Saldremos de aquí desatorados.</li>
+                <li>Conoceremos los bloqueos del otro.</li>
+                <li>Seremos más ágiles decidiendo juntos.</li>
+                <li>Tendremos un sistema de seguimiento.</li>
               </ul>
             </article>
           </div>
         </div>
       </section>
 
+      <!-- Controles fijos -->
       <div class="footer-bar">
-        <div class="footer-note">RAÍZ i3 · Jornada de planeación estratégica WEG</div>
-        <div class="slide-meta" id="slideMeta"><span>Slide actual</span> <span>Bienvenida</span></div>
+        <div class="footer-left">
+          <div class="footer-note">RAÍZ i3 · Jornada WEG 2026</div>
+        </div>
         <div class="controls">
           <button class="btn" id="prevBtn" aria-label="Anterior"><i class="fa-solid fa-arrow-left"></i></button>
           <div class="pager" id="pager"></div>
@@ -1009,8 +733,6 @@
     const pager = document.getElementById('pager');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
-    const slideMeta = document.getElementById('slideMeta');
-    const hint = document.getElementById('hint');
 
     const timerDisplay = document.getElementById('timerDisplay');
     const timerFill = document.getElementById('timerFill');
@@ -1027,8 +749,7 @@
     slides.forEach((slide, index) => {
       const dot = document.createElement('button');
       dot.className = 'dot' + (index === 0 ? ' active' : '');
-      dot.dataset.title = slide.dataset.title || `Slide ${index + 1}`;
-      dot.setAttribute('aria-label', `Ir a ${slide.dataset.title || `slide ${index + 1}`}`);
+      dot.setAttribute('aria-label', `Ir a ${slide.dataset.title}`);
       dot.addEventListener('click', () => goTo(index));
       pager.appendChild(dot);
     });
@@ -1036,6 +757,8 @@
     function updateUI() {
       slides.forEach((slide, index) => {
         slide.classList.toggle('active', index === current);
+        // Reset scroll position when sliding
+        if(index === current) slide.scrollTop = 0;
       });
 
       document.querySelectorAll('.dot').forEach((dot, index) => {
@@ -1043,18 +766,12 @@
       });
 
       progressBar.style.width = `${((current + 1) / slides.length) * 100}%`;
-      prevBtn.style.opacity = current === 0 ? '.45' : '1';
-      nextBtn.style.opacity = current === slides.length - 1 ? '.45' : '1';
-
-      const title = slides[current]?.dataset.title || `Slide ${current + 1}`;
-      slideMeta.innerHTML = `<span>Slide actual</span> <span>${title}</span>`;
-
-      if (hint) {
-        hint.style.opacity = '0';
-        setTimeout(() => {
-          if (hint && hint.parentNode) hint.remove();
-        }, 300);
-      }
+      
+      prevBtn.style.opacity = current === 0 ? '0.3' : '1';
+      prevBtn.style.pointerEvents = current === 0 ? 'none' : 'auto';
+      
+      nextBtn.style.opacity = current === slides.length - 1 ? '0.3' : '1';
+      nextBtn.style.pointerEvents = current === slides.length - 1 ? 'none' : 'auto';
     }
 
     function goTo(index) {
@@ -1072,6 +789,7 @@
       updateUI();
     }
 
+    // Funcionalidad Timer
     function formatTime(seconds) {
       const mins = Math.floor(seconds / 60);
       const secs = seconds % 60;
@@ -1083,6 +801,14 @@
       timerDisplay.textContent = formatTime(remainingSeconds);
       const progress = (remainingSeconds / totalSeconds) * 100;
       timerFill.style.width = `${progress}%`;
+      
+      if(remainingSeconds <= 10 && remainingSeconds > 0) {
+        timerFill.style.background = '#f43f5e'; // Rojo de alerta suave
+        timerDisplay.style.color = '#f43f5e';
+      } else {
+        timerFill.style.background = 'linear-gradient(90deg, var(--turq), var(--gold))';
+        timerDisplay.style.color = 'var(--text)';
+      }
     }
 
     function startTimer() {
@@ -1114,20 +840,18 @@
     if (pauseTimerBtn) pauseTimerBtn.addEventListener('click', pauseTimer);
     if (resetTimerBtn) resetTimerBtn.addEventListener('click', resetTimer);
 
+    // Navegación
     prevBtn.addEventListener('click', prev);
     nextBtn.addEventListener('click', next);
 
     window.addEventListener('keydown', (e) => {
-      if (['ArrowRight', 'PageDown', ' '].includes(e.key)) {
-        e.preventDefault();
-        next();
+      // Ignorar si estamos haciendo scroll con las flechas
+      if (['ArrowRight', 'PageDown'].includes(e.key)) {
+        e.preventDefault(); next();
       }
       if (['ArrowLeft', 'PageUp'].includes(e.key)) {
-        e.preventDefault();
-        prev();
+        e.preventDefault(); prev();
       }
-      if (e.key === 'Home') goTo(0);
-      if (e.key === 'End') goTo(slides.length - 1);
     });
 
     window.addEventListener('touchstart', (e) => {
@@ -1136,7 +860,8 @@
 
     window.addEventListener('touchend', (e) => {
       const delta = e.changedTouches[0].screenX - touchStartX;
-      if (Math.abs(delta) < 40) return;
+      // Solo navega si el deslizamiento es largo (evita roces accidentales al hacer scroll vertical)
+      if (Math.abs(delta) < 80) return; 
       if (delta < 0) next();
       if (delta > 0) prev();
     }, { passive: true });
