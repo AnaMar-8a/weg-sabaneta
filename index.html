@@ -28,8 +28,10 @@
       --shadow: 0 30px 90px rgba(0,0,0,0.38);
       --ease: cubic-bezier(.22,.8,.22,1);
     }
+
     * { box-sizing: border-box; }
     html, body { height: 100%; }
+
     body {
       margin: 0;
       font-family: var(--body);
@@ -42,6 +44,7 @@
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
     }
+
     .app {
       width: 100vw;
       height: 100vh;
@@ -49,6 +52,7 @@
       place-items: center;
       padding: 20px;
     }
+
     .deck {
       position: relative;
       width: min(95vw, 1450px);
@@ -61,6 +65,7 @@
       box-shadow: 0 30px 90px rgba(0,0,0,0.38);
       isolation: isolate;
     }
+
     .deck::before {
       content: "";
       position: absolute;
@@ -70,6 +75,7 @@
       opacity: 0.08;
       pointer-events: none;
     }
+
     .progress-shell {
       position: absolute;
       top: 0;
@@ -79,12 +85,14 @@
       background: rgba(255,255,255,0.05);
       z-index: 50;
     }
+
     .progress-bar {
       height: 100%;
       width: 16.66%;
       background: linear-gradient(90deg, var(--turq), var(--gold));
       transition: width .35s var(--ease);
     }
+
     .slide {
       position: absolute;
       inset: 0;
@@ -98,18 +106,21 @@
       transition: opacity .32s var(--ease), transform .32s var(--ease);
       z-index: 2;
     }
+
     .slide.active {
       opacity: 1;
       transform: translateX(0);
       pointer-events: auto;
       z-index: 3;
     }
+
     .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 14px;
     }
+
     .kicker {
       display: inline-flex;
       align-items: center;
@@ -120,6 +131,7 @@
       letter-spacing: .28em;
       text-transform: uppercase;
     }
+
     .kicker::before {
       content: "";
       width: 34px;
@@ -128,6 +140,7 @@
       background: linear-gradient(90deg, var(--gold), var(--turq));
       display: inline-block;
     }
+
     .slide-count {
       min-width: 96px;
       text-align: center;
@@ -140,12 +153,14 @@
       letter-spacing: .16em;
       color: rgba(248,250,252,0.68);
     }
+
     .content {
       min-height: 0;
       display: grid;
       gap: 16px;
       align-content: start;
     }
+
     h1, h2, h3, h4 {
       margin: 0;
       font-family: var(--display);
@@ -153,33 +168,40 @@
       letter-spacing: .03em;
       line-height: 1.02;
     }
+
     h1 { font-size: clamp(48px, 5vw, 74px); }
     h2 { font-size: clamp(28px, 2.7vw, 42px); }
     h3 { font-size: clamp(18px, 1.3vw, 22px); }
+
     p, li {
       margin: 0;
       font-size: clamp(15px, 1.08vw, 18px);
       line-height: 1.48;
       color: var(--muted);
     }
+
     .accent-t { color: var(--turq); }
     .accent-g { color: var(--gold); }
+
     .section-head {
       display: grid;
       gap: 10px;
       max-width: 920px;
     }
+
     .section-rule {
       width: 110px;
       height: 3px;
       border-radius: 999px;
       background: linear-gradient(90deg, var(--turq), var(--gold));
     }
+
     .intro {
       max-width: 940px;
       color: #cdd6e3;
       font-size: 17px;
     }
+
     .eyebrow {
       display: inline-flex;
       align-items: center;
@@ -196,6 +218,7 @@
       color: rgba(248,250,252,0.78);
       margin-bottom: 14px;
     }
+
     .hero {
       display: grid;
       grid-template-columns: 1.05fr .95fr;
@@ -203,6 +226,7 @@
       height: 100%;
       align-items: center;
     }
+
     .lead {
       max-width: 760px;
       font-size: 19px;
@@ -210,6 +234,7 @@
       color: #d2dbe7;
       margin-top: 16px;
     }
+
     .hero-panel,
     .card,
     .agenda-card,
@@ -225,12 +250,14 @@
       backdrop-filter: blur(12px);
       border-radius: var(--radius-lg);
     }
+
     .hero-panel {
       padding: 24px;
       min-height: 360px;
       position: relative;
       overflow: hidden;
     }
+
     .hero-panel::before,
     .card::before,
     .agenda-card::before,
@@ -246,9 +273,11 @@
       background: linear-gradient(90deg, var(--turq), transparent);
       margin: -24px 0 14px;
     }
+
     .gold::before {
       background: linear-gradient(90deg, var(--gold), transparent);
     }
+
     .summary-band,
     .grid-3,
     .grid-2,
@@ -257,9 +286,11 @@
       display: grid;
       gap: 16px;
     }
+
     .summary-band { grid-template-columns: repeat(3, 1fr); max-width: 860px; margin-top: 24px; }
     .grid-3 { grid-template-columns: repeat(3, 1fr); }
     .grid-2, .facilitators-grid, .deliverable-layout { grid-template-columns: repeat(2, 1fr); }
+
     .summary-item,
     .card,
     .deliverable,
@@ -272,6 +303,7 @@
       gap: 12px;
       align-content: start;
     }
+
     .summary-item .tag,
     .mini-label,
     .timer-hint,
@@ -282,13 +314,16 @@
       color: var(--muted-2);
       font-weight: 700;
     }
+
     .summary-item .big,
     .timer-display {
       font-family: var(--display);
       color: var(--text);
       line-height: 1;
     }
+
     .summary-item .big { font-size: 28px; }
+
     .card-icon,
     .facilitator-icon,
     .agenda-icon {
@@ -301,12 +336,14 @@
       color: var(--turq);
       font-size: 20px;
     }
+
     .gold .card-icon,
     .gold .facilitator-icon,
     .gold .agenda-icon {
       background: rgba(223,166,57,0.12);
       color: var(--gold);
     }
+
     .mini-list,
     .check-list {
       list-style: none;
@@ -315,12 +352,14 @@
       display: grid;
       gap: 8px;
     }
+
     .mini-list li,
     .check-list li {
       position: relative;
       padding-left: 18px;
       color: #d7dfea;
     }
+
     .mini-list li::before,
     .check-list li::before {
       content: "";
@@ -332,14 +371,17 @@
       border-radius: 999px;
       background: var(--turq);
     }
+
     .gold .mini-list li::before,
     .gold .check-list li::before { background: var(--gold); }
+
     .agenda-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
     }
+
     .time-chip {
       width: fit-content;
       padding: 8px 12px;
@@ -351,22 +393,26 @@
       letter-spacing: .10em;
       color: var(--text);
     }
+
     .timer-layout {
       display: grid;
       grid-template-columns: 1.08fr .92fr;
       gap: 18px;
       align-items: stretch;
     }
+
     .timer-card {
       justify-content: center;
       align-items: center;
       text-align: center;
     }
+
     .timer-display {
       font-size: clamp(68px, 8vw, 120px);
       letter-spacing: .04em;
       margin: 10px 0;
     }
+
     .timer-bar {
       width: 100%;
       height: 10px;
@@ -375,12 +421,14 @@
       overflow: hidden;
       margin-top: 10px;
     }
+
     .timer-fill {
       width: 100%;
       height: 100%;
       background: linear-gradient(90deg, var(--turq), var(--gold));
       transition: width 1s linear;
     }
+
     .timer-controls {
       display: flex;
       gap: 10px;
@@ -388,6 +436,7 @@
       flex-wrap: wrap;
       margin-top: 12px;
     }
+
     .timer-btn {
       appearance: none;
       border: 1px solid var(--line);
@@ -400,19 +449,23 @@
       font-family: var(--body);
       transition: transform .18s var(--ease), background .18s var(--ease), border-color .18s var(--ease);
     }
+
     .timer-btn:hover {
       transform: translateY(-1px);
       background: rgba(78,185,165,0.10);
       border-color: rgba(78,185,165,0.34);
     }
+
     .facilitators-grid {
       align-items: stretch;
     }
+
     .facilitator-card {
       grid-template-columns: 220px 1fr;
       align-items: stretch;
       gap: 18px;
     }
+
     .facilitator-media {
       min-height: 320px;
       border-radius: 18px;
@@ -420,17 +473,20 @@
       background: rgba(255,255,255,0.03);
       border: 1px solid var(--line-soft);
     }
+
     .facilitator-media img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
     }
+
     .facilitator-body {
       display: grid;
       gap: 12px;
       align-content: start;
     }
+
     .facilitator-name {
       font-family: var(--display);
       font-size: 28px;
@@ -438,18 +494,21 @@
       text-transform: uppercase;
       color: var(--text);
     }
+
     .facilitator-title {
       font-size: 15px;
       line-height: 1.45;
       color: #e0e7ef;
       font-weight: 600;
     }
+
     .facilitator-links {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       margin-top: 2px;
     }
+
     .profile-link {
       display: inline-flex;
       align-items: center;
@@ -465,15 +524,18 @@
       letter-spacing: .03em;
       transition: transform .18s var(--ease), background .18s var(--ease), border-color .18s var(--ease), color .18s var(--ease);
     }
+
     .profile-link:hover {
       transform: translateY(-1px);
       background: rgba(78,185,165,0.10);
       border-color: rgba(78,185,165,0.32);
       color: #ffffff;
     }
+
     .profile-link i {
       color: #7dd3fc;
     }
+
     .facilitator-note {
       padding-top: 10px;
       border-top: 1px solid var(--line-soft);
@@ -481,12 +543,7 @@
       line-height: 1.5;
       color: #d7dfea;
     }
-    .facilitator-title {
-      font-size: 15px;
-      line-height: 1.45;
-      color: #e0e7ef;
-      font-weight: 600;
-    }
+
     .close-layout {
       display: grid;
       grid-template-columns: 1.02fr .98fr;
@@ -494,6 +551,7 @@
       align-items: center;
       height: 100%;
     }
+
     .footer-bar {
       position: absolute;
       left: 44px;
@@ -505,6 +563,7 @@
       gap: 14px;
       align-items: center;
     }
+
     .footer-note {
       font-size: 10px;
       letter-spacing: .16em;
@@ -516,6 +575,7 @@
       gap: 10px;
       min-width: 0;
     }
+
     .footer-note::before {
       content: "";
       width: 10px;
@@ -524,6 +584,7 @@
       background: linear-gradient(135deg, var(--turq), var(--gold));
       flex: 0 0 auto;
     }
+
     .slide-meta {
       padding: 9px 12px;
       border-radius: 999px;
@@ -536,17 +597,21 @@
       color: rgba(248,250,252,0.68);
       white-space: nowrap;
     }
+
     .slide-meta span:last-child { color: var(--text); }
+
     .controls {
       display: flex;
       align-items: center;
       gap: 10px;
     }
+
     .btn, .dot {
       appearance: none;
       border: none;
       font: inherit;
     }
+
     .btn {
       width: 48px;
       height: 48px;
@@ -559,11 +624,13 @@
       cursor: pointer;
       transition: transform .18s var(--ease), background .18s var(--ease), border-color .18s var(--ease);
     }
+
     .btn:hover {
       transform: translateY(-1px);
       background: rgba(78,185,165,0.10);
       border-color: rgba(78,185,165,0.32);
     }
+
     .pager {
       display: flex;
       align-items: center;
@@ -573,6 +640,7 @@
       border: 1px solid var(--line-soft);
       background: rgba(255,255,255,0.04);
     }
+
     .dot {
       position: relative;
       width: 11px;
@@ -582,10 +650,12 @@
       cursor: pointer;
       transition: width .18s var(--ease), background .18s var(--ease);
     }
+
     .dot.active {
       width: 30px;
       background: linear-gradient(90deg, var(--turq), var(--gold));
     }
+
     .hint {
       position: absolute;
       top: 20px;
@@ -605,6 +675,7 @@
       gap: 8px;
       transition: opacity .25s var(--ease);
     }
+
     kbd {
       font-family: var(--body);
       font-size: 10px;
@@ -614,6 +685,7 @@
       background: rgba(255,255,255,0.06);
       color: var(--text);
     }
+
     @media (max-width: 1220px) {
       .slide { padding: 34px 32px 88px; }
       .hero, .grid-3, .grid-2, .summary-band, .timer-layout, .facilitators-grid, .deliverable-layout, .close-layout {
@@ -633,6 +705,7 @@
       .controls { justify-self: end; }
       .hint { display: none; }
     }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { transition: none !important; }
     }
@@ -811,7 +884,7 @@
           <div class="facilitators-grid">
             <article class="facilitator-card gold">
               <div class="facilitator-media">
-                <img src="./angela-giraldo.jpg" alt="Angela María Giraldo Franco">
+                <img src="./assets/angela-giraldo.jpg" alt="Angela María Giraldo Franco">
               </div>
               <div class="facilitator-body">
                 <div class="facilitator-icon"><i class="fa-solid fa-user-tie"></i></div>
@@ -829,7 +902,7 @@
             </article>
             <article class="facilitator-card">
               <div class="facilitator-media">
-                <img src="./ana-ochoa.JPG" alt="Ana Maria Ochoa">
+                <img src="./assets/ana-ochoa.JPG" alt="Ana Maria Ochoa">
               </div>
               <div class="facilitator-body">
                 <div class="facilitator-icon"><i class="fa-solid fa-user-group"></i></div>
