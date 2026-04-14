@@ -444,6 +444,49 @@
       color: #e0e7ef;
       font-weight: 600;
     }
+    .facilitator-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 2px;
+    }
+    .profile-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--text);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--line-soft);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .03em;
+      transition: transform .18s var(--ease), background .18s var(--ease), border-color .18s var(--ease), color .18s var(--ease);
+    }
+    .profile-link:hover {
+      transform: translateY(-1px);
+      background: rgba(78,185,165,0.10);
+      border-color: rgba(78,185,165,0.32);
+      color: #ffffff;
+    }
+    .profile-link i {
+      color: #7dd3fc;
+    }
+    .facilitator-note {
+      padding-top: 10px;
+      border-top: 1px solid var(--line-soft);
+      font-size: 14px;
+      line-height: 1.5;
+      color: #d7dfea;
+    }
+    .facilitator-title {
+      font-size: 15px;
+      line-height: 1.45;
+      color: #e0e7ef;
+      font-weight: 600;
+    }
     .close-layout {
       display: grid;
       grid-template-columns: 1.02fr .98fr;
@@ -763,54 +806,43 @@
           <div class="section-head">
             <h2>Sus <span class="accent-g">facilitadoras</span></h2>
             <div class="section-rule"></div>
-            <p class="intro">Vamos a acompañar la conversación, cuidar el ritmo de la actividad y ayudar a que lo importante se vuelva visible y accionable.</p>
+            <p class="intro">Vamos a acompañar la conversación, cuidar el ritmo del espacio y ayudar a que lo importante se vuelva visible, ordenado y accionable.</p>
           </div>
           <div class="facilitators-grid">
             <article class="facilitator-card gold">
               <div class="facilitator-media">
-                <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAx
-NDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy
-MjIyMjIyMjL/wAARCAL8AdoDASIAAhEBAxEB/8QAHQAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICf/EAEYQAAIBAgQDBQUFBQYF
-AwUAAAECEQADBBIhMQVBUQYiYXETMoGRobEHFCNCUmLR8AYjYnKSstIVFzNzgpPC0vEkQ3ODorL/xAAaAQEBAQEBAQEAAAAAAAAA
-AAAAAQIDBAUG/8QALxEBAAICAgICAgEDAwUBAAAAAAAAAQIRAyESMQQTQVEiYXGBBRQykaGxwSNC0fD/2gAMAwEAAhEDEQA/AN6i
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAABp4bmrPN9+N76m1jS4PnYjxvt2Pr9n7SGN7pfG6v1PVPV6aun1PCfauzv51WW2q53J7Mb6f2eZXVlk9vU3XQ39G7
-XJrVdQq9i6apm6L6g+4q9vbrdS1v+Z5Vu6z2bl6uV7N6a5J2uTg2wqf6v1J2m7q0S6lV1a0S4T4u2rjQvG8vEZ+fT1M1P9FN3s7s3Zq
-+1J2W6r7Z1QqV6u2q7j2b4rK8W7F+5m+g4HnN7s8S7m3m3r1c9vDkn1S0y4m2YzqM1XU6nN2vVfI3xUqS1qLbt+6w5Y3v7yS0tHn8Zs
-6R8h1r+e8n6vZp7d2zj2n0z1uS9rj5rCz8V1XqjvP3Wc+M6d4V6nO4n4n0eXVr5q0c7aW9vGqVY1o6u8i+X5r+2fMrW6h7vE8m1dJrW
-u2x5mtt7cPqfLxjWm9uQ6v0YvM2+vX2oU6l3l6l5D4V7v7OeLrF1en5m1p8N8rN8JfX7QmV3Mqq1SqyUq5pNt7ZlW8V6PzO3uMx+O7
-4u2x+0yb1Y9n6nTz+Y6o1b11w+G+cbw+3v5k7Zg7ar4nS8qa31PSfJbvzP8Abx7a1dW6P8A1Jv9lPqP+XK4c8+J7L+2h2h3n2M2uFq
-Qx9M1PPzf6j4v0w9qj4dTjVn5a3/ALw8m5s7vWqz+v0M+X9U5r6m9v7G6fKuT1uOX2Xvyb3d4x7bXW1I5Y7n9Mry0l6m1dz6w7n4Xr
-V5m0vJsnq8rUt5n3e9vW1n0tfU6r9aV3mT2l5a6K3m+9v6v1N2+Z9p5vZ7Oe+1n3qfSx8Lk5n7Q7i9n1S3Z7q+uS8uM3b4b+6c2P7K7
-W1p8cW7t5q8v0rX0n3i3m1n2vP3e1sS8dW+vK8nyf9u7mH5f7Tz3m7m0r6K8P9Gd8r8Vv1b6jQx+1f5x6v4E4t9bqW8V6vW7f4mW+2
-m9WqfR6I+7vVb6nW9fJ1m0v0a+fV1O7mP2m6z2T3l3+bQWm1dbX7H4j5QyAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf/2Q==" alt="Angela María Giraldo Franco">
+                <img src="./angela-giraldo.jpg" alt="Angela María Giraldo Franco">
               </div>
               <div class="facilitator-body">
                 <div class="facilitator-icon"><i class="fa-solid fa-user-tie"></i></div>
                 <div class="facilitator-role">Facilitadora 1</div>
                 <div class="facilitator-name">Angela María Giraldo Franco</div>
                 <div class="facilitator-title">CEO y fundadora de RAÍZ i3</div>
-                <p>Acompañará la conversación desde la mirada estratégica, el sentido de la jornada y la lectura de lo que el grupo vaya poniendo sobre la mesa.</p>
+                <div class="facilitator-links">
+                  <a class="profile-link" href="https://linkedin.com/in/angela-giraldo-81a7a427/?skipRedirect=true" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-brands fa-linkedin"></i>
+                    <span>Ver LinkedIn</span>
+                  </a>
+                </div>
+                <p class="facilitator-note">Acompañará la conversación desde la mirada estratégica, el sentido de la jornada y la lectura de lo que el grupo vaya poniendo sobre la mesa.</p>
               </div>
             </article>
             <article class="facilitator-card">
               <div class="facilitator-media">
-                <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAx
-NDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy
-MjIyMjIyMjL/wAARCAGUAfQDASIAAhEBAxEB/8QAHQABAQEAAgMBAQAAAAAAAAAAAAUEAwYBCAIHCP/EAEgQAAEDAgMFBgMGBQIE
-BwAAAAEAAhEDIQQSMUFRYQUTInGBkaGx0QYyQlJScuEUI1NygvAUM0ODk7PC0vEVFiRDU9L/xAAbAQEAAwEBAQEAAAAAAAAAAAAA
-AAECAwQFBv/EAC0RAQACAQMCBgEEAwAAAAAAAAABAhEDEiExBEEFEyJRYXGBkaGxweHwFDLR8P/aAAwDAQACEQMRAD8A+8lERERE
-RERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERE
-RERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERE
-RERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERH/2Q==" alt="Ana Maria Ochoa">
+                <img src="./ana-ochoa.JPG" alt="Ana Maria Ochoa">
               </div>
               <div class="facilitator-body">
                 <div class="facilitator-icon"><i class="fa-solid fa-user-group"></i></div>
                 <div class="facilitator-role">Facilitadora 2</div>
                 <div class="facilitator-name">Ana Maria Ochoa</div>
                 <div class="facilitator-title">Directora de Operaciones de RAÍZ i3</div>
-                <p>Acompañará la metodología, el orden del ejercicio, la participación del grupo y la captura de acuerdos para que la sesión tenga ritmo y aterrizaje.</p>
+                <div class="facilitator-links">
+                  <a class="profile-link" href="https://www.linkedin.com/in/8aanamaria/" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-brands fa-linkedin"></i>
+                    <span>Ver LinkedIn</span>
+                  </a>
+                </div>
+                <p class="facilitator-note">Acompañará la metodología, el orden del ejercicio, la participación del grupo y la captura de acuerdos para que la sesión tenga ritmo y aterrizaje.</p>
               </div>
             </article>
           </div>
