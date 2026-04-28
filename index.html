@@ -193,22 +193,30 @@
     .door-col { flex: 1; background: linear-gradient(180deg, rgba(223,166,57,0.1) 0%, rgba(223,166,57,0) 100%); border: 1px solid rgba(223,166,57,0.2); border-top: 4px solid var(--gold); border-radius: 16px; padding: 2vw; display: flex; flex-direction: column; }
     .door-date { font-family: var(--display); font-size: clamp(24px, 2vw, 32px); color: var(--text); line-height: 1; margin-bottom: 0.5vw; }
 
-    .focus-stat { font-family: var(--display); font-size: clamp(48px, 5vw, 80px); line-height: 1; color: var(--text); margin: 1vw 0; text-shadow: 0 4px 20px rgba(0,0,0,0.5); }
-
-    /* Estilos Slide 20 (Cierre) */
-    .closing-card { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 3vw; display: flex; flex-direction: column; align-items: flex-start; position: relative; overflow: hidden; }
-    .closing-card::after { content: ''; position: absolute; inset: 0; pointer-events: none; }
-    .card-pledge::after { box-shadow: inset 0 0 40px rgba(78,185,165,0.1); border-left: 6px solid var(--turq); }
-    .card-dates::after { box-shadow: inset 0 0 40px rgba(223,166,57,0.1); border-left: 6px solid var(--gold); animation: pulseGlow 3s infinite; }
+    /* ==========================================================================
+       9. ESTILOS SLIDE 20 (Cierre WOW Optimizado)
+       ========================================================================== */
+    .closing-card { 
+      background: rgba(0,0,0,0.3); 
+      border: 1px solid rgba(255,255,255,0.1); 
+      border-radius: 20px; 
+      padding: 3vw; 
+      display: flex; 
+      flex-direction: column; 
+      height: 100%;
+      position: relative;
+    }
+    .card-pledge { border-top: 4px solid var(--turq); background: linear-gradient(180deg, rgba(78,185,165,0.05) 0%, transparent 100%); }
     
+    .card-dates { border-top: 4px solid var(--gold); background: linear-gradient(180deg, rgba(223,166,57,0.05) 0%, transparent 100%); animation: pulseGlow 3s infinite alternate; }
     @keyframes pulseGlow { 
-      0% { box-shadow: inset 0 0 40px rgba(223,166,57,0.1); border-left-color: var(--gold); } 
-      50% { box-shadow: inset 0 0 80px rgba(223,166,57,0.3); border-left-color: #fff; } 
-      100% { box-shadow: inset 0 0 40px rgba(223,166,57,0.1); border-left-color: var(--gold); } 
+      0% { box-shadow: 0 0 0 rgba(223,166,57,0); border-top-color: rgba(223,166,57,0.5); } 
+      100% { box-shadow: 0 10px 40px rgba(223,166,57,0.2); border-top-color: rgba(223,166,57,1); } 
     }
 
-    .date-box { display: flex; align-items: center; gap: 1.5vw; background: rgba(255,255,255,0.03); padding: 1.5vw; border-radius: 12px; border: 1px solid var(--line); width: 100%; margin-top: 1vw; }
-    .date-icon { font-size: 2.5vw; color: var(--gold); }
+    .date-box { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); padding: 1.5vw; border-radius: 12px; display: flex; align-items: center; gap: 1.5vw; margin-top: 1vw; transition: transform 0.2s; }
+    .date-box:hover { transform: translateX(10px); border-color: rgba(223,166,57,0.3); background: rgba(223,166,57,0.05); }
+    .date-icon { width: 4vw; height: 4vw; border-radius: 12px; background: rgba(223,166,57,0.1); color: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 1.8vw; flex-shrink: 0; }
 
     /* FOOTER Y CONTROLES */
     .footer-bar { position: absolute; left: 0; right: 0; bottom: 0; padding: 1vw 4vw; background: linear-gradient(to top, rgba(6,11,23,0.9) 20%, rgba(6,11,23,0)); z-index: 70; display: flex; justify-content: space-between; align-items: flex-end; pointer-events: none; }
@@ -249,7 +257,7 @@
         </div>
       </section>
 
-      <!-- [ SLIDE 2: VISOR FICHAS GIGANTES ] -->
+      <!-- [ SLIDE 2: VISOR FICHAS GIGANTES REDISEÑADO ] -->
       <section class="slide" data-title="Las 35 Fichas">
         <div class="topbar"><div class="kicker">El Inventario de Dolores</div><div class="slide-count"></div></div>
         <div style="text-align: center; margin-bottom: 0;">
@@ -525,7 +533,7 @@
       </section>
 
       <!-- =========================================================================
-           [NUEVO] SLIDE 20: CIERRE WOW (DECLARACIÓN Y FECHAS)
+           [NUEVO Y MEJORADO] SLIDE 20: CIERRE WOW (DECLARACIÓN Y FECHAS)
            ========================================================================= -->
       <section class="slide" data-title="Cierre Estratégico">
         <div class="topbar">
@@ -538,42 +546,42 @@
           <p class="intro" style="margin: 0 auto;">Una planeación no sirve de nada si se guarda en un cajón. Hoy salimos de aquí con compromisos públicos y fechas en el calendario.</p>
         </div>
 
-        <div class="grid-2" style="flex-grow: 1;">
+        <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 3vw; flex-grow: 1; align-items: stretch;">
           
           <!-- Lado Izquierdo: La Declaración del Líder -->
           <article class="closing-card card-pledge">
-            <div class="eyebrow" style="margin-bottom: 1.5vw;"><i class="fa-solid fa-microphone"></i> Paso 1: Acción en Sala</div>
-            <h3 style="font-size: clamp(24px, 2vw, 30px); color: var(--text); margin-bottom: 1vw;">La Declaración Pública</h3>
-            <p style="font-size: clamp(14px, 1.1vw, 16px); color: var(--muted); margin-bottom: 2vw;">Cada líder de proyecto se pone de pie y lee esta frase completando los espacios en blanco. Esto confirma que la Matriz funciona en la realidad.</p>
+            <div class="eyebrow" style="margin-bottom: 1vw;"><i class="fa-solid fa-microphone"></i> Paso 1: El Equipo</div>
+            <h3 style="font-size: clamp(24px, 2vw, 30px); color: var(--text); margin-bottom: 0.5vw;">La Declaración Pública</h3>
+            <p style="font-size: clamp(14px, 1.1vw, 16px); color: var(--muted); margin-bottom: 2vw;">Cada líder se pone de pie y lee esta frase completando los espacios en blanco. Esto confirma que la Matriz funciona en la realidad.</p>
             
-            <div style="background: rgba(78,185,165,0.08); border: 1px dashed rgba(78,185,165,0.3); border-radius: 16px; padding: 2.5vw; text-align: center; width: 100%;">
-              <i class="fa-solid fa-quote-left" style="font-size: 2vw; color: rgba(78,185,165,0.4); margin-bottom: 1vw;"></i>
-              <p style="font-family: var(--display); font-size: clamp(20px, 2vw, 28px); color: var(--text); line-height: 1.4;">
-                "Mi proyecto <span style="color: var(--turq); border-bottom: 2px solid var(--turq);">[Nombre]</span> sirve principalmente al Foco <span style="color: var(--turq); border-bottom: 2px solid var(--turq);">[Ventas/Traslado/ZF]</span> empujando la iniciativa <span style="color: var(--turq); border-bottom: 2px solid var(--turq);">[Iniciativa Estratégica]</span>."
+            <div style="background: rgba(0,0,0,0.4); border-left: 4px solid var(--turq); border-radius: 0 16px 16px 0; padding: 2vw; margin-top: auto; position: relative;">
+              <i class="fa-solid fa-quote-left" style="position: absolute; top: 1vw; right: 1.5vw; font-size: 3vw; color: rgba(78,185,165,0.1);"></i>
+              <p style="font-family: var(--display); font-size: clamp(18px, 1.8vw, 26px); color: var(--text); line-height: 1.5;">
+                "Mi proyecto <span style="color: var(--turq);">[Nombre]</span> sirve principalmente al Foco <span style="color: var(--turq);">[Ventas/Traslado/ZF]</span> empujando la iniciativa <span style="color: var(--turq);">[Iniciativa]</span>."
               </p>
             </div>
           </article>
 
           <!-- Lado Derecho: El Sello de Gerencia -->
           <article class="closing-card card-dates">
-            <div class="eyebrow gold" style="margin-bottom: 1.5vw;"><i class="fa-solid fa-gavel"></i> Paso 2: Acción Gerencial</div>
-            <h3 style="font-size: clamp(24px, 2vw, 30px); color: var(--text); margin-bottom: 1vw;">Las Fechas Innegociables</h3>
+            <div class="eyebrow gold" style="margin-bottom: 1vw;"><i class="fa-solid fa-gavel"></i> Paso 2: Gerencia</div>
+            <h3 style="font-size: clamp(24px, 2vw, 30px); color: var(--text); margin-bottom: 0.5vw;">Fechas Innegociables</h3>
             <p style="font-size: clamp(14px, 1.1vw, 16px); color: var(--muted); margin-bottom: 1.5vw;">Gerencia General cierra la sesión fijando y agendando ahora mismo los dos momentos de control.</p>
             
-            <div style="display: flex; flex-direction: column; gap: 1.5vw; width: 100%;">
+            <div style="display: flex; flex-direction: column; gap: 1vw; margin-top: auto;">
               <div class="date-box">
                 <div class="date-icon"><i class="fa-regular fa-calendar-check"></i></div>
                 <div>
-                  <h4 style="color: var(--gold); font-size: clamp(16px, 1.3vw, 20px); margin-bottom: 0.3vw;">Revisión Mensual</h4>
-                  <p style="font-size: clamp(13px, 1vw, 15px); color: var(--muted); margin: 0;">Seguimiento estricto al Mapa Estratégico y KPIs.</p>
+                  <h4 style="color: var(--gold); font-size: clamp(15px, 1.2vw, 18px); margin-bottom: 0.2vw;">Revisión Mensual</h4>
+                  <p style="font-size: clamp(12px, 0.9vw, 14px); color: var(--muted); margin: 0;">Seguimiento estricto al Canvas y KPIs.</p>
                 </div>
               </div>
               
               <div class="date-box">
                 <div class="date-icon"><i class="fa-solid fa-calendar-days"></i></div>
                 <div>
-                  <h4 style="color: var(--gold); font-size: clamp(16px, 1.3vw, 20px); margin-bottom: 0.3vw;">Revisión Integral (Mediados de Mayo)</h4>
-                  <p style="font-size: clamp(13px, 1vw, 15px); color: var(--muted); margin: 0;">Corte trimestral para evaluar el impacto real y ajustar el rumbo si es necesario.</p>
+                  <h4 style="color: var(--gold); font-size: clamp(15px, 1.2vw, 18px); margin-bottom: 0.2vw;">Revisión Integral</h4>
+                  <p style="font-size: clamp(12px, 0.9vw, 14px); color: var(--muted); margin: 0;">Mediados de Mayo. Ajuste de rumbo.</p>
                 </div>
               </div>
             </div>
