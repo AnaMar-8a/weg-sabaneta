@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>RAÍZ i3 × WEG | Planeación 2026</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <style>
+    /* ==========================================================================
+       1. VARIABLES GLOBALES
+       ========================================================================== */
+    :root {
+      --bg-1: #060b17;
+      --bg-2: #0b1528;
+      --bg-3: #111f3d;
+      
+      --panel: rgba(255,255,255,0.03);
+      --line: rgba(255,255,255,0.08);
+      --line-soft: rgba(255,255,255,0.04);
+      
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --muted-2: #94a3b8;
+      
+      --turq: #4EB9A5;
+      --gold: #DFA639;
+      --rose: #f43f5e;
+      --blue: #3b82f6;
+      
+      --display: 'Oswald', sans-serif;
+      --body: 'Inter', sans-serif;
+      
+      --radius-xl: 32px;
+      --radius-lg: 20px;
+      --shadow: 0 25px 80px rgba(0,0,0,0.6);
+      --ease: cubic-bezier(.22,.8,.22,1);
+    }
+
+    * { box-sizing: border-box; }
+    ::-webkit-scrollbar { display: none; }
+    
+    html, body { 
+      height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; 
+      background: radial-gradient(circle at 0% 0%, rgba(78,185,165,0.12), transparent 40%), radial-gradient(circle at 100% 100%, rgba(223,166,57,0.08), transparent 40%), linear-gradient(135deg, var(--bg-1), var(--bg-2), var(--bg-3));
+      font-family: var(--body); color: var(--text); -webkit-font-smoothing: antialiased;
+    }
+
+    .app { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2vw; overflow: hidden; }
+
+    /* ==========================================================================
+       2. CONTENEDOR 16:9 ESTRICTO
+       ========================================================================== */
+    .deck {
+      position: relative; aspect-ratio: 16 / 9; width: 100%; max-width: 1600px; max-height: 94vh; border-radius: var(--radius-xl); border: 1px solid rgba(255,255,255,0.06); background: rgba(10, 15, 30, 0.7); box-shadow: var(--shadow); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); isolation: isolate; overflow: hidden; touch-action: none;
+    }
+
+    .progress-shell { position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: rgba(255,255,255,0.05); z-index: 50; }
+    .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--turq), var(--gold)); transition: width 0.5s var(--ease); border-radius: 0 4px 4px 0; }
+
+    .slide { position: absolute; inset: 0; padding: 3vw 4vw 5vw; display: flex; flex-direction: column; opacity: 0; transform: translateY(20px); pointer-events: none; transition: opacity 0.4s var(--ease), transform 0.4s var(--ease); z-index: 2; overflow: hidden; }
+    .slide.active { opacity: 1; transform: translateY(0); pointer-events: auto; z-index: 3; }
+
+    /* ==========================================================================
+       3. TEXTOS Y COMPONENTES
+       ========================================================================== */
+    .topbar { display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; margin-bottom: 1vw; }
+    .kicker { display: inline-flex; align-items: center; gap: 0.8vw; color: var(--muted); font-size: clamp(10px, 1vw, 13px); font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; }
+    .kicker::before { content: ""; width: 2vw; height: 3px; border-radius: 2px; background: linear-gradient(90deg, var(--gold), var(--turq)); }
+    .slide-count { padding: 0.5vw 1vw; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,0.02); font-family: var(--display); font-size: clamp(12px, 1.2vw, 16px); letter-spacing: 0.1em; color: var(--muted); }
+
+    h1, h2, h3, h4 { margin: 0; font-family: var(--display); font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; line-height: 1.15; }
+    h1 { font-size: clamp(36px, 4vw, 64px); }
+    h2 { font-size: clamp(28px, 3vw, 48px); }
+    h3 { font-size: clamp(18px, 1.5vw, 24px); }
+    p, li { margin: 0; font-size: clamp(13px, 1.1vw, 17px); line-height: 1.5; color: var(--muted); }
+    
+    .accent-t { color: var(--turq); } .accent-g { color: var(--gold); } .accent-r { color: var(--rose); }
+    .intro { color: var(--text); font-size: clamp(15px, 1.2vw, 20px); max-width: 900px; font-weight: 300; margin-top: 0.5vw; }
+
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; background: rgba(78,185,165,0.1); border: 1px solid rgba(78,185,165,0.2); font-size: clamp(10px, 0.9vw, 12px); font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--turq); margin-bottom: 1vw; }
+    .gold .eyebrow { background: rgba(223,166,57,0.1); border-color: rgba(223,166,57,0.2); color: var(--gold); }
+    .rose .eyebrow { background: rgba(244,63,94,0.1); border-color: rgba(244,63,94,0.2); color: var(--rose); }
+
+    .block-timer { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 6px; background: rgba(255,255,255,0.05); font-family: var(--display); font-size: clamp(14px, 1.2vw, 18px); letter-spacing: 0.05em; color: var(--text); border: 1px solid var(--line); }
+    .timer-btn { border: 1px solid var(--line); background: rgba(0,0,0,0.3); color: var(--text); border-radius: 999px; padding: 0.6vw 1.5vw; cursor: pointer; font-weight: 600; font-size: clamp(12px, 1vw, 16px); font-family: var(--body); transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.5vw; }
+    .timer-btn:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+    .timer-btn.active { border-color: var(--turq); color: var(--turq); background: rgba(78,185,165,0.1); }
+
+    /* Grillas base */
+    .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 3vw; align-items: center; height: 100%; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2vw; height: 100%; align-items: stretch; margin-top: 2vw; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2vw; align-items: stretch; margin-top: 2vw; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2vw; align-items: stretch; margin-top: 2vw; }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 2vw; display: flex; flex-direction: column; }
+
+    /* ==========================================================================
+       4. VISOR DE FICHAS MEJORADO (Slide 2)
+       ========================================================================== */
+    .fichas-viewer { position: relative; width: 100%; flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; margin-top: 1vw; }
+    .fc-window { width: 100%; height: 32vw; overflow: hidden; position: relative; mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%); -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%); }
+    .fc-track { display: flex; align-items: center; gap: 2vw; padding: 0 calc(50% - 14vw); height: 100%; transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+    .fc-card { width: 28vw; height: 22vw; flex-shrink: 0; background: rgba(255,255,255,0.03); border: 1px solid var(--line); border-radius: 24px; padding: 3vw 2.5vw; display: flex; flex-direction: column; justify-content: center; border-left: 8px solid var(--muted-2); transition: all 0.5s ease; opacity: 0.3; transform: scale(0.85); cursor: pointer; }
+    .fc-card.active { opacity: 1; transform: scale(1); background: rgba(255,255,255,0.08); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+    
+    .fc-card.c-turq.active { border-left-color: var(--turq); background: linear-gradient(90deg, rgba(78,185,165,0.08), rgba(255,255,255,0.02)); }
+    .fc-card.c-gold.active { border-left-color: var(--gold); background: linear-gradient(90deg, rgba(223,166,57,0.08), rgba(255,255,255,0.02)); }
+    .fc-card.c-rose.active { border-left-color: var(--rose); background: linear-gradient(90deg, rgba(244,63,94,0.08), rgba(255,255,255,0.02)); }
+    .fc-card.c-blue.active { border-left-color: var(--blue); background: linear-gradient(90deg, rgba(59,130,246,0.08), rgba(255,255,255,0.02)); }
+
+    .fc-area { font-family: var(--display); font-size: clamp(14px, 1.4vw, 20px); font-weight: 500; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 1.5vw; }
+    .fc-title { font-size: clamp(20px, 2.2vw, 36px); color: var(--text); font-weight: 600; line-height: 1.3; text-wrap: balance; }
+    .fc-controls-bar { display: flex; align-items: center; gap: 1vw; margin-top: 0; padding: 0.8vw 2vw; background: rgba(0,0,0,0.4); border: 1px solid var(--line); border-radius: 999px; backdrop-filter: blur(10px); }
+
+    /* ==========================================================================
+       5. CRONOGRAMA MAESTRO REDISEÑADO (Slide 11)
+       ========================================================================== */
+    .gantt-container { position: relative; width: 100%; flex-grow: 1; display: flex; flex-direction: column; margin-top: 1.5vw; background: rgba(0,0,0,0.2); border-radius: 20px; border: 1px solid var(--line); padding: 4vw 0 1vw; overflow: visible; }
+    .g-gate { position: absolute; top: 3vw; bottom: 1vw; border-left: 2px dashed rgba(223,166,57,0.3); z-index: 0; pointer-events: none; }
+    .g-gate::before { content: attr(data-label); position: absolute; top: -3vw; left: 0; transform: translateX(-50%); font-family: var(--display); color: var(--gold); font-size: clamp(12px, 1.2vw, 16px); letter-spacing: 0.05em; background: var(--bg-1); padding: 0.4vw 1vw; border-radius: 6px; border: 1px solid rgba(223,166,57,0.3); white-space: nowrap; }
+
+    .gantt-row { display: flex; width: 100%; height: 6.5vw; align-items: center; position: relative; z-index: 1; border-bottom: 1px solid rgba(255,255,255,0.04); transition: background 0.2s; }
+    .gantt-row:hover { background: rgba(255,255,255,0.03); }
+    .gantt-row:last-child { border-bottom: none; }
+    
+    .g-label { width: 28%; padding: 0 1vw 0 2vw; display: flex; align-items: center; gap: 1vw; font-weight: 500; font-size: clamp(12px, 1.1vw, 16px); color: var(--text); }
+    .g-label .l-box { width: 1.2vw; height: 1.2vw; border-radius: 4px; flex-shrink: 0; }
+    .g-track { width: 72%; position: relative; height: 100%; }
+    
+    .g-node { position: absolute; top: 50%; transform: translate(-50%, -0.6vw); display: flex; flex-direction: column; align-items: center; width: 12vw; z-index: 10; }
+    .g-dot { width: 1.2vw; height: 1.2vw; border-radius: 50%; border: 3px solid var(--bg-1); box-shadow: 0 0 0 2px rgba(255,255,255,0.1); flex-shrink: 0; }
+    .g-text { margin-top: 0.5vw; width: 100%; font-size: clamp(10px, 0.85vw, 13px); color: var(--muted); line-height: 1.3; text-align: center; text-wrap: balance; }
+    .g-text strong { color: var(--text); display: block; font-size: clamp(11px, 0.95vw, 14px); margin-bottom: 2px; }
+    .g-bar { position: absolute; top: 50%; transform: translateY(-50%); height: 0.4vw; border-radius: 999px; opacity: 0.5; }
+
+    /* ==========================================================================
+       6. MATRIZ DE CONTRIBUCIÓN (Slide 16)
+       ========================================================================== */
+    .matrix-container { width: 100%; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; margin-top: 1vw; }
+    .matrix-table { width: 100%; border-collapse: separate; border-spacing: 0; background: rgba(0,0,0,0.2); border-radius: 16px; overflow: hidden; border: 1px solid var(--line); }
+    .matrix-table th { padding: 1vw; font-family: var(--display); font-size: clamp(14px, 1.2vw, 18px); letter-spacing: 0.05em; text-align: center; border-bottom: 1px solid var(--line); border-left: 1px solid var(--line); }
+    .matrix-table th:first-child { border-left: none; background: transparent; }
+    .matrix-table td { padding: 1vw; border-bottom: 1px solid var(--line); border-left: 1px solid var(--line); text-align: center; vertical-align: middle; }
+    .matrix-table td:first-child { text-align: left; border-left: none; font-weight: 500; color: var(--text); font-size: clamp(13px, 1.1vw, 16px); background: rgba(255,255,255,0.02); }
+    .matrix-table tr:last-child td { border-bottom: none; }
+    
+    .m-dots { display: inline-flex; gap: 0.4vw; justify-content: center; }
+    .m-dot { width: 1.2vw; height: 1.2vw; border-radius: 50%; }
+    .m-dot.main { background: var(--gold); box-shadow: 0 0 10px rgba(223,166,57,0.4); }
+    .m-dot.support { background: var(--muted-2); opacity: 0.5; }
+
+    /* ==========================================================================
+       7. CANVAS ESTRATÉGICO (Slide 17)
+       ========================================================================== */
+    .strat-canvas {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: auto 1fr auto; gap: 1vw;
+      background: rgba(255,255,255,0.01); border: 1px solid var(--line); border-radius: 16px; padding: 1.5vw; height: 100%; flex-grow: 1; margin-top: 1vw;
+    }
+    .sc-header { grid-column: span 3; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); padding-bottom: 1vw; margin-bottom: 0.5vw; }
+    .sc-header-left { display: flex; align-items: center; gap: 1vw; }
+    
+    .sc-col { display: flex; flex-direction: column; gap: 1vw; padding: 1.5vw; background: rgba(0,0,0,0.2); border-radius: 12px; border: 1px dashed rgba(255,255,255,0.1); position: relative; }
+    .sc-col.alert { border-color: rgba(244,63,94,0.3); background: rgba(244,63,94,0.05); }
+    
+    .sc-footer { grid-column: span 3; display: grid; grid-template-columns: 2fr 1fr; gap: 1vw; margin-top: 0.5vw; border-top: 1px solid var(--line); padding-top: 1.5vw; }
+    
+    .sc-title { font-family: var(--display); color: var(--turq); font-size: clamp(20px, 2vw, 30px); text-transform: uppercase; letter-spacing: 0.05em; line-height: 1; }
+    .sc-subtitle { font-size: clamp(11px, 0.9vw, 13px); color: var(--muted-2); text-transform: uppercase; font-weight: 700; letter-spacing: 0.1em; display: flex; align-items: center; gap: 0.5vw; margin-bottom: 1vw; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.5vw;}
+    
+    .sc-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1vw; }
+    .sc-list li { display: flex; gap: 0.8vw; align-items: flex-start; font-size: clamp(13px, 1.1vw, 16px); color: var(--text); }
+    .sc-list li i { color: var(--turq); margin-top: 4px; font-size: 1vw; }
+    .sc-pill { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 1vw; border-radius: 8px; font-weight: 500; font-size: clamp(14px, 1.2vw, 16px); color: var(--text); text-align: center; }
+    
+    /* ==========================================================================
+       8. COMPONENTES VARIOS REUTILIZADOS
+       ========================================================================== */
+    .project-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 2.5vw 2vw; display: flex; flex-direction: column; align-items: center; text-align: center; transition: transform 0.3s var(--ease); }
+    .p-icon { width: 4.5vw; height: 4.5vw; border-radius: 50%; display: grid; place-items: center; font-size: 2vw; margin-bottom: 1.5vw; }
+    .c-sys { color: var(--turq); } .c-sys-bg { background: var(--turq); }
+    .c-tras { color: var(--gold); } .c-tras-bg { background: var(--gold); }
+    .c-pers { color: var(--rose); } .c-pers-bg { background: var(--rose); }
+    .c-com { color: var(--blue); } .c-com-bg { background: var(--blue); }
+
+    .step-box { background: rgba(255,255,255,0.02); border: 1px solid var(--line); border-radius: 16px; padding: 2vw; position: relative; }
+    .step-number { width: 2.5vw; height: 2.5vw; border-radius: 50%; background: var(--line); display: grid; place-items: center; font-family: var(--display); margin-bottom: 1vw; font-size: clamp(14px, 1.2vw, 18px); color: var(--text); }
+    
+    .door-timeline { display: flex; align-items: stretch; gap: 1vw; margin-top: 2vw; height: 100%; }
+    .door-col { flex: 1; background: linear-gradient(180deg, rgba(223,166,57,0.1) 0%, rgba(223,166,57,0) 100%); border: 1px solid rgba(223,166,57,0.2); border-top: 4px solid var(--gold); border-radius: 16px; padding: 2vw; display: flex; flex-direction: column; }
+    .door-date { font-family: var(--display); font-size: clamp(24px, 2vw, 32px); color: var(--text); line-height: 1; margin-bottom: 0.5vw; }
+
+    .focus-stat { font-family: var(--display); font-size: clamp(48px, 5vw, 80px); line-height: 1; color: var(--text); margin: 1vw 0; text-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+
+    /* Estilos Slide 20 (Cierre) */
+    .closing-card { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 3vw; display: flex; flex-direction: column; align-items: flex-start; position: relative; overflow: hidden; }
+    .closing-card::after { content: ''; position: absolute; inset: 0; pointer-events: none; }
+    .card-pledge::after { box-shadow: inset 0 0 40px rgba(78,185,165,0.1); border-left: 6px solid var(--turq); }
+    .card-dates::after { box-shadow: inset 0 0 40px rgba(223,166,57,0.1); border-left: 6px solid var(--gold); animation: pulseGlow 3s infinite; }
+    
+    @keyframes pulseGlow { 
+      0% { box-shadow: inset 0 0 40px rgba(223,166,57,0.1); border-left-color: var(--gold); } 
+      50% { box-shadow: inset 0 0 80px rgba(223,166,57,0.3); border-left-color: #fff; } 
+      100% { box-shadow: inset 0 0 40px rgba(223,166,57,0.1); border-left-color: var(--gold); } 
+    }
+
+    .date-box { display: flex; align-items: center; gap: 1.5vw; background: rgba(255,255,255,0.03); padding: 1.5vw; border-radius: 12px; border: 1px solid var(--line); width: 100%; margin-top: 1vw; }
+    .date-icon { font-size: 2.5vw; color: var(--gold); }
+
+    /* FOOTER Y CONTROLES */
+    .footer-bar { position: absolute; left: 0; right: 0; bottom: 0; padding: 1vw 4vw; background: linear-gradient(to top, rgba(6,11,23,0.9) 20%, rgba(6,11,23,0)); z-index: 70; display: flex; justify-content: space-between; align-items: flex-end; pointer-events: none; }
+    .controls { display: flex; align-items: center; gap: 0.5vw; pointer-events: auto; }
+    .btn, .dot { appearance: none; border: none; outline: none; }
+    .btn { width: 2.5vw; height: 2.5vw; min-width: 36px; min-height: 36px; border-radius: 50%; border: 1px solid var(--line); background: rgba(0,0,0,0.5); color: var(--text); cursor: pointer; display: grid; place-items: center; transition: all 0.2s; backdrop-filter: blur(5px); }
+    .btn:hover { background: rgba(255,255,255,0.1); }
+    .pager { display: flex; gap: 0.5vw; padding: 0.6vw 1vw; border-radius: 999px; background: rgba(0,0,0,0.5); border: 1px solid var(--line); backdrop-filter: blur(5px); }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2); cursor: pointer; transition: all 0.3s; }
+    .dot.active { width: 16px; border-radius: 3px; background: var(--turq); }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <main class="deck" aria-label="Planeación WEG - 2026">
+      <div class="progress-shell"><div class="progress-bar" id="progressBar"></div></div>
+
+      <!-- [ SLIDE 1: INTRO ] -->
+      <section class="slide active" data-title="Contexto">
+        <div class="topbar"><div class="kicker">De la dispersión al foco</div><div class="slide-count"></div></div>
+        <div class="hero">
+          <div class="panel-content">
+            <div class="eyebrow"><i class="fa-solid fa-compress"></i> Consolidando esfuerzos</div>
+            <h1>El fin de las <br><span class="accent-t">islas operativas.</span></h1>
+            <p class="intro">Teníamos decenas de peticiones cruzadas, urgencias y dependencias aisladas. Nadie tenía la culpa: todos intentaban salvar su área. Hoy vamos a agrupar todo ese ruido.</p>
+          </div>
+          <div class="panel-content">
+            <div style="background: rgba(255,255,255,0.02); padding: 2.5vw; border-radius: 24px; border: 1px solid var(--line);">
+              <h3 style="color: var(--gold); margin-bottom: 1vw;"><i class="fa-solid fa-layer-group"></i> El reto de hoy</h3>
+              <p style="font-size: clamp(14px, 1.2vw, 18px); color: var(--muted); margin-bottom: 1vw;">Una planeación no es decirle que sí a todo, es saber priorizar.</p>
+              <ul style="display: flex; flex-direction: column; gap: 1vw; list-style: none; padding: 0;">
+                <li style="display: flex; gap: 1vw; align-items: center;"><i class="fa-solid fa-check" style="color: var(--turq);"></i> Entender el panorama completo.</li>
+                <li style="display: flex; gap: 1vw; align-items: center;"><i class="fa-solid fa-check" style="color: var(--turq);"></i> Encontrar a los dueños (dolientes) de cada frente.</li>
+                <li style="display: flex; gap: 1vw; align-items: center;"><i class="fa-solid fa-check" style="color: var(--turq);"></i> Agrupar las soluciones de manera estructurada.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- [ SLIDE 2: VISOR FICHAS GIGANTES ] -->
+      <section class="slide" data-title="Las 35 Fichas">
+        <div class="topbar"><div class="kicker">El Inventario de Dolores</div><div class="slide-count"></div></div>
+        <div style="text-align: center; margin-bottom: 0;">
+          <h2 style="margin-bottom: 0.5vw;">Nuestras <span class="accent-g">35 Peticiones</span></h2>
+          <p class="intro" style="margin: 0 auto 1vw;">Todo este volumen es el que vamos a tomar hoy para darle orden y estructura.</p>
+          <button id="toggleMarqueeBtn" class="timer-btn" aria-label="Pausar animación"><i class="fa-solid fa-pause"></i> Detener para leer</button>
+        </div>
+        <div class="fichas-viewer">
+          <div class="fc-window">
+            <div class="fc-track" id="fichasTrack"></div>
+          </div>
+          <div class="fc-controls-bar">
+            <button id="fcPrev" class="btn" aria-label="Ficha Anterior"><i class="fa-solid fa-chevron-left"></i></button>
+            <button id="fcPlayPause" class="timer-btn" aria-label="Pausar lectura"><i class="fa-solid fa-pause"></i> Pausar lectura</button>
+            <button id="fcNext" class="btn" aria-label="Ficha Siguiente"><i class="fa-solid fa-chevron-right"></i></button>
+            <div id="fcCounter" style="font-family: var(--display); font-size: 1.2vw; color: var(--gold); margin-left: 1vw; width: 4vw; text-align: right;">1/35</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- [ SLIDE 3: LOS 4 PROYECTOS ] -->
+      <section class="slide" data-title="Los 4 Frentes">
+        <div class="topbar"><div class="kicker">La Solución</div><div class="slide-count"></div></div>
+        <div style="text-align: center; margin-bottom: 1vw;">
+          <h2 style="margin-bottom: 0.5vw;">De la dispersión a <span class="accent-t">4 frentes de trabajo</span></h2>
+          <p class="intro" style="margin: 0 auto;">Cualquier ficha o petición debe vivir dentro de una de estas 4 columnas vertebrales.</p>
+        </div>
+        <div class="grid-4">
+          <article class="project-card c-sys"><div class="p-icon" style="background:rgba(78,185,165,0.1); color:var(--turq); border:1px solid rgba(78,185,165,0.2);"><i class="fa-solid fa-server"></i></div><h3 style="color: var(--text);">1. Sistemas y Facturación</h3><p style="margin-top: 1vw; font-size: clamp(12px, 1vw, 14px);">Agrupa SAP, contabilidad, TI e ingenierías para garantizar que la nueva razón social opere y facture.</p></article>
+          <article class="project-card c-tras"><div class="p-icon" style="background:rgba(223,166,57,0.1); color:var(--gold); border:1px solid rgba(223,166,57,0.2);"><i class="fa-solid fa-truck-fast"></i></div><h3 style="color: var(--text);">2. Traslado Físico</h3><p style="margin-top: 1vw; font-size: clamp(12px, 1vw, 14px);">Amarra la movilización de producción con los cuellos de botella de logística, almacén y HSEQ.</p></article>
+          <article class="project-card c-pers"><div class="p-icon" style="background:rgba(244,63,94,0.1); color:var(--rose); border:1px solid rgba(244,63,94,0.2);"><i class="fa-solid fa-people-group"></i></div><h3 style="color: var(--text);">3. Personas y Cambio</h3><p style="margin-top: 1vw; font-size: clamp(12px, 1vw, 14px);">Consolida contrataciones masivas, políticas salariales, capacitaciones y la capacidad de RRHH.</p></article>
+          <article class="project-card c-com"><div class="p-icon" style="background:rgba(59,130,246,0.1); color:var(--blue); border:1px solid rgba(59,130,246,0.2);"><i class="fa-solid fa-handshake"></i></div><h3 style="color: var(--text);">4. Continuidad Comercial</h3><p style="margin-top: 1vw; font-size: clamp(12px, 1vw, 14px);">Reúne certificaciones, catálogos, comunicación a clientes y habilitación de mercado.</p></article>
+        </div>
+      </section>
+
+      <!-- [ SLIDES 4-7: LIENZOS DE TRABAJO ] -->
+      <section class="slide" data-title="Lienzo 1"><div class="topbar"><div class="kicker" style="color: var(--turq);">Mapeo</div><div class="slide-count"></div></div><div style="flex-grow:1; border:3px dashed rgba(255,255,255,0.15); border-radius:var(--radius-xl); display:flex; align-items:center; justify-content:center;"><h3>Zona de trabajo: Sistemas y Facturación</h3></div></section>
+      <section class="slide" data-title="Lienzo 2"><div class="topbar"><div class="kicker" style="color: var(--gold);">Mapeo</div><div class="slide-count"></div></div><div style="flex-grow:1; border:3px dashed rgba(255,255,255,0.15); border-radius:var(--radius-xl); display:flex; align-items:center; justify-content:center;"><h3>Zona de trabajo: Traslado Físico</h3></div></section>
+      <section class="slide" data-title="Lienzo 3"><div class="topbar"><div class="kicker" style="color: var(--rose);">Mapeo</div><div class="slide-count"></div></div><div style="flex-grow:1; border:3px dashed rgba(255,255,255,0.15); border-radius:var(--radius-xl); display:flex; align-items:center; justify-content:center;"><h3>Zona de trabajo: Personas y Cambio</h3></div></section>
+      <section class="slide" data-title="Lienzo 4"><div class="topbar"><div class="kicker" style="color: var(--blue);">Mapeo</div><div class="slide-count"></div></div><div style="flex-grow:1; border:3px dashed rgba(255,255,255,0.15); border-radius:var(--radius-xl); display:flex; align-items:center; justify-content:center;"><h3>Zona de trabajo: Continuidad Comercial</h3></div></section>
+
+      <!-- [ SLIDE 8: BLOQUE 1 - AGRUPAR ] -->
+      <section class="slide" data-title="Bloque 1: Agrupar">
+        <div class="topbar"><div class="kicker">Dinámica de Trabajo</div><div class="slide-count"></div></div>
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1vw;">
+          <div><h2 style="margin-bottom: 0.5vw;">Bloque 1: <span class="accent-t">Acomodar la Casa</span></h2><p class="intro">En las paredes están los 4 proyectos. Tomen sus fichas y hagamos que encuentren su hogar.</p></div>
+          <div class="block-timer"><i class="fa-regular fa-clock"></i> 40 Minutos</div>
+        </div>
+        <div class="grid-3">
+          <article class="step-box"><div class="step-time">15 min</div><div class="step-number">1</div><h3 style="color: var(--text); margin-bottom: 0.8vw;">La Acción Física</h3><p>Pasan una a una, leen y pegan la ficha. <strong>Regla estricta: en absoluto silencio.</strong></p></article>
+          <article class="step-box" style="border-color: rgba(223,166,57,0.3); background: rgba(223,166,57,0.02);"><div class="step-time" style="color: var(--gold);">10 min</div><div class="step-number" style="background: rgba(223,166,57,0.1); color: var(--gold);">2</div><h3 style="color: var(--text); margin-bottom: 0.8vw;">La Zona Ambigua</h3><p>En plenaria revisamos dudas. Si pertenece a dos proyectos, se duplica (dependencia crítica).</p></article>
+          <article class="step-box"><div class="step-time">15 min</div><div class="step-number">3</div><h3 style="color: var(--text); margin-bottom: 0.8vw;">El Balanceo</h3><p>Caminamos juntos por las paredes. ¿Hay un proyecto completamente desbalanceado?</p></article>
+        </div>
+      </section>
+
+      <!-- [ SLIDE 9: BLOQUE 2 - LÍDERES ] -->
+      <section class="slide" data-title="Bloque 2: Líderes">
+        <div class="topbar"><div class="kicker">Tomando Responsabilidad</div><div class="slide-count"></div></div>
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1vw;">
+          <div><div class="eyebrow rose" style="margin-bottom: 0.5vw;"><i class="fa-solid fa-fire"></i> El Momento Incómodo</div><h2 style="margin-bottom: 0.5vw;">Bloque 2: <span class="accent-r">Nombres y Apellidos</span></h2></div>
+          <div class="block-timer"><i class="fa-regular fa-clock"></i> 30 Minutos</div>
+        </div>
+        <div class="hero" style="grid-template-columns: 1.1fr 0.9fr;">
+          <div>
+            <p class="intro" style="font-size: clamp(18px, 1.4vw, 24px); line-height: 1.4; color: var(--text);">Cada proyecto necesita <strong style="color: var(--rose);">un nombre y un apellido</strong>, no un área genérica.</p>
+            <p style="margin-top: 1.5vw; font-size: clamp(15px, 1.1vw, 18px);">Esa persona convoca reuniones y rinde cuentas semanalmente frente al equipo.</p>
+          </div>
+          <div class="card" style="border-color: rgba(223,166,57,0.3); background: rgba(223,166,57,0.02);">
+            <h4 style="color: var(--gold); margin-bottom: 1.5vw; border-bottom: 1px solid rgba(223,166,57,0.2); padding-bottom: 0.5vw;">Criterios Innegociables</h4>
+            <div style="display: flex; flex-direction: column; gap: 1vw;">
+              <div style="display:flex; gap:1vw;"><i class="fa-solid fa-gavel" style="color:var(--gold);"></i><div><strong style="color:var(--text);">1. Tiene Autoridad</strong><p style="font-size:13px; margin:0;">Sabe convocar a las áreas dependientes.</p></div></div>
+              <div style="display:flex; gap:1vw;"><i class="fa-solid fa-hourglass-half" style="color:var(--gold);"></i><div><strong style="color:var(--text);">2. Tiene Tiempo Real</strong><p style="font-size:13px; margin:0;">No es "un encargo más".</p></div></div>
+              <div style="display:flex; gap:1vw;"><i class="fa-solid fa-handshake-angle" style="color:var(--gold);"></i><div><strong style="color:var(--text);">3. Tiene Respaldo</strong><p style="font-size:13px; margin:0;">Gerencia avala su nombramiento en sala.</p></div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- [ SLIDE 10: BLOQUE 3 - PUERTAS ] -->
+      <section class="slide" data-title="Bloque 3: Las Puertas">
+        <div class="topbar"><div class="kicker">Asegurando la Ruta</div><div class="slide-count"></div></div>
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1vw;">
+          <div><h2 style="margin-bottom: 0.5vw;">Bloque 3: <span class="accent-g">Las 3 Puertas</span></h2><p class="intro">Tres convergencias críticas en el año. Tres momentos "Go / No-Go".</p></div>
+          <div class="block-timer"><i class="fa-regular fa-clock"></i> 45 Minutos</div>
+        </div>
+        <div class="door-timeline">
+          <article class="door-col"><div class="door-date">MAYO</div><div style="color:var(--gold); font-size:12px; font-weight:600;">SEMANA 1</div><div style="margin-top:1vw; color:var(--muted); font-size:14px;"><p><i class="fa-solid fa-square-check" style="color:var(--turq);"></i> Criterios Binarios</p><p><i class="fa-solid fa-user-check" style="color:var(--turq);"></i> Decisor</p><p style="color:#fda4af;"><i class="fa-solid fa-life-ring" style="color:var(--rose);"></i> Plan B</p></div></article>
+          <article class="door-col"><div class="door-date">JUNIO</div><div style="color:var(--gold); font-size:12px; font-weight:600;">FIN DE MES</div><div style="margin-top:1vw; color:var(--muted); font-size:14px;"><p><i class="fa-solid fa-square-check" style="color:var(--turq);"></i> Criterios Binarios</p><p><i class="fa-solid fa-user-check" style="color:var(--turq);"></i> Decisor</p><p style="color:#fda4af;"><i class="fa-solid fa-life-ring" style="color:var(--rose);"></i> Plan B</p></div></article>
+          <article class="door-col"><div class="door-date">OCTUBRE</div><div style="color:var(--gold); font-size:12px; font-weight:600;">SEMANA 1</div><div style="margin-top:1vw; color:var(--muted); font-size:14px;"><p><i class="fa-solid fa-square-check" style="color:var(--turq);"></i> Criterios Binarios</p><p><i class="fa-solid fa-user-check" style="color:var(--turq);"></i> Decisor</p><p style="color:#fda4af;"><i class="fa-solid fa-life-ring" style="color:var(--rose);"></i> Plan B</p></div></article>
+        </div>
+      </section>
+
+      <!-- [ SLIDE 11: CRONOGRAMA MAESTRO ] -->
+      <section class="slide" data-title="Cronograma">
+        <div class="topbar"><div class="kicker">Ruta Crítica Operativa</div><div class="slide-count"></div></div>
+        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+          <div><h2 style="margin-bottom: 0;">El Mapa del <span class="accent-t">2026</span></h2><p class="intro" style="font-size: 15px;">Cómo se conectan nuestras acciones con las 3 Puertas a lo largo de los meses.</p></div>
+        </div>
+        <div class="gantt-container">
+          <div class="g-gate" style="left: calc(28% + 72% * 0.15);" data-label="C1 (Mayo)"></div>
+          <div class="g-gate" style="left: calc(28% + 72% * 0.40);" data-label="C2 (Junio)"></div>
+          <div class="g-gate" style="left: calc(28% + 72% * 0.75);" data-label="C3 (Octubre)"></div>
+
+          <div class="gantt-row"><div class="g-label"><div class="l-box c-sys-bg"></div> 1. Sistemas y facturación</div>
+            <div class="g-track">
+              <div class="g-node" style="left: 16%;"><div class="g-dot c-sys-bg"></div><div class="g-text"><strong>Razón social</strong>4 may</div></div>
+              <div class="g-node" style="left: 40%;"><div class="g-dot c-sys-bg"></div><div class="g-text"><strong>SAP materiales</strong>30 jun</div></div>
+              <div class="g-node" style="left: 78%;"><div class="g-dot c-sys-bg"></div><div class="g-text"><strong>TI completa</strong>13 oct</div></div>
+            </div>
+          </div>
+          <div class="gantt-row"><div class="g-label"><div class="l-box c-tras-bg"></div> 2. Traslado físico</div>
+            <div class="g-track">
+              <div class="g-node" style="left: 5%;"><div class="g-dot c-tras-bg"></div><div class="g-text"><strong>Cronograma</strong>17 abr</div></div>
+              <div class="g-bar c-tras-bg" style="left: 10%; width: 60%;"></div>
+              <div class="g-node" style="left: 40%;"><div class="g-dot" style="opacity: 0;"></div><div class="g-text" style="color:var(--text); font-weight:600;">Movilización por áreas</div></div>
+              <div class="g-node" style="left: 75%;"><div class="g-dot c-tras-bg"></div><div class="g-text"><strong>HSEQ planta</strong>1 oct</div></div>
+            </div>
+          </div>
+          <div class="gantt-row"><div class="g-label"><div class="l-box c-pers-bg"></div> 3. Personas y cambio</div>
+            <div class="g-track">
+              <div class="g-node" style="left: 12%;"><div class="g-dot c-pers-bg"></div><div class="g-text"><strong>Tabla salarial</strong>30 abr</div></div>
+              <div class="g-node" style="left: 60%;"><div class="g-dot c-pers-bg"></div><div class="g-text"><strong>Capacitación</strong>1 sep</div></div>
+              <div class="g-node" style="left: 90%;"><div class="g-dot c-pers-bg"></div><div class="g-text"><strong>22 ingresos</strong>dic</div></div>
+            </div>
+          </div>
+          <div class="gantt-row"><div class="g-label"><div class="l-box c-com-bg"></div> 4. Continuidad comercial</div>
+            <div class="g-track">
+              <div class="g-node" style="left: 16%;"><div class="g-dot c-com-bg"></div><div class="g-text"><strong>Aviso clientes</strong>4 may</div></div>
+              <div class="g-node" style="left: 50%;"><div class="g-dot c-com-bg"></div><div class="g-text"><strong>Orden 138 kV</strong>jul</div></div>
+              <div class="g-node" style="left: 75%;"><div class="g-dot c-com-bg"></div><div class="g-text"><strong>Certificación</strong>1 oct</div></div>
+              <div class="g-node" style="left: 95%;"><div class="g-dot c-com-bg"></div><div class="g-text"><strong>Inauguración</strong>ene 27</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- [ SLIDE 12: BLOQUE 4 - PRESUPUESTO ] -->
+      <section class="slide" data-title="Bloque 4: Presupuesto">
+        <div class="topbar"><div class="kicker">Haciendo visible lo invisible</div><div class="slide-count"></div></div>
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1.5vw;">
+          <div><h2 style="margin-bottom: 0.5vw;">Bloque 4: <span class="accent-t">El Presupuesto a Ojo</span></h2><p class="intro">Dimensionar el esfuerzo de cada proyecto.</p></div>
+          <div class="block-timer"><i class="fa-regular fa-clock"></i> 15 Minutos</div>
+        </div>
+        <article style="background: rgba(255,255,255,0.02); border: 1px solid var(--line); border-top: 4px solid var(--turq); padding: 3vw; border-radius: 20px; max-width: 1000px; margin: 0 auto; text-align: center;">
+          <i class="fa-solid fa-coins" style="font-size: 3vw; color: var(--turq); margin-bottom: 1vw;"></i>
+          <p style="font-size: clamp(16px, 1.3vw, 20px); color: var(--text); margin-bottom: 2vw;">Cada líder escribe en su papelógrafo los tres números críticos. Gerencia valida si están alineados con la visión o si urge hablar con casa matriz.</p>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2vw;">
+            <div style="background: rgba(0,0,0,0.3); padding: 2vw; border-radius: 12px; border: 1px dashed rgba(255,255,255,0.15);"><span style="display:block; font-size:12px; color:var(--muted-2); text-transform:uppercase;">Costo Estimado</span><span style="font-family:var(--display); font-size:24px; color:var(--turq);">¿Cuánto creemos que cuesta?</span></div>
+            <div style="background: rgba(0,0,0,0.3); padding: 2vw; border-radius: 12px; border: 1px dashed rgba(255,255,255,0.15);"><span style="display:block; font-size:12px; color:var(--muted-2); text-transform:uppercase;">Personal Nuevo</span><span style="font-family:var(--display); font-size:24px; color:var(--turq);">¿Cuántas cabezas adicionales?</span></div>
+            <div style="background: rgba(0,0,0,0.3); padding: 2vw; border-radius: 12px; border: 1px dashed rgba(255,255,255,0.15);"><span style="display:block; font-size:12px; color:var(--muted-2); text-transform:uppercase;">Tiempo del Equipo</span><span style="font-family:var(--display); font-size:24px; color:var(--turq);">¿Cuánto consumo de otras áreas?</span></div>
+          </div>
+        </article>
+      </section>
+
+      <!-- [ SLIDE 13: BLOQUE 4 - READINESS ] -->
+      <section class="slide" data-title="La Pregunta Final">
+        <div class="topbar"><div class="kicker" style="color: var(--rose);">El Momento de la Verdad</div><div class="slide-count"></div><div class="block-timer" style="border-color: rgba(244,63,94,0.3); color: #fda4af; background: rgba(244,63,94,0.05);"><i class="fa-regular fa-clock"></i> 15 Minutos</div></div>
+        <div style="flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative;">
+          <div style="position: absolute; width: 40vw; height: 40vw; background: radial-gradient(circle, rgba(244,63,94,0.15) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: -1;"></div>
+          <i class="fa-solid fa-bolt" style="font-size: clamp(40px, 5vw, 80px); color: var(--rose); margin-bottom: 2vw; filter: drop-shadow(0 0 20px rgba(244,63,94,0.6));"></i>
+          <h1 style="font-family: var(--display); font-size: clamp(40px, 4.2vw, 70px); line-height: 1.2; text-transform: none; font-weight: 500; margin-bottom: 2vw; text-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            ¿Qué tiene que ser cierto <br><span class="accent-r" style="font-weight: 700;">el día que sale el primer transformador</span><br>fabricado de principio a fin en Rionegro?
+          </h1>
+          <div style="background: rgba(244,63,94,0.1); border: 1px solid rgba(244,63,94,0.2); padding: 1vw 2vw; border-radius: 999px; color: #fda4af; font-size: clamp(14px, 1.2vw, 18px);"><i class="fa-solid fa-pen-to-square"></i> Respondamos en post-its. Lo que se repita 3 o más veces será el checklist oficial.</div>
+        </div>
+      </section>
+
+      <!-- [ SLIDE 14: DESCANSO / TIMER ] -->
+      <section class="slide" data-title="Descanso">
+        <div class="topbar"><div class="kicker">Fin de la Parte 1</div><div class="slide-count"></div></div>
+        <div style="display: grid; grid-template-columns: 1fr; gap: 2vw; align-items: start; max-width: 800px; margin: 0 auto; height: 100%; align-content: center;">
+          <div style="text-align: center; margin-bottom: 1vw;"><h2 style="margin-bottom: 0.5vw;">Pausa y <span class="accent-t">Refrigerio</span></h2><p class="intro" style="margin: 0 auto;">Hemos organizado la casa. Tomemos 20 minutos para respirar antes de pasar a la estrategia de cierre.</p></div>
+          <article style="text-align: center; padding: 4vw 3vw; border-radius: 40px; background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.1);">
+            <div class="timer-display" id="timerDisplay">20:00</div>
+            <div style="width: 100%; height: 12px; border-radius: 999px; background: rgba(255,255,255,0.05); overflow: hidden; margin: 2vw 0;"><div id="timerFill" style="width: 100%; height: 100%; background: linear-gradient(90deg, var(--turq), var(--gold)); transition: width 1s linear;"></div></div>
+            <div style="display: flex; gap: 1vw; justify-content: center; margin-top: 1vw;">
+              <button class="timer-btn" id="startTimer"><i class="fa-solid fa-play"></i> Iniciar Pausa</button>
+              <button class="timer-btn" id="pauseTimer" style="background: transparent;"><i class="fa-solid fa-pause"></i></button>
+              <button class="timer-btn" id="resetTimer" style="background: transparent;"><i class="fa-solid fa-rotate-left"></i></button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           PARTE 2: ESTRATEGIA Y LIENZOS
+           ========================================================================= -->
+
+      <!-- [ SLIDE 15: INICIO PARTE 2 - CONFIRMAR FOCOS ] -->
+      <section class="slide" data-title="Inicio Parte 2">
+        <div class="topbar"><div class="kicker">Segunda Parte · Bloque 1</div><div class="slide-count"></div></div>
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2vw;">
+          <div><h2 style="margin-bottom: 0.5vw;">Confirmar los <span class="accent-t">3 Focos Estratégicos</span></h2><p class="intro">La hipótesis de trabajo es que el año se resume en estas 3 grandes apuestas innegociables.</p></div>
+          <div class="block-timer"><i class="fa-regular fa-clock"></i> 20 Minutos</div>
+        </div>
+        <div class="grid-3" style="flex-grow: 1; align-items: center;">
+          <article class="card" style="text-align: center; padding: 4vw 2vw; border-top: 4px solid var(--rose);"><div class="eyebrow rose" style="margin: 0 auto 1vw;">Foco 1</div><h3 style="color: var(--text); font-size: clamp(24px, 2vw, 32px);">Ventas</h3><div class="focus-stat" style="color: var(--rose); margin-top: 1.5vw;">167 <span style="font-size: clamp(16px, 1.5vw, 24px); color: var(--muted-2);">MCOP</span></div></article>
+          <article class="card" style="text-align: center; padding: 4vw 2vw; border-top: 4px solid var(--turq); transform: scale(1.05); z-index: 5; box-shadow: 0 20px 40px rgba(0,0,0,0.4);"><div class="eyebrow" style="margin: 0 auto 1vw;">Foco 2</div><h3 style="color: var(--text); font-size: clamp(24px, 2vw, 32px);">Traslado Planta</h3><div class="focus-stat" style="color: var(--turq); margin-top: 1.5vw;">30 <span style="font-size: clamp(16px, 1.5vw, 24px); color: var(--muted-2);">OCT 2026</span></div></article>
+          <article class="card" style="text-align: center; padding: 4vw 2vw; border-top: 4px solid var(--gold);"><div class="eyebrow gold" style="margin: 0 auto 1vw;">Foco 3</div><h3 style="color: var(--text); font-size: clamp(24px, 2vw, 32px);">Zona Franca</h3><div class="focus-stat" style="color: var(--gold); margin-top: 1.5vw;">30 <span style="font-size: clamp(16px, 1.5vw, 24px); color: var(--muted-2);">OCT 2026</span></div></article>
+        </div>
+      </section>
+
+      <!-- [ SLIDE 16: MATRIZ DE CONTRIBUCIÓN ] -->
+      <section class="slide" data-title="Matriz de Contribución">
+        <div class="topbar"><div class="kicker">Conectando Operación con Estrategia</div><div class="slide-count"></div></div>
+        <div><h2 style="margin-bottom: 0.5vw;">¿Quién empuja <span class="accent-g">qué cosa?</span></h2><p class="intro">La densidad de los puntos indica el nivel de contribución de cada proyecto operativo a cada foco estratégico.</p></div>
+        <div class="matrix-container">
+          <table class="matrix-table">
+            <thead><tr><th style="width: 25%;"></th><th style="width: 25%; background: rgba(244,63,94,0.1); color: var(--rose);">VENTAS</th><th style="width: 25%; background: rgba(78,185,165,0.1); color: var(--turq);">TRASLADO</th><th style="width: 25%; background: rgba(223,166,57,0.1); color: var(--gold);">ZONA FRANCA</th></tr></thead>
+            <tbody>
+              <tr><td>1. Sistemas y facturación</td><td><div class="m-dots"><div class="m-dot support"></div></div></td><td><div class="m-dots"><div class="m-dot main"></div><div class="m-dot main"></div></div></td><td><div class="m-dots"><div class="m-dot support"></div></div></td></tr>
+              <tr><td>2. Traslado físico</td><td></td><td><div class="m-dots"><div class="m-dot main"></div><div class="m-dot main"></div><div class="m-dot main"></div></div></td><td></td></tr>
+              <tr><td>3. Personas y cambio</td><td></td><td><div class="m-dots"><div class="m-dot support"></div></div></td><td><div class="m-dots"><div class="m-dot main"></div><div class="m-dot main"></div><div class="m-dot main"></div></div></td></tr>
+              <tr><td>4. Continuidad comercial</td><td><div class="m-dots"><div class="m-dot main"></div><div class="m-dot main"></div><div class="m-dot main"></div></div></td><td></td><td><div class="m-dots"><div class="m-dot main"></div><div class="m-dot main"></div></div></td></tr>
+            </tbody>
+          </table>
+          <div style="display: flex; gap: 2vw; align-items: center; margin-top: 1.5vw; padding-left: 1vw;">
+            <div style="display: flex; align-items: center; gap: 0.5vw; color: var(--muted); font-size: clamp(12px, 1vw, 14px);"><div class="m-dot support"></div> Apoyo</div>
+            <div style="display: flex; align-items: center; gap: 0.5vw; color: var(--text); font-size: clamp(12px, 1vw, 14px); font-weight: 500;"><div class="m-dots"><div class="m-dot main"></div><div class="m-dot main"></div></div> Contribución significativa</div>
+            <div style="display: flex; align-items: center; gap: 0.5vw; color: var(--text); font-size: clamp(12px, 1vw, 14px); font-weight: 700;"><div class="m-dots"><div class="m-dot main"></div><div class="m-dot main"></div><div class="m-dot main"></div></div> Contribución principal</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- [ SLIDE 17: EL CANVAS ESTRATÉGICO ] -->
+      <section class="slide" data-title="El Canvas Estratégico">
+        <div class="topbar"><div class="kicker" style="color: var(--turq);">Segunda Parte · Herramienta</div><div class="slide-count"></div></div>
+        <div style="margin-bottom: 1vw;"><h2 style="margin-bottom: 0.5vw;">El <span class="accent-t">Canvas Estratégico</span></h2><p class="intro">Para no quedarnos en buenas intenciones, cada proyecto construirá su propio lienzo para asegurar que empuja los Focos.</p></div>
+        <div class="strat-canvas">
+          <div class="sc-header"><div class="sc-header-left"><i class="fa-solid fa-layer-group" style="font-size: 2vw; color: var(--turq);"></i><div class="sc-title">PROYECTO ESTRATÉGICO: [NOMBRE DEL PROYECTO]</div></div><div style="font-family: var(--display); color: rgba(255,255,255,0.2); font-size: 1.5vw;">2026</div></div>
+          <div class="sc-col"><div class="sc-subtitle"><i class="fa-solid fa-list-check"></i> 1. Iniciativas Clave (Máximo 3)</div><p style="font-size: clamp(13px, 1vw, 15px); color: var(--muted); margin-bottom: 1vw;">¿Cuáles son las 3 grandes batallas de este proyecto para empujar los Focos?</p><ul class="sc-list"><li><i class="fa-solid fa-circle-check"></i> Acción estratégica y concreta A.</li><li><i class="fa-solid fa-circle-check"></i> Acción estratégica y concreta B.</li><li><i class="fa-solid fa-circle-check"></i> Acción estratégica y concreta C.</li></ul></div>
+          <div class="sc-col"><div class="sc-subtitle"><i class="fa-solid fa-chart-pie"></i> 2. KPIs (Métricas de éxito)</div><p style="font-size: clamp(13px, 1vw, 15px); color: var(--muted); margin-bottom: 1vw;">¿Cómo nos damos cuenta de que este proyecto va por buen camino?</p><div style="display: flex; flex-direction: column; gap: 0.8vw;"><div class="sc-pill">Indicador 1 (Ej: % Retención)</div><div class="sc-pill">Indicador 2 (Ej: Tasa de conversión)</div></div></div>
+          <div class="sc-col alert"><div class="sc-subtitle" style="color: var(--rose);"><i class="fa-solid fa-triangle-exclamation"></i> 3. Riesgos / Cuellos de botella</div><p style="font-size: clamp(13px, 1vw, 15px); color: var(--muted); margin-bottom: 1vw;">¿Qué es lo que puede matar o frenar este proyecto?</p><ul class="sc-list" style="color: #fda4af;"><li><i class="fa-solid fa-xmark" style="color: var(--rose);"></i> Riesgo mapeado A.</li><li><i class="fa-solid fa-xmark" style="color: var(--rose);"></i> Riesgo mapeado B.</li></ul></div>
+          <div class="sc-footer">
+            <div style="display: flex; flex-direction: column;"><div class="sc-subtitle"><i class="fa-solid fa-link"></i> Dependencias Clave</div><p style="font-size: clamp(13px, 1.1vw, 15px); color: var(--muted);">¿Qué necesito obligatoriamente de las otras áreas para fluir?</p></div>
+            <div style="display: flex; flex-direction: column; border-left: 1px solid var(--line); padding-left: 1.5vw;"><div class="sc-subtitle" style="color: var(--gold);"><i class="fa-solid fa-user-shield"></i> Líder del Proyecto</div><p style="font-size: clamp(16px, 1.4vw, 20px); color: var(--text); font-family: var(--display); margin-top: 0.5vw;">[Nombre y Apellido]</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- [ SLIDE 18: MAPEO DE RIESGOS ] -->
+      <section class="slide" data-title="Mapeo de Riesgos">
+        <div class="topbar"><div class="kicker" style="color: var(--rose);">Haciendo visible lo invisible</div><div class="slide-count"></div></div>
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2vw;">
+          <div><h2 style="margin-bottom: 0.5vw;">¿Cómo mapeamos los <span class="accent-r">riesgos?</span></h2><p class="intro">En lugar de preguntar "¿qué podría salir mal?", vamos a usar un <strong>ejercicio de anticipación</strong> para evitar que nuestro optimismo nos juegue una mala pasada.</p></div>
+        </div>
+        <div style="flex-grow: 1; display: flex; align-items: center; justify-content: center;">
+          <article style="background: rgba(244,63,94,0.05); border: 2px dashed rgba(244,63,94,0.3); border-radius: 24px; padding: 4vw; text-align: center; max-width: 1100px;">
+            <i class="fa-solid fa-road-barrier" style="font-size: 4vw; color: var(--rose); margin-bottom: 2vw; filter: drop-shadow(0 0 15px rgba(244,63,94,0.4));"></i>
+            <p style="font-family: var(--display); font-size: clamp(24px, 2.5vw, 36px); color: var(--text); line-height: 1.3; margin-bottom: 1.5vw;">
+              "Imaginemos que es 31 de diciembre de 2026... <br>El proyecto <span style="color: var(--rose); font-weight: 700;">se estancó por completo</span> y no logramos la meta."
+            </p>
+            <div style="display: inline-flex; align-items: center; gap: 1vw; background: rgba(0,0,0,0.5); padding: 1vw 2vw; border-radius: 999px; border: 1px solid rgba(255,255,255,0.1);">
+              <i class="fa-solid fa-magnifying-glass" style="color: var(--gold);"></i><span style="font-size: clamp(16px, 1.3vw, 20px); color: var(--gold); font-weight: 600;">¿Cuál fue ese obstáculo crítico que no vimos venir?</span>
+            </div>
+            <p style="margin-top: 2vw; font-size: clamp(14px, 1.1vw, 16px); color: var(--muted);">Las 2 respuestas más importantes que salgan de esta pregunta van directo a la columna de Riesgos del Canvas.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- [ SLIDE 19: BLOQUE 2 - LLENAR LOS LIENZOS ] -->
+      <section class="slide" data-title="Bloque 2: Construir la Estrategia">
+        <div class="topbar"><div class="kicker">Dinámica de Equipo</div><div class="slide-count"></div></div>
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1.5vw;">
+          <div><h2 style="margin-bottom: 0.5vw;">Bloque 2: <span class="accent-t">Construir los Lienzos</span></h2><p class="intro">Nos mantenimos en los <strong>4 equipos</strong> que acabamos de armar, cada uno liderado por el doliente del Proyecto. Es hora de manchar los post-its.</p></div>
+          <div class="block-timer"><i class="fa-regular fa-clock"></i> 45 Minutos</div>
+        </div>
+        <div class="grid-3" style="flex-grow: 1;">
+          <article class="step-box" style="border-top: 4px solid var(--turq);"><div class="step-number" style="background: rgba(78,185,165,0.1); color: var(--turq);">1</div><h3 style="color: var(--text); margin-bottom: 1vw;">Las Iniciativas</h3><p>Con base en las fichas que ya pegaron, definan las 3 grandes batallas de su proyecto. <strong>Fuerzan el descarte</strong>, menos es más.</p></article>
+          <article class="step-box" style="border-top: 4px solid var(--gold);"><div class="step-number" style="background: rgba(223,166,57,0.1); color: var(--gold);">2</div><h3 style="color: var(--text); margin-bottom: 1vw;">Anticipación & KPIs</h3><p>Hagan el ejercicio de anticipación para sacar los 2 riesgos clave. Luego, definan cómo van a medir el éxito mensual con números reales.</p></article>
+          <article class="step-box" style="border-top: 4px solid var(--rose);"><div class="step-number" style="background: rgba(244,63,94,0.1); color: var(--rose);">3</div><h3 style="color: var(--text); margin-bottom: 1vw;">Dependencias</h3><p>Miren la Matriz de Contribución. Escriban claramente qué necesitan de los otros 3 proyectos para no quedarse estancados a mitad de año.</p></article>
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           [NUEVO] SLIDE 20: CIERRE WOW (DECLARACIÓN Y FECHAS)
+           ========================================================================= -->
+      <section class="slide" data-title="Cierre Estratégico">
+        <div class="topbar">
+          <div class="kicker" style="color: var(--gold);">El Punto de No Retorno</div>
+          <div class="slide-count"></div>
+        </div>
+        
+        <div style="text-align: center; margin-bottom: 2vw;">
+          <h2 style="margin-bottom: 0.5vw;">Cierre de la <span class="accent-g">Planeación</span></h2>
+          <p class="intro" style="margin: 0 auto;">Una planeación no sirve de nada si se guarda en un cajón. Hoy salimos de aquí con compromisos públicos y fechas en el calendario.</p>
+        </div>
+
+        <div class="grid-2" style="flex-grow: 1;">
+          
+          <!-- Lado Izquierdo: La Declaración del Líder -->
+          <article class="closing-card card-pledge">
+            <div class="eyebrow" style="margin-bottom: 1.5vw;"><i class="fa-solid fa-microphone"></i> Paso 1: Acción en Sala</div>
+            <h3 style="font-size: clamp(24px, 2vw, 30px); color: var(--text); margin-bottom: 1vw;">La Declaración Pública</h3>
+            <p style="font-size: clamp(14px, 1.1vw, 16px); color: var(--muted); margin-bottom: 2vw;">Cada líder de proyecto se pone de pie y lee esta frase completando los espacios en blanco. Esto confirma que la Matriz funciona en la realidad.</p>
+            
+            <div style="background: rgba(78,185,165,0.08); border: 1px dashed rgba(78,185,165,0.3); border-radius: 16px; padding: 2.5vw; text-align: center; width: 100%;">
+              <i class="fa-solid fa-quote-left" style="font-size: 2vw; color: rgba(78,185,165,0.4); margin-bottom: 1vw;"></i>
+              <p style="font-family: var(--display); font-size: clamp(20px, 2vw, 28px); color: var(--text); line-height: 1.4;">
+                "Mi proyecto <span style="color: var(--turq); border-bottom: 2px solid var(--turq);">[Nombre]</span> sirve principalmente al Foco <span style="color: var(--turq); border-bottom: 2px solid var(--turq);">[Ventas/Traslado/ZF]</span> empujando la iniciativa <span style="color: var(--turq); border-bottom: 2px solid var(--turq);">[Iniciativa Estratégica]</span>."
+              </p>
+            </div>
+          </article>
+
+          <!-- Lado Derecho: El Sello de Gerencia -->
+          <article class="closing-card card-dates">
+            <div class="eyebrow gold" style="margin-bottom: 1.5vw;"><i class="fa-solid fa-gavel"></i> Paso 2: Acción Gerencial</div>
+            <h3 style="font-size: clamp(24px, 2vw, 30px); color: var(--text); margin-bottom: 1vw;">Las Fechas Innegociables</h3>
+            <p style="font-size: clamp(14px, 1.1vw, 16px); color: var(--muted); margin-bottom: 1.5vw;">Gerencia General cierra la sesión fijando y agendando ahora mismo los dos momentos de control.</p>
+            
+            <div style="display: flex; flex-direction: column; gap: 1.5vw; width: 100%;">
+              <div class="date-box">
+                <div class="date-icon"><i class="fa-regular fa-calendar-check"></i></div>
+                <div>
+                  <h4 style="color: var(--gold); font-size: clamp(16px, 1.3vw, 20px); margin-bottom: 0.3vw;">Revisión Mensual</h4>
+                  <p style="font-size: clamp(13px, 1vw, 15px); color: var(--muted); margin: 0;">Seguimiento estricto al Mapa Estratégico y KPIs.</p>
+                </div>
+              </div>
+              
+              <div class="date-box">
+                <div class="date-icon"><i class="fa-solid fa-calendar-days"></i></div>
+                <div>
+                  <h4 style="color: var(--gold); font-size: clamp(16px, 1.3vw, 20px); margin-bottom: 0.3vw;">Revisión Integral (Mediados de Mayo)</h4>
+                  <p style="font-size: clamp(13px, 1vw, 15px); color: var(--muted); margin: 0;">Corte trimestral para evaluar el impacto real y ajustar el rumbo si es necesario.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+          
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           FOOTER Y CONTROLES (Global)
+           ========================================================================= -->
+      <div class="footer-bar">
+        <div class="controls">
+          <button class="btn" id="prevBtn" aria-label="Anterior"><i class="fa-solid fa-arrow-left"></i></button>
+          <div class="pager" id="pager"></div>
+          <button class="btn" id="nextBtn" aria-label="Siguiente"><i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // --- MÓDULO DE NAVEGACIÓN ---
+    const Navigation = (() => {
+      const getSlides = () => Array.from(document.querySelectorAll('.slide'));
+      const progressBar = document.getElementById('progressBar');
+      const pager = document.getElementById('pager');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      
+      let current = 0;
+      let touchStartX = 0;
+
+      const updateUI = () => {
+        const slides = getSlides();
+        const total = slides.length;
+
+        slides.forEach((slide, index) => slide.classList.toggle('active', index === current));
+        document.querySelectorAll('.dot').forEach((dot, index) => dot.classList.toggle('active', index === current));
+
+        progressBar.style.width = `${((current + 1) / total) * 100}%`;
+        
+        document.querySelectorAll('.slide-count').forEach(el => {
+          el.innerText = `${String(current + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+        });
+
+        prevBtn.style.opacity = current === 0 ? '0.3' : '1';
+        prevBtn.style.pointerEvents = current === 0 ? 'none' : 'auto';
+        nextBtn.style.opacity = current === total - 1 ? '0.3' : '1';
+        nextBtn.style.pointerEvents = current === total - 1 ? 'none' : 'auto';
+      };
+
+      const goTo = (index) => {
+        const slides = getSlides();
+        current = Math.max(0, Math.min(slides.length - 1, index));
+        updateUI();
+      };
+      
+      const next = () => { if (current < getSlides().length - 1) goTo(current + 1); };
+      const prev = () => { if (current > 0) goTo(current - 1); };
+
+      const init = () => {
+        const slides = getSlides();
+        pager.innerHTML = '';
+        slides.forEach((slide, index) => {
+          const dot = document.createElement('button');
+          dot.className = 'dot' + (index === 0 ? ' active' : '');
+          dot.addEventListener('click', () => goTo(index));
+          pager.appendChild(dot);
+        });
+
+        prevBtn.addEventListener('click', prev);
+        nextBtn.addEventListener('click', next);
+
+        window.addEventListener('keydown', (e) => {
+          if (['ArrowRight', 'PageDown'].includes(e.key)) { e.preventDefault(); next(); }
+          if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
+        });
+
+        window.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+        window.addEventListener('touchend', (e) => {
+          const delta = e.changedTouches[0].screenX - touchStartX;
+          if (Math.abs(delta) < 50) return; 
+          if (delta < 0) next();
+          if (delta > 0) prev();
+        }, { passive: true });
+
+        updateUI();
+      };
+
+      return { init };
+    })();
+
+    // --- MÓDULO VISOR DE FICHAS MEJORADO (Slide 2) ---
+    const FichasViewer = (() => {
+      const fichasData = [
+        { area: "Almacén", title: "Asignación turno nocturno y montacargas", color: "gold" },
+        { area: "Mercadeo", title: "Catálogos y presentaciones a inglés", color: "blue" },
+        { area: "Ventas", title: "Ubicación física equipo híbrido", color: "blue" },
+        { area: "Ingeniería", title: "22 Contrataciones clave hasta Dic", color: "rose" },
+        { area: "TI / SAP", title: "Saneamiento de materiales (Jun 30)", color: "turq" },
+        { area: "Producción", title: "Cronograma de salida y movilización", color: "gold" },
+        { area: "RRHH", title: "Revisión de tabla salarial (Abr 30)", color: "rose" },
+        { area: "Mercadeo", title: "Comunicación nueva razón social (May 4)", color: "blue" },
+        { area: "Contabilidad", title: "Gestión contable de activos fijos", color: "turq" },
+        { area: "Almacén", title: "Flujo de materiales en traslado", color: "gold" },
+        { area: "HSEQ", title: "Certificaciones para licitar (Oct 1)", color: "blue" },
+        { area: "TI", title: "Legalización de software (Riesgo Legal)", color: "turq" },
+        { area: "Líderes", title: "Cursos de liderazgo (Julio)", color: "rose" },
+        { area: "HSEQ", title: "Verificación de maquinaria en Zona Franca", color: "gold" },
+        { area: "Ing. Producto", title: "Desarrollo de ingenierías (Ago 30)", color: "turq" },
+        { area: "Comercial", title: "Equipos 138kV: 1ra orden en Julio", color: "blue" },
+        { area: "Operaciones", title: "Inspector nocturno y refuerzo COMEX", color: "rose" },
+        { area: "Industrial", title: "Ingreso de proveedores a Zona Franca", color: "gold" }
+      ];
+      
+      const allFichas = [...fichasData, ...fichasData].slice(0, 35); 
+      let currentFicha = 0; let fichaTimer; let isFichaPaused = false;
+
+      const init = () => {
+        const fichasTrack = document.getElementById('fichasTrack');
+        if (!fichasTrack) return;
+        const btnPlayPause = document.getElementById('fcPlayPause');
+        const btnPrev = document.getElementById('fcPrev');
+        const btnNext = document.getElementById('fcNext');
+        const fcCounter = document.getElementById('fcCounter');
+        const toggleMarqueeBtn = document.getElementById('toggleMarqueeBtn');
+
+        allFichas.forEach((ficha) => {
+          const card = document.createElement('div');
+          card.className = `fc-card c-${ficha.color}`;
+          card.innerHTML = `<div class="fc-area">${ficha.area}</div><div class="fc-title">${ficha.title}</div>`;
+          fichasTrack.appendChild(card);
+        });
+
+        const cardElements = Array.from(fichasTrack.children);
+
+        const updateView = () => {
+          fichasTrack.style.transform = `translateX(calc(-${currentFicha} * 30vw))`;
+          cardElements.forEach((el, index) => el.classList.toggle('active', index === currentFicha));
+          fcCounter.innerText = `${currentFicha + 1}/35`;
+        };
+
+        const goNext = () => { currentFicha = (currentFicha + 1) % allFichas.length; updateView(); };
+        const goPrev = () => { currentFicha = (currentFicha - 1 + allFichas.length) % allFichas.length; updateView(); };
+
+        const startAutoPlay = () => {
+          if(fichaTimer) clearInterval(fichaTimer);
+          if(!isFichaPaused) fichaTimer = setInterval(goNext, 3000);
+        };
+
+        const forcePause = () => {
+          isFichaPaused = true; clearInterval(fichaTimer);
+          btnPlayPause.classList.add('active'); btnPlayPause.innerHTML = '<i class="fa-solid fa-play"></i> Reanudar';
+          if(toggleMarqueeBtn) { toggleMarqueeBtn.classList.add('active'); toggleMarqueeBtn.innerHTML = '<i class="fa-solid fa-play"></i> Reanudar'; }
+        };
+
+        const togglePause = () => {
+          isFichaPaused = !isFichaPaused;
+          if(isFichaPaused) { forcePause(); } 
+          else {
+            btnPlayPause.classList.remove('active'); btnPlayPause.innerHTML = '<i class="fa-solid fa-pause"></i> Pausar lectura';
+            if(toggleMarqueeBtn) { toggleMarqueeBtn.classList.remove('active'); toggleMarqueeBtn.innerHTML = '<i class="fa-solid fa-pause"></i> Detener para leer'; }
+            startAutoPlay();
+          }
+        };
+
+        btnPlayPause.addEventListener('click', togglePause);
+        if(toggleMarqueeBtn) toggleMarqueeBtn.addEventListener('click', togglePause);
+        btnNext.addEventListener('click', () => { forcePause(); goNext(); });
+        btnPrev.addEventListener('click', () => { forcePause(); goPrev(); });
+
+        updateView(); startAutoPlay();
+      };
+
+      return { init };
+    })();
+
+    // --- MÓDULO TEMPORIZADOR DE DESCANSO ---
+    const BreakTimer = (() => {
+      let totalSeconds = 20 * 60; 
+      let remainingSeconds = totalSeconds;
+      let mainTimerInterval = null;
+
+      const formatTime = (seconds) => {
+        const mins = Math.floor(seconds / 60); const secs = seconds % 60;
+        return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      };
+
+      const init = () => {
+        const timerDisplay = document.getElementById('timerDisplay');
+        const timerFill = document.getElementById('timerFill');
+        const startTimerBtn = document.getElementById('startTimer');
+        const pauseTimerBtn = document.getElementById('pauseTimer');
+        const resetTimerBtn = document.getElementById('resetTimer');
+        
+        if (!timerDisplay) return;
+
+        const renderTimer = () => {
+          timerDisplay.textContent = formatTime(remainingSeconds);
+          const progress = (remainingSeconds / totalSeconds) * 100;
+          timerFill.style.width = `${progress}%`;
+          if(remainingSeconds <= 60 && remainingSeconds > 0) { timerFill.style.background = '#f43f5e'; timerDisplay.style.color = '#f43f5e'; } 
+          else { timerFill.style.background = 'linear-gradient(90deg, var(--turq), var(--gold))'; timerDisplay.style.color = 'var(--text)'; }
+        };
+
+        const startTimer = () => {
+          if (mainTimerInterval) return;
+          startTimerBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Corriendo...';
+          mainTimerInterval = setInterval(() => {
+            if (remainingSeconds > 0) { remainingSeconds -= 1; renderTimer(); } 
+            else { clearInterval(mainTimerInterval); mainTimerInterval = null; startTimerBtn.innerHTML = '<i class="fa-solid fa-bell"></i> ¡Tiempo Finalizado!'; }
+          }, 1000);
+        };
+
+        const pauseTimer = () => { clearInterval(mainTimerInterval); mainTimerInterval = null; startTimerBtn.innerHTML = '<i class="fa-solid fa-play"></i> Reanudar'; };
+        const resetTimer = () => { clearInterval(mainTimerInterval); mainTimerInterval = null; remainingSeconds = totalSeconds; renderTimer(); startTimerBtn.innerHTML = '<i class="fa-solid fa-play"></i> Iniciar Pausa'; };
+
+        startTimerBtn.addEventListener('click', startTimer);
+        pauseTimerBtn.addEventListener('click', pauseTimer);
+        resetTimerBtn.addEventListener('click', resetTimer);
+
+        renderTimer();
+      };
+
+      return { init };
+    })();
+
+    // ARRANQUE
+    document.addEventListener('DOMContentLoaded', () => {
+      Navigation.init();
+      FichasViewer.init();
+      BreakTimer.init();
+    });
+  </script>
+</body>
+</html>
