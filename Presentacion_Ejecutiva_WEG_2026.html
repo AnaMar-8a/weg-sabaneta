@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- 
+    =============================================================================
+    DELIVERABLE: Informe Ejecutivo de Planeación Estratégica 2026 (HTML Presentation)
+    PROYECTO: Traslado Operativo a Zona Franca Rionegro
+    CLIENTE / AUDIENCIA: Comité Ejecutivo y Junta Directiva - WEG Colombia
+    AUTOR: Raíz i³
+    FECHA DE GENERACIÓN: Mayo 2026
+    
+    INSTRUCCIONES DE USO TÉCNICO:
+    - Formato optimizado para proyección 16:9 (1920x1080).
+    - Navegación estricta por teclado (Flechas Izquierda/Derecha, Espacio, Enter) para 
+      evitar saltos accidentales por clics durante la exposición directiva.
+    - Dependencia externa única: Google Fonts (Inter, Lora).
+    - Optimizado con soporte de impresión (@media print) para exportación nativa a PDF.
+    
+    SISTEMA DE TOKENS VISUALES:
+    Basado en tipografía Serif humanista (Lora) para jerarquías y Sans-Serif (Inter) 
+    para lectura. Paleta corporativa sobria anclada en Azul Ejecutivo y Dorado.
+    *Regla Innegociable*: Cero uso de 'font-weight: bold' en cuerpos de texto.
+    =============================================================================
+    -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe Ejecutivo de Planeación Estratégica 2026 - WEG</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&family=Lora:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =============================================================================
+        1. VARIABLES Y TOKENS DE DISEÑO
+        Definición centralizada de colores corporativos y transparencias estandarizadas.
+        =============================================================================
+        */
+        :root {
+            /* Colores Base */
+            --blue: #0b3d5c;
+            --gold: #c8a455;
+            --white: #ffffff;
+            --grey: #4a5a6e;
+            --green: #1d6a3a;
+            --amber: #b88410;
+            --red: #a02828;
+            --bg-light: #f8f9fa;
+            
+            /* Transparencias Estandarizadas (Alpha) */
+            --blue-alpha-03: rgba(11, 61, 92, 0.03);
+            --red-alpha-02: rgba(160, 40, 40, 0.02);
+            --white-alpha-20: rgba(255, 255, 255, 0.2);
+            --white-alpha-70: rgba(255, 255, 255, 0.7);
+            --grey-alpha-10: rgba(74, 90, 110, 0.1);
+            --grey-alpha-20: rgba(74, 90, 110, 0.2);
+            --grey-alpha-30: rgba(74, 90, 110, 0.3);
+        }
+
+        /* =============================================================================
+        2. SISTEMA TIPOGRÁFICO BASE Y RESET
+        Orden de propiedades: Posicionamiento > Dimensiones > Espaciado > Tipografía > Color
+        =============================================================================
+        */
+        body, html {
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            font-size: 18px;
+            font-weight: 300;
+            color: var(--grey);
+            background-color: var(--white);
+            cursor: default;
+        }
+
+        h1, h2, h3, h4 {
+            margin: 0;
+            font-family: 'Lora', serif;
+            font-weight: 500;
+            color: var(--blue);
+        }
+
+        h1 { 
+            font-size: 3.2rem; 
+            line-height: 1.1; 
+            letter-spacing: -0.02em; 
+        }
+        
+        h2 { 
+            margin-bottom: 2.5rem;
+            font-size: 2.4rem; 
+            line-height: 1.2; 
+            letter-spacing: -0.01em; 
+        }
+        
+        h3 { 
+            margin-bottom: 0.5rem;
+            font-size: 1.6rem; 
+        }
+        
+        p {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        /* Remoción forzada de bold en etiquetas estándar por sanidad técnica */
+        strong, b { 
+            font-weight: 400; 
+            color: var(--blue); 
+        }
+
+        /* =============================================================================
+        3. LAYOUT MAESTRO DEL SLIDE
+        Contenedores principales y sistema de transiciones.
+        =============================================================================
+        */
+        #presentation {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+            padding: 4rem 6rem;
+            visibility: hidden;
+            opacity: 0;
+            background-color: var(--white);
+            transition: opacity 0.4s ease-in-out;
+        }
+
+        .slide.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .content-body { 
+            display: flex; 
+            flex: 1; 
+            flex-direction: column; 
+            justify-content: center; 
+        }
+
+        /* =============================================================================
+        4. COMPONENTES REUTILIZABLES (UI KITS)
+        Grillas, tarjetas, modulos de texto y elementos recurrentes.
+        =============================================================================
+        */
+        
+        /* Sistema de Grillas */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3rem; }
+        .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 2rem; }
+        .matrix-2x2 { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 2rem; height: 100%; }
+        
+        /* Tipografía Utilitaria */
+        .label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--gold);
+        }
+
+        .highlight-text { 
+            font-size: 1.2rem;
+            color: var(--blue); 
+        }
+
+        .huge-text { 
+            margin-bottom: 2rem;
+            font-family: 'Lora', serif; 
+            font-size: 2.8rem; 
+            line-height: 1.2; 
+            color: var(--blue); 
+        }
+
+        .quote-box { 
+            padding: 3rem; 
+            background-color: var(--bg-light); 
+            border-left: 4px solid var(--gold); 
+        }
+
+        .quote-text { 
+            margin: 0;
+            font-family: 'Lora', serif; 
+            font-size: 1.6rem; 
+            font-style: italic; 
+            line-height: 1.4; 
+            color: var(--blue); 
+        }
+
+        /* Listas Limpias */
+        ul.clean-list { 
+            margin: 0;
+            padding: 0;
+            list-style: none; 
+        }
+        
+        ul.clean-list li { 
+            position: relative; 
+            margin-bottom: 1.2rem;
+            padding-left: 1.5rem; 
+        }
+        
+        ul.clean-list li::before { 
+            content: '—'; 
+            position: absolute; 
+            left: 0; 
+            color: var(--gold); 
+        }
+
+        /* Tarjetas Estructurales */
+        .card {
+            padding: 2rem 0;
+            background: transparent;
+            border-top: 2px solid var(--blue);
+        }
+
+        .card-solid {
+            box-sizing: border-box;
+            padding: 2.5rem;
+            background: var(--bg-light);
+            border-left: 2px solid var(--gold);
+        }
+
+        /* Modificadores Estructurales */
+        .border-left {
+            padding-left: 3rem;
+            border-left: 1px solid var(--grey-alpha-20);
+        }
+
+        .border-bottom {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--grey-alpha-20);
+        }
+
+        /* Línea de Tiempo (Gobernanza) */
+        .timeline { 
+            position: relative; 
+            display: flex; 
+            justify-content: space-around; 
+            width: 100%;
+            margin-top: 4rem; 
+        }
+        
+        .timeline::before { 
+            content: ''; 
+            position: absolute; 
+            top: 0.65rem; 
+            right: 0; 
+            left: 0; 
+            z-index: 1; 
+            height: 2px; 
+            background: var(--grey-alpha-30); 
+        }
+        
+        .time-node { 
+            position: relative; 
+            z-index: 2; 
+            display: flex;
+            flex-direction: column;
+            width: 26%; 
+            background: transparent; 
+        }
+        
+        .time-node .circle { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            align-self: center;
+            width: 1.5rem; 
+            height: 1.5rem; 
+            margin-bottom: 2rem; 
+            background: var(--blue); 
+            border-radius: 50%; 
+        }
+        
+        .time-node .circle::after { 
+            content: ''; 
+            width: 0.5rem; 
+            height: 0.5rem; 
+            background: var(--white); 
+            border-radius: 50%; 
+        }
+        
+        .time-node-content {
+            width: 100%;
+            text-align: left;
+        }
+
+        /* Matriz de Riesgos */
+        .risk-row { 
+            display: grid; 
+            grid-template-columns: 3fr 1fr 1fr 4fr; 
+            gap: 2rem; 
+            align-items: start; 
+            padding: 1.5rem 0; 
+            border-bottom: 1px solid var(--grey-alpha-10); 
+        }
+        
+        .risk-header { 
+            align-items: flex-end; 
+            padding-bottom: 1rem; 
+            font-family: 'Inter', sans-serif; 
+            font-size: 0.8rem; 
+            text-transform: uppercase; 
+            letter-spacing: 0.1em; 
+            color: var(--grey); 
+            border-bottom: 2px solid var(--blue); 
+        }
+        
+        .risk-eval { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 0.2rem; 
+        }
+
+        /* Cronograma Maestro */
+        .schedule-line { 
+            position: relative; 
+            padding-left: 3rem; 
+            border-left: 2px solid var(--gold); 
+        }
+        
+        .schedule-item { 
+            position: relative; 
+            margin-bottom: 3rem; 
+        }
+        
+        .schedule-item::before { 
+            content: ''; 
+            position: absolute; 
+            top: 0.4rem; 
+            left: -3.4rem; 
+            width: 0.6rem; 
+            height: 0.6rem; 
+            background: var(--blue); 
+            border-radius: 50%; 
+        }
+
+        /* =============================================================================
+        5. ESTILOS ESPECÍFICOS Y CLASES UTILITARIAS (DRY / Optimización)
+        Estilos aplicables a slides particulares o necesidades puntuales.
+        =============================================================================
+        */
+        .slide-cover {
+            justify-content: center;
+            background-color: var(--blue);
+            color: var(--white);
+        }
+        
+        .slide-cover h1 { 
+            margin-bottom: 2rem; 
+            font-weight: 600; 
+            color: var(--white); 
+        }
+        
+        .slide-cover h2 { 
+            padding-bottom: 2rem; 
+            font-family: 'Inter', sans-serif; 
+            font-size: 1.4rem; 
+            font-weight: 300; 
+            color: var(--gold); 
+            border-bottom: 1px solid var(--white-alpha-20); 
+        }
+        
+        .slide-cover p { color: var(--white-alpha-70); }
+        .slide-cover .brand { 
+            position: absolute; 
+            bottom: 4rem; 
+            left: 6rem; 
+            font-family: 'Lora', serif; 
+            font-size: 1.2rem; 
+            color: var(--gold); 
+        }
+
+        /* Clases utilitarias (Sustituyen estilos inline previos) */
+        .kpi-anchor {
+            font-family: 'Lora', serif; 
+            font-size: 1.6rem; 
+            color: var(--blue);
+        }
+
+        .top-aligned { justify-content: flex-start; }
+        .text-center { text-align: center; }
+        .h-full { height: 100%; }
+        .w-full { width: 100%; }
+        .max-w-md { max-width: 44.4rem; } /* ~800px */
+        
+        .mt-0 { margin-top: 0; }
+        .mb-0 { margin-bottom: 0; }
+        .mt-2 { margin-top: 2rem; }
+        .mt-4 { margin-top: 4rem; }
+        
+        .pl-0 { padding-left: 0; }
+        .pr-3 { padding-right: 3rem; }
+        
+        .border-l-0 { border-left: 0; }
+        .border-blue { border-left-color: var(--blue); }
+        .border-red { border-left-color: var(--red); }
+        
+        .bg-blue-soft { background-color: var(--blue-alpha-03); }
+        .bg-red-soft { background-color: var(--red-alpha-02); }
+        
+        .text-high { color: var(--red); }
+        .text-med { color: var(--amber); }
+        .text-low { color: var(--green); }
+        
+        /* Utilidades para Horizonte 2027-2030 (Slide 14) */
+        .horizon-title { font-size: 1.4rem; }
+        .horizon-desc { font-size: 0.9rem; }
+        .horizon-footer {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            font-size: 0.8rem;
+            color: var(--gold);
+            border-top: 1px solid var(--grey-alpha-20);
+        }
+
+        /* =============================================================================
+        6. NAVEGACIÓN Y FOOTER GLOBAL
+        Elementos fijos posicionados sobre los slides.
+        =============================================================================
+        */
+        .global-brand { 
+            position: absolute; 
+            bottom: 3rem; 
+            left: 6rem; 
+            font-size: 0.8rem; 
+            letter-spacing: 0.1em; 
+            color: var(--gold); 
+        }
+
+        #counter { 
+            position: absolute; 
+            right: 6rem; 
+            bottom: 3rem; 
+            font-size: 0.8rem; 
+            letter-spacing: 0.1em; 
+            color: var(--grey); 
+        }
+
+        /* =============================================================================
+        7. ESTILOS DE IMPRESIÓN / EXPORTACIÓN PDF
+        Garantiza que la generación de PDF desde el navegador asigne una página por slide.
+        =============================================================================
+        */
+        @media print {
+            body, html { 
+                height: auto; 
+                overflow: visible; 
+                background: white; 
+            }
+            #presentation { position: static; }
+            .slide {
+                position: relative;
+                page-break-after: always;
+                page-break-inside: avoid;
+                visibility: visible;
+                opacity: 1;
+                min-height: 100vh;
+                padding: 2rem 4rem;
+            }
+            .slide-cover { 
+                background-color: var(--blue) !important; 
+                color: var(--white) !important; 
+                -webkit-print-color-adjust: exact; 
+                print-color-adjust: exact; 
+            }
+            #counter { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Contenedor principal enriquecido con semántica ARIA para accesibilidad -->
+    <div id="presentation" role="region" aria-label="Presentación Estratégica">
+
+        <!-- Slide 01 — Portada. Presentación de la consultoría, audiencia objetivo y fecha. -->
+        <section class="slide slide-cover active">
+            <div class="content-body">
+                <span class="label" style="color: rgba(255, 255, 255, 0.7);">Plan Maestro 2026</span>
+                <h1>Informe Ejecutivo de<br>Planeación Estratégica</h1>
+                <h2>Traslado Operativo a Zona Franca Rionegro</h2>
+                <div class="grid-2 mt-4 max-w-md">
+                    <div>
+                        <span class="label">Audiencia</span>
+                        <p>Comité Ejecutivo y Junta Directiva<br>WEG Colombia</p>
+                    </div>
+                    <div>
+                        <span class="label">Fecha de Entrega</span>
+                        <p>Mayo de 2026</p>
+                    </div>
+                </div>
+            </div>
+            <div class="brand">Raíz i³</div>
+        </section>
+
+        <!-- Slide 02 — La Apuesta (Contexto Estratégico). Articula la dimensión transformacional y la meta última en una imagen verbal. -->
+        <section class="slide">
+            <span class="label">Contexto Estratégico</span>
+            <h2>La Dimensión Transformacional</h2>
+            <div class="content-body">
+                <div class="huge-text">
+                    La organización ejecutará seis transformaciones simultáneas en un periodo comprimido.
+                </div>
+                <div class="grid-2">
+                    <div>
+                        <ul class="clean-list">
+                            <li>Cambio de domicilio físico hacia Rionegro.</li>
+                            <li>Cambio operativo de razón social.</li>
+                            <li>Migración de sistemas a SAP integrado bajo régimen aduanero.</li>
+                            <li>Recomposición humana estructural (contratación y gestión de deserción).</li>
+                            <li>Alineación productiva a estándares de casa matriz.</li>
+                            <li>Obtención de certificaciones internacionales (UL, CFE, INEN, COVENIN).</li>
+                        </ul>
+                    </div>
+                    <div class="quote-box">
+                        <span class="label">La imagen de éxito en octubre</span>
+                        <p class="quote-text">
+                            "El primer transformador fabricado de principio a fin en Rionegro, certificado bajo norma UL, con SAP estabilizado, personal motivado y la nueva razón social plenamente operativa."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 03 — Objetivos del Proyecto. Contraste entre la exigencia financiera 2026 y el posicionamiento del trienio. -->
+        <section class="slide">
+            <span class="label">Objetivos del Proyecto</span>
+            <h2>Las Dos Metas del Traslado</h2>
+            <div class="content-body">
+                <div class="grid-2">
+                    <div class="card-solid h-full">
+                        <span class="label">La Meta Visible</span>
+                        <h3>167 MM COP</h3>
+                        <p class="highlight-text mt-2">Mide la ejecución del año en curso.</p>
+                        <p class="mt-2">
+                            Es la exigencia financiera del 2026. Requiere que la transición física y de sistemas ocurra sin detener el ingreso de órdenes ni interrumpir los ciclos de facturación vigentes. El presupuesto no es limitante, la disciplina de ejecución sí.
+                        </p>
+                    </div>
+                    <div class="card-solid border-blue h-full">
+                        <span class="label">La Meta Menos Visible</span>
+                        <h3>Horizonte 2027–2030</h3>
+                        <p class="highlight-text mt-2">Mide la posición competitiva del trienio.</p>
+                        <p class="mt-2">
+                            Es el posicionamiento como nodo de manufactura regional. Habilitar la planta para exportaciones a Norteamérica, México y Ecuador, e integrar procesos con la red global de la casa matriz. Se construye hoy, se monetiza mañana.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 04 — Modelo de Gobernanza por Puertas. Articula los tres puntos de validación que estructuran la velocidad de decisión. -->
+        <section class="slide">
+            <span class="label">Mecanismos de Control</span>
+            <h2>Modelo de Gobernanza por Puertas</h2>
+            <p>Tres puntos de validación con criterios verificables, decisor único y plan B activable, diseñados para sostener velocidad de decisión durante la transición.</p>
+            <div class="content-body">
+                <div class="timeline">
+                    <div class="time-node">
+                        <div class="circle"></div>
+                        <div class="time-node-content">
+                            <span class="label">Mayo 2026</span>
+                            <h3>Puerta C1</h3>
+                            <p class="highlight-text">Habilitación de cimientos.</p>
+                            <p>Contratación inicial, infraestructura base, aviso formal a clientes del cambio de razón social y arranque documentado de SAP.</p>
+                        </div>
+                    </div>
+                    <div class="time-node">
+                        <div class="circle"></div>
+                        <div class="time-node-content">
+                            <span class="label">Junio 2026</span>
+                            <h3>Puerta C2</h3>
+                            <p class="highlight-text">Capacidad instalada y de sistema.</p>
+                            <p>Maquinaria aprobada, formación técnica en marcha, parametrización de SAP FI/CO lista e infraestructura crítica de obra al 90%.</p>
+                        </div>
+                    </div>
+                    <div class="time-node">
+                        <div class="circle"></div>
+                        <div class="time-node-content">
+                            <span class="label">Octubre 2026</span>
+                            <h3>Puerta C3</h3>
+                            <p class="highlight-text">Operación plena certificada.</p>
+                            <p>Inicio de facturación en Rionegro, planta al 100%, certificaciones liberadas y primer transformador fabricado de principio a fin.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 05 — Arquitectura de Ejecución. Matriz 2x2 definiendo la función estratégica de cada pilar fundamental. -->
+        <section class="slide">
+            <span class="label">Arquitectura de Ejecución</span>
+            <h2>Los Cuatro Pilares del 2026</h2>
+            <div class="content-body">
+                <div class="matrix-2x2">
+                    <div class="card border-bottom border-left border-l-0 pl-0">
+                        <h3>1. Sistemas y Facturación</h3>
+                        <p class="highlight-text">Convierte el cambio en ingreso.</p>
+                        <p>Materializa transaccionalmente la nueva razón social. Transición de inventarios, parametrización aduanera y puesta a punto de SAP bajo requerimientos de Zona Franca.</p>
+                    </div>
+                    <div class="card border-bottom border-left">
+                        <h3>2. Personas y Cambios</h3>
+                        <p class="highlight-text">Decide si la organización emerge más capaz.</p>
+                        <p>Gestión de curvas de adopción, retención de talento crítico, formación del nuevo contingente humano y protección sistemática del conocimiento tácito.</p>
+                    </div>
+                    <div class="card pl-0">
+                        <h3>3. Continuidad Comercial</h3>
+                        <p class="highlight-text">Sostiene el año mientras construye el trienio.</p>
+                        <p>Protección de las cuotas de ventas tradicionales en simultáneo con el desarrollo preoperativo de nuevos mercados internacionales vía certificaciones.</p>
+                    </div>
+                    <div class="card border-left">
+                        <h3>4. Traslado Físico</h3>
+                        <p class="highlight-text">Ancla sistémicamente las dependencias.</p>
+                        <p>Ejecución de obra civil, estandarización técnica de líneas de producción y habilitación del campo de pruebas como motor de certificación.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 06 — Deep Dive: Sistemas y Facturación. Identifica rol estratégico, iniciativas críticas, riesgo y KPI de este pilar. -->
+        <section class="slide">
+            <span class="label">Análisis de Pilar</span>
+            <h2>Pilar 1: Sistemas y Facturación</h2>
+            <div class="content-body grid-2">
+                <div>
+                    <span class="label">Rol Estratégico</span>
+                    <p class="highlight-text">El pilar que menos margen de improvisación admite. O SAP opera bajo la nueva entidad y SIZFRA en octubre, o la transición comercial se detiene en seco.</p>
+                    
+                    <div class="mt-4">
+                        <span class="label">Riesgo de Falla</span>
+                        <p>Cero facturación. Implicaciones tributarias inmediatas y un impacto reputacional frente a clientes imposible de revertir con gestión comercial.</p>
+                    </div>
+                </div>
+                <div class="card-solid">
+                    <span class="label">Iniciativas Críticas</span>
+                    <ul class="clean-list" style="margin-bottom: 2rem;">
+                        <li>Parametrización de SAP FI-CO para régimen aduanero (corte 30 de mayo).</li>
+                        <li>Saneamiento final de materiales e inventarios (corte 30 de junio).</li>
+                        <li>Integración bidireccional SAP-SIZFRA garantizada para facturación electrónica.</li>
+                    </ul>
+                    
+                    <span class="label">KPI Ancla</span>
+                    <div class="highlight-text kpi-anchor">
+                        Primera orden liberada y facturada en SAP bajo la nueva razón social en Zona Franca.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 07 — Deep Dive: Personas y Cambios. Foco en retención de talento y formalización de conocimiento tácito. -->
+        <section class="slide">
+            <span class="label">Análisis de Pilar</span>
+            <h2>Pilar 2: Personas y Cambios</h2>
+            <div class="content-body grid-2">
+                <div>
+                    <span class="label">Rol Estratégico</span>
+                    <p class="highlight-text">Sostener al equipo humano durante la fricción del traslado, e instalar prácticas formales de coordinación que reemplacen la inercia actual de Sabaneta.</p>
+                    
+                    <div class="mt-4">
+                        <span class="label">Riesgo de Falla</span>
+                        <p>Producir una infraestructura técnica de vanguardia que termina siendo operada con lógicas antiguas, sumado a una fuga silenciosa de años de memoria histórica.</p>
+                    </div>
+                </div>
+                <div class="card-solid">
+                    <span class="label">Iniciativas Críticas</span>
+                    <ul class="clean-list" style="margin-bottom: 2rem;">
+                        <li>Plan de retención y ajustes salariales (corte 30 de abril).</li>
+                        <li>Contratación e integración de veintidós posiciones técnicas críticas (a diciembre).</li>
+                        <li>Programa formal de captura de conocimiento crítico previo a retiros.</li>
+                    </ul>
+                    
+                    <span class="label">KPI Ancla</span>
+                    <div class="highlight-text kpi-anchor">
+                        Tasa de retención superior al 90% en roles clasificados como conocimiento crítico.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 08 — Deep Dive: Continuidad Comercial. El balance entre defender la cuenta de cobro local y abrir los mercados externos. -->
+        <section class="slide">
+            <span class="label">Análisis de Pilar</span>
+            <h2>Pilar 3: Continuidad Comercial</h2>
+            <div class="content-body grid-2">
+                <div>
+                    <span class="label">Rol Estratégico</span>
+                    <p class="highlight-text">Resolver el dilema de transición: proteger la cuenta de cobro del mes a mes, mientras se estructuran los mercados de exportación del año entrante.</p>
+                    
+                    <div class="mt-4">
+                        <span class="label">Riesgo de Falla</span>
+                        <p>El mercado internacional objetivo se cede a la competencia global durante doce a dieciocho meses adicionales, perdiendo el apalancamiento central de la Zona Franca.</p>
+                    </div>
+                </div>
+                <div class="card-solid">
+                    <span class="label">Iniciativas Críticas</span>
+                    <ul class="clean-list" style="margin-bottom: 2rem;">
+                        <li>Comunicación formal de nueva razón social a cuentas clave (4 de mayo).</li>
+                        <li>Ejecución del pipeline de certificaciones: UL, CFE, INEN, COVENIN (a octubre).</li>
+                        <li>Definición del modelo del equipo híbrido de ventas bajo Zona Franca.</li>
+                    </ul>
+                    
+                    <span class="label">KPI Ancla</span>
+                    <div class="highlight-text kpi-anchor">
+                        Avance validado de habilitación de mercados en Norteamérica (UL) y México (CFE).
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 09 — Deep Dive: Traslado Físico. Infraestructura, cumplimiento civil y prevención de retrasos sistémicos. -->
+        <section class="slide">
+            <span class="label">Análisis de Pilar</span>
+            <h2>Pilar 4: Traslado Físico</h2>
+            <div class="content-body grid-2">
+                <div>
+                    <span class="label">Rol Estratégico</span>
+                    <p class="highlight-text">El frente más visible y el ancla temporal de los demás pilares. Su gestión exige alta disciplina para no transmitir retrasos ocultos hacia aguas abajo.</p>
+                    
+                    <div class="mt-4">
+                        <span class="label">Riesgo de Falla</span>
+                        <p>Retraso sistémico. Cada desviación silenciosa en obra o instalación se traduce en planeación a ciegas para TI, Calidad, Recursos Humanos y el equipo de Ventas.</p>
+                    </div>
+                </div>
+                <div class="card-solid">
+                    <span class="label">Iniciativas Críticas</span>
+                    <ul class="clean-list" style="margin-bottom: 2rem;">
+                        <li>Cronograma estricto de instalación de equipos y maquinaria (cierre a junio).</li>
+                        <li>Habilitación del campo de pruebas dimensionado hasta 138 kV.</li>
+                        <li>Subestación eléctrica y PTAR operativas y certificadas.</li>
+                    </ul>
+                    
+                    <span class="label">KPI Ancla</span>
+                    <div class="highlight-text kpi-anchor">
+                        Certificación RETIE de planta y subestación al cierre de Puerta C3.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 10 — Diagnóstico Organizacional. Enumera las cinco dinámicas blandas pero críticas identificadas (Cultura de Islas, Asimetría). -->
+        <section class="slide">
+            <span class="label">Diagnóstico Organizacional</span>
+            <h2>Dinámicas y Hallazgos del Proceso</h2>
+            <p style="margin-bottom: 3rem;">Obstáculos no técnicos que condicionan de manera material la ejecución del plan.</p>
+            
+            <div class="content-body grid-3">
+                <div class="border-bottom">
+                    <span class="label">Hallazgo 01</span>
+                    <h3>Asimetría Comunicacional</h3>
+                    <p>El rigor en la obra no se corresponde con una arquitectura de comunicación abierta. La información avanza en silos, forzando a TI, RRHH y Comercial a planificar con supuestos tardíos y subóptimos.</p>
+                </div>
+                <div class="border-bottom">
+                    <span class="label">Hallazgo 02</span>
+                    <h3>Cultura de Islas</h3>
+                    <p>Dependencia en el conocimiento individual y relaciones acumuladas. Al ingresar personal nuevo o cambiar procesos, los flujos informales de la operación actual se rompen al escalar a Rionegro.</p>
+                </div>
+                <div class="border-bottom">
+                    <span class="label">Hallazgo 03</span>
+                    <h3>Velocidad de Decisión</h3>
+                    <p>La suma de comunicación asimétrica e islas ralentiza la resolución de problemas horizontales. Las decisiones inter-áreas se postergan produciendo soluciones locales fragmentadas.</p>
+                </div>
+                <div>
+                    <span class="label">Hallazgo 04</span>
+                    <h3>Conocimiento Tácito</h3>
+                    <p>Gran parte del saber-hacer reside en personal con larga tenencia. Sin cultura de documentación, la deserción esperada representa una pérdida irrecuperable de capital técnico de operación.</p>
+                </div>
+                <div>
+                    <span class="label">Hallazgo 05</span>
+                    <h3>Dinámica Casa Matriz</h3>
+                    <p>La estandarización aumenta la interlocución con Brasil. Requiere balancear el lineamiento global con la adaptación local, exigiendo un punto de contacto único, no canales individuales descoordinados.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 11 — Implicaciones de la Razón Social. Expone que la migración legal es también una migración de posicionamiento de marca. -->
+        <section class="slide">
+            <span class="label">Posicionamiento</span>
+            <h2>Implicaciones de la Nueva Razón Social</h2>
+            <p style="margin-bottom: 3rem;">Una nueva entidad ante el mercado, empleados y autoridades requiere más que un registro legal.</p>
+            
+            <div class="content-body grid-2">
+                <div class="card border-bottom border-left border-l-0 pl-0 pr-3">
+                    <span class="label">01. Legal y Documental</span>
+                    <h3>Tránsito Regulatorio</h3>
+                    <p>Actualización simultánea de todos los contratos vigentes, registros ambientales, pólizas y titularidad de marcas, gobernado bajo una única matriz jurídica.</p>
+                </div>
+                <div class="card border-bottom border-left">
+                    <span class="label">02. Identidad Visual</span>
+                    <h3>Alineación Global</h3>
+                    <p>Despliegue de un manual local derivado de la casa matriz para señalética, uniformes, dotación e insumos, erradicando coexistencias de marca antes de la inauguración.</p>
+                </div>
+                <div class="card pr-3">
+                    <span class="label">03. Propósito Organizacional</span>
+                    <h3>Misión y Visión Suficientes</h3>
+                    <p>Declaraciones operativas y verificables, diseñadas por la Gerencia y memorizables sin apoyo visual. Responden al nuevo alcance competitivo del trienio.</p>
+                </div>
+                <div class="card border-left">
+                    <span class="label">04. Arquitectura de Mensajes</span>
+                    <h3>Comunicación Externa</h3>
+                    <p>Interlocución secuenciada con clientes, certificación proactiva para evitar exclusión de licitaciones y un plan de prensa anclado a enero de 2027.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 12 — Matriz de Riesgos Materiales. Tabla priorizada y categorizada con mitigaciones concretas, alineada al top. -->
+        <section class="slide">
+            <span class="label">Gestión de Vulnerabilidades</span>
+            <h2>Riesgos Materiales Consolidados</h2>
+            <div class="content-body top-aligned">
+                <div class="risk-row risk-header">
+                    <div>Riesgo Estratégico</div>
+                    <div>Impacto</div>
+                    <div>Probabilidad</div>
+                    <div>Palanca de Mitigación Principal</div>
+                </div>
+
+                <div class="risk-row">
+                    <div>Falla en disponibilidad transaccional SAP para el inicio.</div>
+                    <div class="risk-eval"><span class="text-high">Alto</span></div>
+                    <div class="risk-eval"><span class="text-med">Media</span></div>
+                    <div>Sostener infraestructura en Sabaneta como contingencia activa; sumar expertos externos.</div>
+                </div>
+                
+                <div class="risk-row">
+                    <div>Asimetría comunicacional del frente de obra.</div>
+                    <div class="risk-eval"><span class="text-high">Alto</span></div>
+                    <div class="risk-eval"><span class="text-high">Alta</span></div>
+                    <div>Divulgación quincenal estructurada e intervención de Gerencia General como balance.</div>
+                </div>
+
+                <div class="risk-row">
+                    <div>Deserción no programada de talento crítico.</div>
+                    <div class="risk-eval"><span class="text-high">Alto</span></div>
+                    <div class="risk-eval"><span class="text-high">Alta</span></div>
+                    <div>Anticipación de contrataciones clave y programa salarial de retención temprana.</div>
+                </div>
+
+                <div class="risk-row">
+                    <div>Retraso en certificaciones limitando acceso a mercados.</div>
+                    <div class="risk-eval"><span class="text-high">Alto</span></div>
+                    <div class="risk-eval"><span class="text-med">Media</span></div>
+                    <div>Relación anticipada con entes certificadores (UL, CFE) y priorización de pruebas.</div>
+                </div>
+
+                <div class="risk-row">
+                    <div>Cultura de islas fracturando los procesos formales.</div>
+                    <div class="risk-eval"><span class="text-high">Alto</span></div>
+                    <div class="risk-eval"><span class="text-high">Alta</span></div>
+                    <div>Asignación de equipos cruzados, métricas compartidas y documentación forzada.</div>
+                </div>
+
+                <div class="risk-row">
+                    <div>Atraso dominó en obra civil o subestación.</div>
+                    <div class="risk-eval"><span class="text-high">Alto</span></div>
+                    <div class="risk-eval"><span class="text-med">Media</span></div>
+                    <div>Periodos de gracia estrictamente monitoreados y uso de contratistas de soporte listos.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 13 — Cronograma Maestro. Línea temporal con los grandes hitos interdepartamentales. -->
+        <section class="slide">
+            <span class="label">Hoja de Ruta</span>
+            <h2>Cronograma Maestro Integrado 2026</h2>
+            <div class="content-body">
+                <div class="schedule-line">
+                    <div class="schedule-item">
+                        <span class="label">4 de Mayo</span>
+                        <p class="highlight-text mb-0">Comunicación externa a clientes.</p>
+                        <p class="text-sm mt-0">Notificación jurídica del cambio de razón social.</p>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="label">Primera Semana Mayo</span>
+                        <p class="highlight-text mb-0">Puerta C1: Cimientos del proyecto validados.</p>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="label">30 de Junio</span>
+                        <p class="highlight-text mb-0">Puerta C2: Habilitación de obra y parametrización.</p>
+                        <p class="text-sm mt-0">Equipamiento, módulos FI-CO e inventarios clasificados.</p>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="label">Primera Semana Octubre</span>
+                        <p class="highlight-text mb-0">Puerta C3: Facturación, certificación y primer equipo.</p>
+                        <p class="text-sm mt-0">Arranque operativo definitivo bajo nueva razón social.</p>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="label">Diciembre 2026</span>
+                        <p class="highlight-text mb-0">Cierre fiscal con meta sostenida de 167 MM COP.</p>
+                    </div>
+                    <div class="schedule-item mb-0">
+                        <span class="label">Enero 2027</span>
+                        <p class="highlight-text mb-0">Lanzamiento oficial ante clientes e inauguración formal.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 14 — Visión 2027-2030. Conecta la táctica presente con los beneficios a largo plazo. -->
+        <section class="slide">
+            <span class="label">Alineación Futura</span>
+            <h2>Visión Post-Traslado: Horizonte 2027–2030</h2>
+            <p style="margin-bottom: 3rem;">Toda decisión que parece pertenecer únicamente al 2026 contiene, embebida, una decisión sobre el posicionamiento de la compañía para el trienio siguiente.</p>
+            <div class="content-body grid-4">
+                <div>
+                    <span class="label">Año 2027</span>
+                    <h3 class="horizon-title">Consolidación</h3>
+                    <p class="horizon-desc">Operación sostenida bajo la norma de la matriz, productividad estabilizada, y apropiación cultural madura.</p>
+                    <p class="horizon-footer">
+                        Habilitado por: El rigor de la Puerta C3.
+                    </p>
+                </div>
+                <div>
+                    <span class="label">2027 – 2028</span>
+                    <h3 class="horizon-title">Penetración</h3>
+                    <p class="horizon-desc">Exportaciones significativas hacia México, Ecuador y Norteamérica, diluyendo la concentración de riesgo en Colombia.</p>
+                    <p class="horizon-footer">
+                        Habilitado por: Avance de Calidad y Comercial hoy.
+                    </p>
+                </div>
+                <div>
+                    <span class="label">2028 – 2030</span>
+                    <h3 class="horizon-title">Liderazgo Técnico</h3>
+                    <p class="horizon-desc">Transición de planta manufacturera a centro de competencia regional andino con laboratorio de validación integrado.</p>
+                    <p class="horizon-footer">
+                        Habilitado por: Entrega total del campo de pruebas.
+                    </p>
+                </div>
+                <div>
+                    <span class="label">2027 – 2030</span>
+                    <h3 class="horizon-title">Madurez Organizacional</h3>
+                    <p class="horizon-desc">Sostenibilidad del cambio cultural, procesos sistematizados y erradicación definitiva de la dependencia en silos.</p>
+                    <p class="horizon-footer">
+                        Habilitado por: Prácticas instaladas durante fricción 2026.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 15 — Conclusión. Plantea la decisión entre el liderazgo regional vs la inercia transicional. -->
+        <section class="slide">
+            <span class="label">Conclusión Ejecutiva</span>
+            <h2>El Verdadero Objeto de Decisión</h2>
+            <div class="content-body grid-2">
+                <div class="card-solid border-blue bg-blue-soft">
+                    <span class="label">Escenario A: Ejecución Disciplinada</span>
+                    <h3 class="mt-2">Crecimiento y Liderazgo</h3>
+                    <p class="mt-2">
+                        Se instalan los mecanismos de gobernanza propuestos. Se rompe deliberadamente la cultura de islas y se controla la comunicación asimétrica de la obra civil.
+                    </p>
+                    <p class="highlight-text kpi-anchor">
+                        El traslado se convierte en el punto de partida hacia el liderazgo técnico y operativo de la red regional para el 2030.
+                    </p>
+                </div>
+                <div class="card-solid border-red bg-red-soft">
+                    <span class="label">Escenario B: Ejecución Erosionada</span>
+                    <h3 class="text-high mt-2">Transición por Inercia</h3>
+                    <p class="mt-2">
+                        Se relegan los riesgos organizacionales a un segundo plano. Los sistemas colisionan en la facturación y la memoria histórica de la operación se pierde en retiros no previstos.
+                    </p>
+                    <p class="kpi-anchor text-high">
+                        Se compromete la facturación del año y se cede la ventaja competitiva internacional ganada con el régimen fiscal de la Zona Franca.
+                    </p>
+                </div>
+            </div>
+            <p class="highlight-text text-center mt-4">
+                Esa diferencia entre ambos escenarios es lo que la Alta Gerencia está decidiendo hoy.
+            </p>
+        </section>
+
+        <!-- Elementos Fijos Globales -->
+        <div class="global-brand">
+            WEG COLOMBIA <span style="margin: 0 0.5rem;">|</span> RAÍZ I³
+        </div>
+        <div id="counter" aria-live="polite" aria-label="Número de diapositiva">
+            1 / 15
+        </div>
+
+    </div>
+
+    <script>
+        /* =============================================================================
+        LÓGICA DE NAVEGACIÓN Y RENDERIZADO
+        Manejo de estado de slides mediante un índice global y manipulación de clases
+        CSS ('active'). Escucha unicamente eventos de teclado para garantizar control.
+        =============================================================================
+        */
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. Referencias al DOM
+            const slideElements = document.querySelectorAll('.slide');
+            const counterElement = document.getElementById('counter');
+            let currentSlideIndex = 0;
+
+            // 2. Definición de Funciones
+            /**
+             * Actualiza la visibilidad de los slides iterando la colección y asignando
+             * la clase .active únicamente al índice coincidente. Luego actualiza el texto del contador.
+             */
+            function renderSlideVisibility(targetIndex) {
+                slideElements.forEach((slide, index) => {
+                    if (index === targetIndex) {
+                        slide.classList.add('active');
+                    } else {
+                        slide.classList.remove('active');
+                    }
+                });
+                
+                // Actualización del texto dinámico respetando accesibilidad (aria-live)
+                counterElement.innerText = `${targetIndex + 1} / ${slideElements.length}`;
+            }
+
+            // 3. Inicialización y Event Listeners
+            
+            // Captura exclusiva de eventos de teclado (Flechas, Espacio, Enter)
+            document.addEventListener('keydown', (event) => {
+                // Avance: Flecha Derecha, Espacio, o Enter
+                if (event.key === 'ArrowRight' || event.key === ' ' || event.key === 'Enter') {
+                    if (currentSlideIndex < slideElements.length - 1) {
+                        currentSlideIndex++;
+                        renderSlideVisibility(currentSlideIndex);
+                    }
+                } 
+                // Retroceso: Flecha Izquierda
+                else if (event.key === 'ArrowLeft') {
+                    if (currentSlideIndex > 0) {
+                        currentSlideIndex--;
+                        renderSlideVisibility(currentSlideIndex);
+                    }
+                }
+            });
+
+            // Llamada inicial para pintar el estado 0 en la carga de página
+            renderSlideVisibility(currentSlideIndex);
+        });
+    </script>
+</body>
+</html>
